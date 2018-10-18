@@ -5,6 +5,6 @@ package seedu.address.model.room.booking.exceptions;
  */
 public class NoActiveOrExpiredBookingException extends RuntimeException {
     public NoActiveOrExpiredBookingException() {
-        super("This room does not have an active or upcoming booking.");
+        super("No active or upcoming booking found.");
     }
 }

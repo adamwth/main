@@ -30,7 +30,7 @@ hotel management tasks done faster than traditional GUI apps. Interested? Jump t
 .  Copy the file to the folder you want to use as the home folder for your Concierge.
 .  Double-click the file to start the app. The GUI should appear in a few seconds.
 +
-image::Ui.png[width="790"]
+image::Ui.jpg[width="790"]
 +
 .  Type the command in the command box and press kbd:[Enter] to execute it. +
 e.g. typing *`help`* and pressing kbd:[Enter] will open the help window.
@@ -65,15 +65,26 @@ A guest can have any number of tags (including 0)
 
 Examples:
 
-* `add n/John Smith p/98765432 e/johnsmith@gmail.com a/17 River Road t/VIP r/85
-from/09/12/18 to/10/12/18`
-Adds a guest "John Smith" to room 85 for a period of stay from 09/12/18 to
-10/12/18.
+* `add n/John Smith p/98765432 e/johnsmith@gmail.com t/VIP r/085 from/09/12/18 to/10/12/18`
+Add a guest "John Smith" to room 085 for a period of stay from 09/12/18 to 10/12/18.
 
-=== Listing all guests or rooms : `list`
+=== Adding a person: `addx` [red]#Coming in v2.0#
 
-Displays a list of all rooms or guests (using flags -r/-g).
-Format: `list -r`, `list -g`
+Adds a guest to the guest list NOT for the purpose of assigning a room (perhaps add to archived guest list) +
+Format: `add n/NAME p/PHONE_NUMBER e/EMAIL [t/TAG]...`
+
+Examples:
+* `addx n/guest p/98765432 e/johntan@hotmail.com t/bro`
+
+=== Checkout room: `checkin`
+
+Checks in the room, which marks the room's current booking as checked-in.
+Format: `checkin ROOM_NUMBER`
+
+Examples:
+
+* `checkin 085` +
+Checks in room 085 and marks room 085's current booking as checked-in.
 
 === Checkout room: `checkout`
 
@@ -83,10 +94,10 @@ Format: `checkout ROOM_NUMBER`
 
 Examples:
 
-* `checkout 85` +
-Checks out room 85 and the guest staying in it.
+* `checkout 085` +
+Checks out room 085 and the guest staying in it.
 
-=== Deleting a guest : `delete`
+=== Deleting a guest : `delete` [red]#Coming in v2.0#
 
 Deletes the specified guest from the archived guest list. +
 Format: `delete INDEX`
@@ -106,7 +117,7 @@ Deletes the 2nd guest in the displayed guest list.
 `delete 1` +
 Deletes the 1st guest in the results of the `find` command.
 
-=== Editing a guest : `edit`
+=== Editing a guest : `edit` [red]#Coming in v1.3#
 
 Edits an existing guest in the guest list. +
 Format: `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [t/TAG]...`
@@ -126,7 +137,7 @@ Edits the phone number and email address of the 1st guest to be `91234567` and `
 * `edit 2 n/Betsy Crower t/` +
 Edits the name of the 2nd guest to be `Betsy Crower` and clears all existing tags.
 
-=== Locating guests by name: `find`
+=== Locating guests by name: `find` [red]#Coming in v1.3#
 
 Finds guests or rooms, depending on the input flag and the keywords. +
 Format: `find [flag] KEYWORD`
@@ -140,35 +151,35 @@ Format: `find [flag] KEYWORD`
 
 Examples:
 
-* `find -g n/John Smith` +
+* `find -g John Smith` +
 Find guest(s) with "John" or "Smith" or both in their names.
-* `find -g r/85` +
-Find guest currently staying in room 85
-* `find -r 85` +
-Find room 85
+* `find -g r/085` +
+Find guest currently staying in room 085
+* `find -r 085` +
+Find room 085
 * `find -r g/John Smith` +
-Find room in which guest John Smith is currently staying
+Find room for which guest(s) with "John" or "Smith" or both in their names, has made a booking
+* `find -r double` +
+Find all double rooms
+* `find -r avail` +
+Find all available rooms today
+* `find -r avail from/09/12/18 to/10/12/18` +
+Find rooms that are available from 09/12/18 10/12/18. Input dates must be in DD/MM/YY format.
 
 === Listing all guests : `list`
 
-Shows a list of rooms or guests, depending on the input flag +
+Shows the entire list of rooms, or guests, depending on the input flag +
 Format: `list [flag]`
 
 Examples:
 
 * `list -r` +
-List all rooms (default)
+List all rooms
 * `list -g` +
 List all guests
-* `list -r -d` +
-List all double rooms
-* `list -r -a` +
-List all available rooms today
-* `list -r -a 09/12/18 10/12/18` +
-Lists rooms that are available from 091218 101218. Input dates must be in DD/MM/YY format.
 
 
-=== Selecting a guest : `select`
+=== Selecting a guest : `select` [red]#Coming in v1.3#
 
 Selects the guest/room identified by the index number used in the displayed list. +
 Format: `select INDEX`
@@ -182,28 +193,45 @@ Format: `select INDEX`
 
 Examples:
 
-* `list` +
+* `list -g` +
 `select 2` +
 Selects the 2nd room in the displayed list.
 * `find -g Betsy` +
 `select 1` +
 Selects the 1st guest in the results of the `find` command.
 
-=== Provide Room Service: `service`
+=== Provide Room Service: `service` [red]#Coming in v1.3#
 
-Provides the given room service for the room and charges are tagged to the room  +
-Format: `service rm/709 st/bath supplies`
+Charges a room service to a room  +
+Format: `service r/ROOM_NUMBER svc/SERVICE_TYPE`
 
-st refers to the type of room service required. Could be bath supplies, mini bar, replacing sheets,
-vacuuming, general, etc.
+****
+* SERVICE_TYPE refers to the serial number given to each type of service offered by the hotel.
+* This could be room service, on-demand video streaming, bath supplies, mini bar, etc.
+****
 
-=== Mark Room as faulty: `fault`
+Examples:
 
-Marks the given room for maintenance +
-Format: `service rm/709 mt/wiring`
+* `service r/085 svc/01` +
+Adds a service with the serial number *01* to the room's expenses.
 
-mt refers to the type of maintenance required.
-Room will not be available for booking whilst in this state.
+=== Room maintenance: `maintenance` [red]#Coming in v2.0#
+
+Sets the room to be under maintenance. +
+Format: `maintenance ROOM_NUMBER TRUE/FALSE`
+
+****
+* A room under maintenance does not affect any of the other system operations.
+* The receptionist should handle this situation on the ground using his judgment, be it to swap rooms for the guest
+* or ask the guest to wait until the maintenance is over (e.g. leave luggage at hotel and talk a walk outside).
+****
+
+Examples:
+
+* `maintenance 085 TRUE` +
+Sets room 085 to be under maintenance.
+* `maintenance 085 FALSE` +
+Lifts the maintenance status on room 085.
 
 === Listing entered commands : `history`
 
@@ -223,7 +251,7 @@ Format: `undo`
 
 [NOTE]
 ====
-Undoable commands: those commands that modify the address book's content (`add`, `delete`, `edit` and `clear`).
+Undoable commands: those commands that modify the address book's content (`add`, `checkin`, `checkout`, `delete`, `edit` and `clear`).
 ====
 
 Examples:
@@ -270,12 +298,12 @@ The `redo` command fails as there are no `undo` commands executed previously.
 Clears all entries from the application. +
 Format: `clear`
 
-=== Export log: `export`
+=== Export log: `export` [red]#Coming in v1.3#
 
 Exports a log of all history of commands into a text file +
 Format: `export`
 
-=== Viewing help : `help`
+=== Viewing help : `help` [red]#Coming in v1.3#
 
 Format: `help`
 
@@ -290,7 +318,7 @@ Address book data are saved in the hard disk automatically after any command tha
 There is no need to save manually.
 
 // tag::dataencryption[]
-=== Encrypting data files `[coming in v2.0]`
+=== Encrypting data files [red]#Coming in v2.0#
 
 _{explain how the user can enable/disable data encryption}_
 // end::dataencryption[]
@@ -303,6 +331,7 @@ _{explain how the user can enable/disable data encryption}_
 == Command Summary
 
 * *Add a Guest and assign a Room* : `add`
+* *Checkin* : `checkin`
 * *Checkout* : `checkout`
 * *Delete* : `delete INDEX`
 * *Edit* : `edit INDEX [n/NAME] [p/PHONE_NUMBER] [e/EMAIL] [a/ADDRESS] [t/TAG]...`

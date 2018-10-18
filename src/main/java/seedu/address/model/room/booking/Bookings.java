@@ -10,6 +10,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.SortedList;
 import seedu.address.model.room.booking.exceptions.BookingNotFoundException;
+import seedu.address.model.room.booking.exceptions.NoBookingException;
 import seedu.address.model.room.booking.exceptions.OverlappingBookingException;
 
 /**
@@ -96,7 +97,7 @@ public class Bookings implements Iterable<Booking> {
      */
     public Booking getFirstBooking() {
         if (isEmpty()) {
-            throw new NullPointerException("There are no bookings.");
+            throw new NoBookingException();
         }
         return sortedList.get(0);
     }

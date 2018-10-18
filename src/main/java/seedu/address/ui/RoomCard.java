@@ -6,6 +6,7 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import seedu.address.model.room.Room;
+import seedu.address.model.room.booking.Booking;
 
 /**
  * An UI component that displays information of a {@code Room}.
@@ -33,7 +34,7 @@ public class RoomCard extends UiPart<Region> {
     @FXML
     private Label expenses;
     @FXML
-    private Label bookings;
+    private FlowPane bookings;
     @FXML
     private FlowPane occupant;
     @FXML
@@ -44,8 +45,9 @@ public class RoomCard extends UiPart<Region> {
         this.room = room;
         roomNumber.setText("Room: " + room.getRoomNumber().toString());
         capacity.setText("Capacity: " + room.getCapacity().toString());
-        expenses.setText("Expenses: " + room.getExpenses().toString());
-        bookings.setText("Bookings: " + room.getBookings().toString());
+        expenses.setText("Expenses: " + room.getExpenses().toStringTotalCost());
+        bookings.getChildren().add(new Label("Current booking\n" + room.getFirstBooking()
+            .map(Booking::toStringShortDescription).orElse("")));
         room.getTags().forEach(tag -> tags.getChildren().add(new Label(tag.tagName)));
     }
 

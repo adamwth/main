@@ -319,6 +319,25 @@ image::UndoRedoActivityDiagram.png[width="650"]
 ** Cons: Requires dealing with commands that have already been undone: We must remember to skip these commands. Violates Single Responsibility Principle and Separation of Concerns as `HistoryManager` now needs to do two different things.
 // end::undoredo[]
 
+=== Rooms List Feature
+==== Current Implementation
+The list function is facilitated by a modified `ListCommand` class, of which the input from the CommandBox is parsed by a `ListCommandParser` class.
+
+The list function now requires a flag after the 'list' command. Below are the two allowed list commands:
+
+* `list -g` - Lists all guests.
+* `list -r` - Lists all rooms.
+
+==== Design Considerations
+===== Aspect: How to display each list
+* **Alternative 1 (current choice):** Maintain two columns on the MainWindow UI to display both rooms and guests
+** Pros: Easier to modify UI by adding on instead of modifying and replacing, and modifications in the future will not be too tedious.
+** Cons: UI looks cluttered with an empty column when not displaying the other, not an efficient use of screen space.
+
+* **Alternative 2 :** Separately display the two lists within the same MainWindow UI space/column.
+** Pros: Cleaner looking, fully utilises empty spaces. Better visual feedback from commands as inputs.
+** Cons: Requires heavy modification of MainWindow UI files, future features must stick with the restriction of having a list of either guests or rooms.
+
 === Command Archive feature
 Given below is the UML diagram for the `CommandArchive` Class:
 
@@ -373,6 +392,72 @@ from the user.
 2. Does not utilise the existing infrastructure and data found in the base level program class `CommandHistory` and
 hence would require more effort to implement.
 
+// tag::checkin[]
+=== Room Check-in/Checkout feature
+==== Current Implementation
+
+The room check-in and checkout features are facilitated by `UniqueRoomList`.
+The logic that supports the check-in and checkout operations reside in the classes in the `Room` and `Booking` packages.
+
+* `UniqueRoomList#checkin(RoomNumber)` -- Checks in the active booking of the room identified by the given room number
+* `UniqueRoomList#checkout(RoomNumber)` -- Checks out the first booking in the list of bookings of the room identified by the given room number.
+
+Note:
+
+* Active booking refers to a booking that includes today's date.
+* The room maintains a sorted list of bookings. The first booking refers to the first in chronological order.
+* A room can be checked out regardless of its checked-in status. Thus, `checkout` doubles as a command to delete bookings.
+
+These operations are exposed in the `Model` interface as `Model#checkin()` and `Model#checkout()` respectively.
+
+Given below is an example usage scenario and how the check-in/checkout mechanism behaves at each step.
+
+Assuming there is a booking already added to room 001,
+
+* The user executes `checkin 001` when the guest arrives.
+. The `checkin` command takes in a `RoomNumber` argument and calls `Model#checkinRoom` as such: `Model.checkinRoom(roomNumber)`
+. `ModelManager#checkinRoom` (which implements Model) will call `VersionedAddressBook#checkinRoom`
+. `VersionedAddressBook#checkinRoom` will call `UniqueRoomList#checkinRoom`
+. `UniqueRoomList#checkinRoom` will call `UniqueRoomList#getRoom` to get the room using its RoomNumber, followed by
+`Room#checkin`
+. `Room#checkin` will
+.. throw `NoBookingException` if the room has no bookings
+.. throw `NoActiveBookingException` if the room has no active bookings
+.. throw `OccupiedRoomCheckInException` if the room's active booking is already checked in
+.. update the active booking as checked-in
+
+* The user executes `checkout 001` when the guest leaves.
+. The `checkout` command follows step 1 to 4 of the `checkin` command, just replace occurences of "checkin" to "checkout"
+. `Room#checkout` will
+.. throw `NoBookingException` if the room has no bookings
+.. throw `NoActiveOrExpiredBookingException` if the room has no active or expired bookings
+.. delete the first booking from the list of bookings
+
+==== Design Considerations
+
+===== Aspect: How check-in/checkout executes
+
+* **Alternative 1 (current choice):** Check-in only the active booking, and check-out only the first expired or active booking regardless of check-in status.
+** Pros: Natural, because the receptionist will only check-in guests who have a booking during their booking period, not before or after (even if the receptionist forgets).
+On the other hand, receptionist may forget to checkout a guest on the system, resulting in an expired booking. Thus, we allow checking out of a room with an expired booking.
+Checkout acts as a delete booking feature, since it ignores the check-in status of a room's active booking.
+[NOTE]
+The ability to delete upcoming bookings is planned for v1.3.
+** Cons: Have to check for many exceptions.
+* **Alternative 2:** Check-in only the active booking, and check-out only active booking.
+** Pros: Stricter checks on check-in/checkout, leading to less chance of error.
+** Cons: Many various real-life situations to consider.
+
+===== Aspect: Immutability of check-in command
+
+* **Alternative 1 (current choice):** Check-in a room by creating a new copy of the room with the check-in flag set to true.
+** Pros: Debugging is easy. Consistent with the rest of the application.
+** Cons: Check-in method becomes unintuitive, since a new room is returned from the operation, instead of a void method simply setting the room property.
+* **Alternative 2:** Check-in a room by changing its check-in flag to true.
+** Pros: Check-in method is intuitive, and does not return a new room.
+** Cons: Harder to debug. Tests also become troublesome since changes are made to the same referenced room.
+// tag::checkin[]
+
 // tag::dataencryption[]
 === [Proposed] Data Encryption
 
@@ -412,6 +497,40 @@ We then create a new `Booking` object with the `Guest` and `BookingPeriod`.
 This `Booking` is then added to the `Room` with the `RoomNumber` specified.
 
 We do not record the `Room` details in the `Guest` to minimise coupling.
+
+// tag::expenses[]
+=== Expense, Expenses and ExpenseType
+In Concierge, users will be given the feature of tracking the expenditure of each individual
+guest, in order to facilitate checkout charges. Hence, the three classes, `Expenses`, `Expense`
+and `ExpenseType` have been created for this purpose. In addition, the hotel also has a menu of
+goods and services available.
+
+==== Current Implementation
+`ExpenseType` objects are essentially immutable objects that represent a single item or service
+being sold at the hotel. An `ExpenseType` object contains information about its menu number,
+usual price, and description. The main purpose of this class is for convenience; users may
+charge a customer by simply providing the menu number of the item and the cost and description
+of the item will be able to be referenced. `ExpenseType` information is stored in a `Menu`
+object, which is then stored on the hard disk, since users should have the ability to modify
+the menu at any time. The `Menu` object is internally represented with a `HashMap<String, ExpenseType>`,
+with the menu number as keys and the `ExpenseType` objects as values. This allows for the
+serialisation of the `Menu` into XML, since `HashMap` is supported by JAXB.
+* **Alternative 1: Use a List<ExpenseType> to store the menu.** While there may be negligible
+differences for a small menu, searching for an `ExpenseType` object still takes linear time
+and there may be significant performance drops for a large menu.
+
+An `Expense` object contains information about one individual expenditure by a guest. An
+`Expense` object encapsulates the cost, `ExpenseType` of the item bought, and the date and time
+of expenditure.
+
+The `Expenses` object is essentially a `List<Expense>`. Every room contains an `Expenses`
+object, to represent the collection of all the expenses of the guests in the room.
+* **Alternative 1: Use a `List<Expense>` object**: Defining the `Expenses` class allows us
+to restrict access to the collection, and only allow certain methods such as adding an
+`Expense` or displaying on screen.
+* **Alternative 2: Use a `Set<Expense>` object**: Having the expenses ordered (e.g.
+chronologically) will be useful for generating a nice view of all the expenses incurred.
+// end::dataencryption[]
 
 == Documentation
 
