@@ -2,6 +2,8 @@ package seedu.address.logic.parser;
 
 import static seedu.address.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ADDRESS;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_DATE_END;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_DATE_START;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_EMAIL;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
@@ -17,6 +19,8 @@ import seedu.address.model.person.Email;
 import seedu.address.model.person.Guest;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Phone;
+import seedu.address.model.room.RoomNumber;
+import seedu.address.model.room.booking.BookingPeriod;
 import seedu.address.model.tag.Tag;
 
 /**
@@ -32,9 +36,12 @@ public class AddCommandParser implements Parser<AddCommand> {
     public AddCommand parse(String args) throws ParseException {
         ArgumentMultimap argMultimap =
             ArgumentTokenizer.tokenize(args, PREFIX_NAME, PREFIX_PHONE,
-                    PREFIX_EMAIL, PREFIX_ADDRESS, PREFIX_TAG, PREFIX_ROOM);
-        if (!ParserUtil.arePrefixesPresent(argMultimap, PREFIX_NAME, PREFIX_ADDRESS,
-                PREFIX_PHONE, PREFIX_EMAIL)
+                    PREFIX_EMAIL, PREFIX_ADDRESS, PREFIX_TAG, PREFIX_ROOM,
+                    PREFIX_DATE_START, PREFIX_DATE_END);
+        if (!ParserUtil.arePrefixesPresent(argMultimap, PREFIX_NAME,
+                PREFIX_ADDRESS, PREFIX_PHONE, PREFIX_EMAIL, PREFIX_ROOM,
+                PREFIX_DATE_START,
+                PREFIX_DATE_END)
                 || !argMultimap.getPreamble().isEmpty()) {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, AddCommand.MESSAGE_USAGE));
         }
@@ -45,9 +52,15 @@ public class AddCommandParser implements Parser<AddCommand> {
         Address address = ParserUtil.parseAddress(argMultimap.getValue(PREFIX_ADDRESS).get());
         Set<Tag> tagList = ParserUtil.parseTags(argMultimap.getAllValues(PREFIX_TAG));
 
+        RoomNumber roomNumber =
+                ParserUtil.parseRoomNumber(argMultimap.getValue(PREFIX_ROOM).get());
+        BookingPeriod bookingPeriod =
+                ParserUtil.parseBookingPeriod(argMultimap.getValue(PREFIX_DATE_START).get(),
+                        argMultimap.getValue(PREFIX_DATE_END).get());
+
         Guest guest = new Guest(name, phone, email, address, tagList);
 
-        return new AddCommand(guest);
+        return new AddCommand(guest, roomNumber, bookingPeriod);
     }
 
 }

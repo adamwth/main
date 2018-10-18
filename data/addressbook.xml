@@ -55,10 +55,10 @@
                 <tagged>friends</tagged>
             </guest>
             <bookingPeriod>
-                <startDate>16/10/2018</startDate>
-                <endDate>17/10/2018</endDate>
+                <startDate>18/10/2018</startDate>
+                <endDate>19/10/2018</endDate>
             </bookingPeriod>
-            <checkin>false</checkin>
+            <checkin>true</checkin>
         </bookings>
         <expenses>
             <item>RS01</item>
