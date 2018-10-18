@@ -134,6 +134,24 @@ public class Booking implements Comparable<Booking> {
             && otherBooking.getBookingPeriod().equals(getBookingPeriod());
     }
 
+
+    /**
+     * Gets the short description of this room, which comprises of
+     * 1) Guest's name
+     * 2) Booking period
+     * 3) Checked-in status
+     */
+    public String toStringShortDescription() {
+        final StringBuilder builder = new StringBuilder();
+        builder.append("Guest: ")
+            .append(getGuest().getName())
+            .append("\nBooking period: ")
+            .append(getBookingPeriod())
+            .append("\nChecked-in: ")
+            .append(isCheckedIn() ? "Yes" : "No");
+        return builder.toString();
+    }
+
     /**
      * Returns true if both bookings have the same identity and data fields.
      * This defines a stronger notion of equality between two bookings.

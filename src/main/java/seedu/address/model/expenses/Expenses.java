@@ -53,6 +53,20 @@ public class Expenses {
         return Collections.unmodifiableList(expenseList);
     }
 
+    /**
+     * Get the total cost of all the expenses
+     */
+    public double getTotalCost() {
+        return expenseList.stream().map(Expense::getCost).mapToDouble(Double::doubleValue).sum();
+    }
+
+    /**
+     * Get the total cost of all the expenses as a string
+     */
+    public String toStringTotalCost() {
+        return Double.toString(getTotalCost());
+    }
+
     @Override
     public String toString() {
         StringBuilder output = new StringBuilder();
