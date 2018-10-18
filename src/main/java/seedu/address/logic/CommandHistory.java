@@ -2,6 +2,7 @@ package seedu.address.logic;
 
 import static java.util.Objects.requireNonNull;
 
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -25,6 +26,22 @@ public class CommandHistory {
     public void add(String userInput) {
         requireNonNull(userInput);
         userInputHistory.add(userInput);
+
+        /**
+         * Converts userInputHistory from a linked list into a string so that it can be passed to the CommandArchive
+         * class where the latest command can be extracted and added to commandFile.txt which tracks all the keystrokes
+         * of a user with a timestamp
+         */
+        String newLine = System.getProperty("line.separator");
+        StringBuilder string = new StringBuilder();
+        Iterator<?> it = userInputHistory.descendingIterator();
+
+        while (it.hasNext()) {
+            string.append(it.next() + newLine);
+        }
+        String inputString = string.toString();
+        System.out.println(inputString);
+        CommandArchive.stringToFile(inputString);
     }
 
     /**

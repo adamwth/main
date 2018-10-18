@@ -16,7 +16,7 @@ public class Expense {
     /**
      * Standard date-time format used for this hotel's expenses
      */
-    public static final DateTimeFormatter FORMAT = DateTimeFormatter.ofPattern("dd/MM/yyyy hh:mm:ss");
+    public static final DateTimeFormatter DATETIME_FORMAT = DateTimeFormatter.ofPattern("d/M/u HH:mm:ss");
 
     private final double cost;
     private final ExpenseType type;
@@ -98,7 +98,7 @@ public class Expense {
      * @return The date and time of this transaction in string.
      */
     public String getDateTimeString() {
-        return dateTime.format(FORMAT);
+        return dateTime.format(DATETIME_FORMAT);
     }
 
     @Override
