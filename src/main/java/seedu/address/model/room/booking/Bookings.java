@@ -41,7 +41,7 @@ public class Bookings {
      */
     public Bookings(SortedSet<Booking> sortedBookingsSet) {
         requireAllNonNull(sortedBookingsSet);
-        if (!bookingsAreNotOverlapping(sortedBookingsSet)) {
+        if (bookingsAreOverlapping(sortedBookingsSet)) {
             throw new OverlappingBookingException();
         }
         this.sortedBookingsSet = sortedBookingsSet;
@@ -71,7 +71,7 @@ public class Bookings {
      */
     public Bookings add(Booking toAdd) {
         requireNonNull(toAdd);
-        if (canAcceptBooking(toAdd)) {
+        if (!canAcceptBooking(toAdd)) {
             throw new OverlappingBookingException();
         }
         SortedSet<Booking> editedBookings = new TreeSet<>(this.sortedBookingsSet);
@@ -128,7 +128,7 @@ public class Bookings {
      */
     public boolean canAcceptBooking(Booking toCheck) {
         requireNonNull(toCheck);
-        return sortedBookingsSet.stream().anyMatch(toCheck::isOverlapping);
+        return sortedBookingsSet.stream().noneMatch(toCheck::isOverlapping);
     }
 
     /**
@@ -141,9 +141,9 @@ public class Bookings {
     }
 
     /**
-     * Returns true if {@code Bookings} contains no overlapping Bookings.
+     * Returns true if {@code Bookings} contains at least one overlapping Booking.
      */
-    private static boolean bookingsAreNotOverlapping(Set<Booking> bookings) {
+    private static boolean bookingsAreOverlapping(Set<Booking> bookings) {
         return bookings.stream().anyMatch(b1 -> 
             bookings.stream().anyMatch(b2 -> !b1.equals(b2) && b1.isOverlapping(b2)));
     }

@@ -16,6 +16,10 @@ public class TypicalBookings {
     public static final Booking LASTWEEK_YESTERDAY = new BookingBuilder()
         .withBookingPeriod(TypicalBookingPeriods.LASTWEEK_YESTERDAY).build();
 
+    public static final Booking LASTWEEK_YESTERDAY_CHECKEDIN = new BookingBuilder()
+        .withBookingPeriod(TypicalBookingPeriods.LASTWEEK_YESTERDAY)
+        .withCheckIn(true).build();
+
     public static final Booking YESTERDAY_TODAY = new BookingBuilder()
         .withBookingPeriod(TypicalBookingPeriods.YESTERDAY_TODAY).build();
 
@@ -38,6 +42,12 @@ public class TypicalBookings {
     public static SortedSet<Booking> getTypicalBookingsLastWeekYesterday() {
         SortedSet<Booking> bookings = new TreeSet<>();
         bookings.add(LASTWEEK_YESTERDAY);
+        return bookings;
+    }
+
+    public static SortedSet<Booking> getTypicalBookingsLastWeekYesterdayCheckedIn() {
+        SortedSet<Booking> bookings = new TreeSet<>();
+        bookings.add(LASTWEEK_YESTERDAY_CHECKEDIN);
         return bookings;
     }
 

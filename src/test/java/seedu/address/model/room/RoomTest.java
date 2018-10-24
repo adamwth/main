@@ -24,6 +24,8 @@ public class RoomTest {
 
     private final Room testRoomWithLastWeekYesterdayBooking = new RoomBuilder()
         .withBookings(TypicalBookings.getTypicalBookingsLastWeekYesterday()).build();
+    private final Room testRoomWithLastWeekYesterdayBookingCheckedIn = new RoomBuilder()
+        .withBookings(TypicalBookings.getTypicalBookingsLastWeekYesterdayCheckedIn()).build();
     private final Room testRoomWithYesterdayTodayBooking = new RoomBuilder()
         .withBookings(TypicalBookings.getTypicalBookingsYesterdayToday()).build();
     private final Room testRoomWithTodayTomorrowBooking = new RoomBuilder()
@@ -50,14 +52,14 @@ public class RoomTest {
     public void updateBooking() {
         Booking originalBooking = testRoomWithTodayTomorrowBooking.getBookings().getFirstBooking();
         Booking editedBooking = testRoomWithTomorrowNextWeekBooking.getBookings().getFirstBooking();
-        testRoomWithTodayTomorrowBooking.updateBooking(originalBooking, editedBooking);
-        assertTrue(testRoomWithTodayTomorrowBooking.equals(testRoomWithTomorrowNextWeekBooking));
+        Room editedRoom = testRoomWithTodayTomorrowBooking.updateBooking(originalBooking, editedBooking);
+        assertTrue(editedRoom.equals(testRoomWithTomorrowNextWeekBooking));
     }
 
     @Test
     public void isCheckedIn() {
         assertFalse(testRoomWithLastWeekYesterdayBooking.isCheckedIn());
-        assertTrue(testRoomWithLastWeekYesterdayBooking.checkIn().isCheckedIn());
+        assertTrue(testRoomWithLastWeekYesterdayBookingCheckedIn.isCheckedIn());
         assertFalse(testRoomWithYesterdayTodayBooking.isCheckedIn());
         assertFalse(testRoomWithTodayTomorrowBooking.isCheckedIn());
         assertFalse(testRoomWithTomorrowNextWeekBooking.isCheckedIn());
@@ -145,7 +147,7 @@ public class RoomTest {
 
     @Test
     public void checkOut_lastweekYesterday_success() {
-        Room editedRoom = testRoomWithLastWeekYesterdayBooking.checkIn().checkout();
+        Room editedRoom = testRoomWithLastWeekYesterdayBookingCheckedIn.checkout();
         assertTrue(editedRoom.equals(testRoomWithoutBooking));
     }
 
