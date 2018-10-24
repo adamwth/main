@@ -8,11 +8,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import javafx.beans.Observable;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import seedu.address.model.expenses.Expense;
-import seedu.address.model.room.booking.Booking;
 import seedu.address.model.room.exceptions.DuplicateRoomException;
 import seedu.address.model.room.exceptions.RoomNotFoundException;
 
@@ -43,7 +40,7 @@ public class UniqueRoomList implements Iterable<Room> {
     public UniqueRoomList(String maxRoomNumber) {
         this.internalList.setAll(Stream.iterate(1, i -> i <= Integer.parseInt(maxRoomNumber), i -> i + 1)
             .map(i -> {
-                RoomNumber roomNumber = new RoomNumber(String.format("%03d", i));;
+                RoomNumber roomNumber = new RoomNumber(String.format("%03d", i));
                 if (i % 10 == 0) { // All rooms with room number that is multiple of 10 is a SuiteRoom.
                     return new SuiteRoom(roomNumber);
                 }
