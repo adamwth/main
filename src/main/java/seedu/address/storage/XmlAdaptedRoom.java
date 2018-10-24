@@ -73,7 +73,7 @@ public class XmlAdaptedRoom {
      * @throws IllegalValueException if there were any data constraints violated in the adapted room
      */
     public Room toModelType(Menu menu) throws IllegalValueException {
-        
+
         if (roomNumber == null) {
             throw new IllegalValueException(
                     String.format(MISSING_FIELD_MESSAGE_FORMAT, RoomNumber.class.getSimpleName()));

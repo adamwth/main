@@ -66,9 +66,9 @@ public class UniqueRoomList implements Iterable<Room> {
         }
         throw new RoomNotFoundException();
     }
-    
+
     //=========== Operations =============================================================
-    
+
     /**
      * Adds a room to the list.
      * The room must not already exist in the list.

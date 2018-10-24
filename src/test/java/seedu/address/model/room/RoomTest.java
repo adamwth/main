@@ -198,8 +198,8 @@ public class RoomTest {
         */
 
         // same room number, different bookings -> returns true
-        editedRoom = new RoomBuilder(testRoomWithYesterdayTodayBooking).withBookings(TypicalBookings.getTypicalBookingsTodayTomorrow())
-            .build();
+        editedRoom = new RoomBuilder(testRoomWithYesterdayTodayBooking)
+            .withBookings(TypicalBookings.getTypicalBookingsTodayTomorrow()).build();
         assertTrue(testRoomWithYesterdayTodayBooking.isSameRoom(editedRoom));
 
         // same room number, different tags -> return true

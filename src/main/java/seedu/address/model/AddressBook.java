@@ -133,7 +133,7 @@ public class AddressBook implements ReadOnlyAddressBook {
         Room editedRoom = room.addBooking(booking);
         rooms.setRoom(room, editedRoom);
     }
-    
+
     /**
      * Checks in the room using its room number
      */
@@ -173,7 +173,7 @@ public class AddressBook implements ReadOnlyAddressBook {
         setRooms(newData.getRoomList());
         setMenu(newData.getMenuMap());
     }
-    
+
     //=========== Boolean checkers =============================================================
 
     /**
@@ -191,7 +191,7 @@ public class AddressBook implements ReadOnlyAddressBook {
         requireNonNull(room);
         return rooms.contains(room);
     }
-    
+
     /**
      * Returns true if the room identified by its room number is checked in.
      */

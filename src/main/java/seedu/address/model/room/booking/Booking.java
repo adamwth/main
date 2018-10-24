@@ -85,7 +85,7 @@ public class Booking implements Comparable<Booking> {
     public boolean isUpcoming() {
         return getBookingPeriod().isUpcoming();
     }
-    
+
     /**
      * Checks if this booking includes the given date
      */

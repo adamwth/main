@@ -1,13 +1,6 @@
 package seedu.address.testutil;
 
-import java.util.Arrays;
-import java.util.List;
-
-import seedu.address.model.room.DoubleRoom;
-import seedu.address.model.room.Room;
 import seedu.address.model.room.RoomNumber;
-import seedu.address.model.room.SingleRoom;
-import seedu.address.model.room.SuiteRoom;
 import seedu.address.model.room.UniqueRoomList;
 
 /**

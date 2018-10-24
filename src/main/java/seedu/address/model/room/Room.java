@@ -10,7 +10,6 @@ import java.util.Set;
 
 import seedu.address.model.expenses.Expense;
 import seedu.address.model.expenses.Expenses;
-import seedu.address.model.person.Guest;
 import seedu.address.model.room.booking.Booking;
 import seedu.address.model.room.booking.Bookings;
 import seedu.address.model.room.booking.exceptions.NoActiveBookingException;
@@ -51,7 +50,7 @@ public abstract class Room {
     }
 
     //=========== Special constructor method !IMPORTANT =============================================================
-    
+
     /**
      * Method to edit a room by passing arguments and getting a new Room with those arguments
      * Abstract to allow subclass to override and return a {@code Room} of their own type
@@ -153,7 +152,7 @@ public abstract class Room {
     }
 
     //=========== Boolean checkers =============================================================
-    
+
     /**
      * Returns true if room's first booking has been checked in.
      */

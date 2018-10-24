@@ -1,13 +1,10 @@
 package seedu.address.testutil;
 
-import seedu.address.model.room.booking.Booking;
-import seedu.address.model.room.booking.Bookings;
-
-import java.util.Arrays;
 import java.util.Collections;
-import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
+
+import seedu.address.model.room.booking.Booking;
 
 /**
  * A utility class containing a list of {@code Booking} objects to be used in tests.
@@ -31,10 +28,10 @@ public class TypicalBookings {
 
     public static final Booking TOMORROW_NEXTWEEK = new BookingBuilder()
         .withBookingPeriod(TypicalBookingPeriods.TOMORROW_NEXTWEEK).build();
-    
+
     public static SortedSet<Booking> getTypicalBookingsSet() {
         SortedSet<Booking> bookings = new TreeSet<>();
-        Collections.addAll(bookings, 
+        Collections.addAll(bookings,
             LASTWEEK_YESTERDAY, YESTERDAY_TODAY, TODAY_TOMORROW, TODAY_NEXTWEEK, TOMORROW_NEXTWEEK);
         return bookings;
     }
