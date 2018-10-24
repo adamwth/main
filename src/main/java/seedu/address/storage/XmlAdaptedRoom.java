@@ -60,11 +60,9 @@ public class XmlAdaptedRoom {
         capacity = source.getCapacity().getValue();
         expenses.addAll(source.getExpenses().getExpensesList().stream().map(XmlAdaptedExpense::new)
             .collect(Collectors.toList()));
-        bookings.addAll(source.getBookings().asUnmodifiableSortedList().stream().map(XmlAdaptedBooking::new)
+        bookings.addAll(source.getBookings().getSortedBookingsSet().stream().map(XmlAdaptedBooking::new)
             .collect(Collectors.toList()));
-        tagged = source.getTags().stream()
-                .map(XmlAdaptedTag::new)
-                .collect(Collectors.toList());
+        tagged = source.getTags().stream().map(XmlAdaptedTag::new).collect(Collectors.toList());
     }
 
     /**
@@ -115,20 +113,11 @@ public class XmlAdaptedRoom {
         final Set<Tag> modelTags = new HashSet<>(roomTags);
 
         if (modelCapacity.equals(SingleRoom.CAPACITY_SINGLE_ROOM)) {
-            SingleRoom singleRoom = new SingleRoom(modelRoomNumber);
-            singleRoom.setBookings(modelBookings);
-            singleRoom.resetExpenses(modelExpenses);
-            return singleRoom;
+            return new SingleRoom(modelRoomNumber, modelExpenses, modelBookings, modelTags);
         } else if (modelCapacity.equals(DoubleRoom.CAPACITY_DOUBLE_ROOM)) {
-            DoubleRoom doubleRoom = new DoubleRoom(modelRoomNumber);
-            doubleRoom.setBookings(modelBookings);
-            doubleRoom.resetExpenses(modelExpenses);
-            return doubleRoom;
+            return new DoubleRoom(modelRoomNumber, modelExpenses, modelBookings, modelTags);
         } else if (modelCapacity.equals(SuiteRoom.CAPACITY_SUITE_ROOM)) {
-            SuiteRoom suiteRoom = new SuiteRoom(modelRoomNumber);
-            suiteRoom.setBookings(modelBookings);
-            suiteRoom.resetExpenses(modelExpenses);
-            return suiteRoom;
+            return new SuiteRoom(modelRoomNumber, modelExpenses, modelBookings, modelTags);
         } else {
             throw new IllegalValueException(String.format(MESSAGE_NO_SUCH_ROOM_WITH_CAPACITY, capacity));
         }

@@ -31,7 +31,7 @@ public class Booking implements Comparable<Booking> {
     /**
      * Private constructor used to check-in a booking
      */
-    private Booking(Guest guest, BookingPeriod bookingPeriod, boolean isCheckedIn) {
+    public Booking(Guest guest, BookingPeriod bookingPeriod, boolean isCheckedIn) {
         requireAllNonNull(guest, bookingPeriod);
         this.guest = guest;
         this.bookingPeriod = bookingPeriod;

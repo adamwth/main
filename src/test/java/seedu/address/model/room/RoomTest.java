@@ -81,11 +81,11 @@ public class RoomTest {
 
     @Test
     public void hasBooking() {
-        assertTrue(testRoomWithLastWeekYesterdayBooking.hasBooking());
-        assertTrue(testRoomWithYesterdayTodayBooking.hasBooking());
-        assertTrue(testRoomWithTodayTomorrowBooking.hasBooking());
-        assertTrue(testRoomWithTomorrowNextWeekBooking.hasBooking());
-        assertFalse(testRoomWithoutBooking.hasBooking());
+        assertTrue(testRoomWithLastWeekYesterdayBooking.hasBookings());
+        assertTrue(testRoomWithYesterdayTodayBooking.hasBookings());
+        assertTrue(testRoomWithTodayTomorrowBooking.hasBookings());
+        assertTrue(testRoomWithTomorrowNextWeekBooking.hasBookings());
+        assertFalse(testRoomWithoutBooking.hasBookings());
     }
 
     @Test

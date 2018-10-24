@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import javafx.collections.ObservableList;
+import seedu.address.model.expenses.Expense;
 import seedu.address.model.expenses.ExpenseType;
 import seedu.address.model.person.Guest;
 import seedu.address.model.person.UniqueGuestList;
@@ -46,7 +47,30 @@ public class AddressBook implements ReadOnlyAddressBook {
         resetData(toBeCopied);
     }
 
-    //// list overwrite operations
+    //=========== Getters =============================================================
+
+    @Override
+    public ObservableList<Guest> getPersonList() {
+        return persons.asUnmodifiableObservableList();
+    }
+
+
+    @Override
+    public ObservableList<Room> getRoomList() {
+        return rooms.asUnmodifiableObservableList();
+    }
+
+    @Override
+    public Menu getMenu() {
+        return menu;
+    }
+
+    @Override
+    public Map<String, ExpenseType> getMenuMap() {
+        return menu.asUnmodifiableMap();
+    }
+
+    //=========== Guest operations =============================================================
 
     /**
      * Replaces the contents of the guest list with {@code guests}.
@@ -54,27 +78,6 @@ public class AddressBook implements ReadOnlyAddressBook {
      */
     public void setPersons(List<Guest> guests) {
         this.persons.setGuests(guests);
-    }
-
-    /**
-     * Resets the existing data of this {@code AddressBook} with {@code newData}.
-     */
-    public void resetData(ReadOnlyAddressBook newData) {
-        requireNonNull(newData);
-
-        setPersons(newData.getPersonList());
-        setRooms(newData.getRoomList());
-        setMenu(newData.getMenuMap());
-    }
-
-    //// guest-level operations
-
-    /**
-     * Returns true if a guest with the same identity as {@code guest} exists in the address book.
-     */
-    public boolean hasPerson(Guest guest) {
-        requireNonNull(guest);
-        return persons.contains(guest);
     }
 
     /**
@@ -104,20 +107,14 @@ public class AddressBook implements ReadOnlyAddressBook {
         persons.remove(key);
     }
 
+    //=========== Room operations =============================================================
+
     /**
      * Adds a room to the address book.
      * The room must not already exist in the address book.
      */
     public void addRoom(Room r) {
         rooms.add(r);
-    }
-
-    /**
-     * Returns true if a room with the same identity as {@code room} exists in the address book.
-     */
-    public boolean hasRoom(Room room) {
-        requireNonNull(room);
-        return rooms.contains(room);
     }
 
     /**
@@ -132,52 +129,95 @@ public class AddressBook implements ReadOnlyAddressBook {
      * Add a booking to a room identified by its room number.
      */
     public void addBooking(RoomNumber roomNumber, Booking booking) {
-        rooms.addBooking(roomNumber, booking);
+        Room room = rooms.getRoom(roomNumber);
+        Room editedRoom = room.addBooking(booking);
+        rooms.setRoom(room, editedRoom);
     }
-    public void setMenu(Map<String, ExpenseType> menu) {
-        this.menu.setMenu(menu);
-    }
-
-    /**
-     * Returns true if the room identified by its room number is checked in.
-     */
-    public boolean isRoomCheckedIn(RoomNumber roomNumber) {
-        return rooms.isRoomCheckedIn(roomNumber);
-    }
-
-    /**
-     * Returns true if the room's bookings is non-empty
-     */
-    public boolean roomHasBooking(RoomNumber roomNumber) {
-        return rooms.roomHasBooking(roomNumber);
-    }
-
-    /**
-     * Returns true if the room's first booking is active.
-     */
-    public boolean roomHasActiveBooking(RoomNumber roomNumber) {
-        return rooms.roomHasActiveBooking(roomNumber);
-    }
-
-    /**
-     * Returns true if the room's first booking is active or expired
-     */
-    public boolean roomHasActiveOrExpiredBooking(RoomNumber roomNumber) {
-        return rooms.roomHasActiveOrExpiredBooking(roomNumber);
-    }
-
+    
     /**
      * Checks in the room using its room number
      */
-    public void checkinRoom(RoomNumber roomNumber) {
-        rooms.checkinRoom(roomNumber);
+    public void checkInRoom(RoomNumber roomNumber) {
+        Room room = rooms.getRoom(roomNumber);
+        rooms.setRoom(room, room.checkIn());
     }
 
     /**
      * Checks out a room using its room number
      */
     public void checkoutRoom(RoomNumber roomNumber) {
-        rooms.checkoutRoom(roomNumber);
+        Room room = rooms.getRoom(roomNumber);
+        rooms.setRoom(room, room.checkout());
+    }
+
+    public void setMenu(Map<String, ExpenseType> menu) {
+        this.menu.setMenu(menu);
+    }
+
+    /**
+     * Adds an expense to the room using its room number
+     */
+    public void addExpense(RoomNumber roomNumber, Expense expense) {
+        rooms.getRoom(roomNumber).addExpense(expense);
+    }
+
+    //=========== Reset data =============================================================
+
+    /**
+     * Resets the existing data of this {@code AddressBook} with {@code newData}.
+     */
+    public void resetData(ReadOnlyAddressBook newData) {
+        requireNonNull(newData);
+
+        setPersons(newData.getPersonList());
+        setRooms(newData.getRoomList());
+        setMenu(newData.getMenuMap());
+    }
+    
+    //=========== Boolean checkers =============================================================
+
+    /**
+     * Returns true if a guest with the same identity as {@code guest} exists in the address book.
+     */
+    public boolean hasPerson(Guest guest) {
+        requireNonNull(guest);
+        return persons.contains(guest);
+    }
+
+    /**
+     * Returns true if a room with the same identity as {@code room} exists in the address book.
+     */
+    public boolean hasRoom(Room room) {
+        requireNonNull(room);
+        return rooms.contains(room);
+    }
+    
+    /**
+     * Returns true if the room identified by its room number is checked in.
+     */
+    public boolean isRoomCheckedIn(RoomNumber roomNumber) {
+        return rooms.getRoom(roomNumber).isCheckedIn();
+    }
+
+    /**
+     * Returns true if the room's bookings is non-empty
+     */
+    public boolean roomHasBookings(RoomNumber roomNumber) {
+        return rooms.getRoom(roomNumber).hasBookings();
+    }
+
+    /**
+     * Returns true if the room's first booking is active.
+     */
+    public boolean roomHasActiveBooking(RoomNumber roomNumber) {
+        return rooms.getRoom(roomNumber).hasActiveBooking();
+    }
+
+    /**
+     * Returns true if the room's first booking is active or expired
+     */
+    public boolean roomHasActiveOrExpiredBooking(RoomNumber roomNumber) {
+        return rooms.getRoom(roomNumber).hasActiveOrExpiredBooking();
     }
 
     //// util methods
@@ -186,27 +226,6 @@ public class AddressBook implements ReadOnlyAddressBook {
     public String toString() {
         return persons.asUnmodifiableObservableList().size() + " persons";
         // TODO: refine later
-    }
-
-    @Override
-    public ObservableList<Guest> getPersonList() {
-        return persons.asUnmodifiableObservableList();
-    }
-
-
-    @Override
-    public ObservableList<Room> getRoomList() {
-        return rooms.asUnmodifiableObservableList();
-    }
-
-    @Override
-    public Menu getMenu() {
-        return menu;
-    }
-
-    @Override
-    public Map<String, ExpenseType> getMenuMap() {
-        return menu.asUnmodifiableMap();
     }
 
     @Override

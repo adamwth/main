@@ -75,7 +75,7 @@ public class RoomBuilder {
      * Sets the {@code Expenses} of the {@code Room} that we are building.
      */
     public RoomBuilder withExpenses(Expenses expenses) {
-        this.expenses = new Expenses(expenses.getExpensesList());
+        this.expenses.setExpenses(expenses);
         return this;
     }
 
@@ -83,7 +83,7 @@ public class RoomBuilder {
      * Sets the {@code Bookings} of the {@code Room} that we are building.
      */
     public RoomBuilder withBookings(Bookings bookings) {
-        this.bookings = new Bookings(bookings);
+        this.bookings.setBookings(bookings);
         return this;
     }
 
