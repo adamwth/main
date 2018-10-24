@@ -33,7 +33,7 @@ public class BookingBuilder {
     public BookingBuilder(Booking bookingToCopy) {
         guest = bookingToCopy.getGuest();
         bookingPeriod = bookingToCopy.getBookingPeriod();
-        checkIn = bookingToCopy.isCheckedIn();
+        checkIn = bookingToCopy.getIsCheckedIn();
     }
 
     /**

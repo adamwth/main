@@ -36,7 +36,7 @@ public class XmlAdaptedBooking {
     public XmlAdaptedBooking(Booking source) {
         guest = new XmlAdaptedPerson(source.getGuest());
         bookingPeriod = new XmlAdaptedBookingPeriod(source.getBookingPeriod());
-        checkin = source.isCheckedIn();
+        checkin = source.getIsCheckedIn();
     }
 
     /**

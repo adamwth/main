@@ -128,7 +128,7 @@ public class BookingPeriod implements Comparable<BookingPeriod> {
     }
 
     /**
-     * Checks if the given date is within this booking period's start and end dates.
+     * Checks if the given date is within this booking period's start and end dates, inclusively
      */
     public boolean includesDate(LocalDate date) {
         return date.compareTo(startDate) >= 0

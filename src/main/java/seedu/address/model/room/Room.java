@@ -128,7 +128,7 @@ public abstract class Room {
      */
     public boolean isCheckedIn() {
         Booking firstBooking = bookings.getFirstBooking();
-        return firstBooking.isCheckedIn();
+        return firstBooking.getIsCheckedIn();
     }
 
     /**
@@ -151,7 +151,7 @@ public abstract class Room {
      */
     public boolean hasActiveOrExpiredBooking() {
         Booking firstBooking = bookings.getFirstBooking();
-        return firstBooking.isActiveOrExpired();
+        return firstBooking.isActive() || firstBooking.isExpired();
     }
 
     public Optional<Booking> getFirstBooking() {
