@@ -32,8 +32,9 @@ import seedu.address.model.room.booking.exceptions.OverlappingBookingException;
  */
 public class Bookings implements Iterable<Booking> {
 
-    private final ObservableList<Booking> internalList = FXCollections.observableArrayList();
-    private final SortedList<Booking> sortedList = new SortedList<>(internalList);
+    public final ObservableList<Booking> internalList = FXCollections.observableArrayList();
+    public final SortedList<Booking> sortedList = new SortedList<>(internalList,
+        (Booking b1, Booking b2) -> b1.compareTo(b2));
 
     /**
      * Initializes an empty bookings object

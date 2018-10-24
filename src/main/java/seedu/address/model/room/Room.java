@@ -93,8 +93,9 @@ public abstract class Room {
     /**
      * Adds a booking to this room's list of bookings
      */
-    public void addBooking(Booking booking) {
+    public Room addBooking(Booking booking) {
         bookings.add(booking);
+        return cloneRoom();
     }
 
     /**

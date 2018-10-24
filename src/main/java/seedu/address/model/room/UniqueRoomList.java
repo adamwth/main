@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import javafx.beans.Observable;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import seedu.address.model.expenses.Expense;
@@ -28,7 +29,9 @@ import seedu.address.model.room.exceptions.RoomNotFoundException;
  */
 public class UniqueRoomList implements Iterable<Room> {
 
-    private final ObservableList<Room> internalList = FXCollections.observableArrayList();
+    private final ObservableList<Room> internalList = FXCollections.observableArrayList(
+        room -> new Observable[] {room.getBookings().sortedList}
+    );
 
     /**
      * Initializes an empty room list
@@ -163,7 +166,8 @@ public class UniqueRoomList implements Iterable<Room> {
      */
     public void addBooking(RoomNumber roomNumber, Booking booking) {
         Room roomToAdd = getRoom(roomNumber);
-        roomToAdd.addBooking(booking);
+        Room editedRoom = roomToAdd.addBooking(booking);
+        setRoom(roomToAdd, editedRoom);
     }
 
     /**
