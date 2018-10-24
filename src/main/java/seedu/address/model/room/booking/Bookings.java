@@ -143,7 +143,7 @@ public class Bookings {
     /**
      * Returns true if {@code Bookings} contains at least one overlapping Booking.
      */
-    private static boolean bookingsAreOverlapping(Set<Booking> bookings) {
+    public static boolean bookingsAreOverlapping(Set<Booking> bookings) {
         return bookings.stream().anyMatch(b1 -> 
             bookings.stream().anyMatch(b2 -> !b1.equals(b2) && b1.isOverlapping(b2)));
     }
