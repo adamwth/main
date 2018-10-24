@@ -50,8 +50,8 @@ public class AddressBook implements ReadOnlyAddressBook {
     //=========== Getters =============================================================
 
     @Override
-    public ObservableList<Guest> getPersonList() {
-        return persons.asUnmodifiableObservableList();
+    public ObservableList<Guest> getGuestList() {
+        return guests.asUnmodifiableObservableList();
     }
 
 
@@ -76,8 +76,8 @@ public class AddressBook implements ReadOnlyAddressBook {
      * Replaces the contents of the guest list with {@code guests}.
      * {@code guests} must not contain duplicate guests.
      */
-    public void setPersons(List<Guest> guests) {
-        this.persons.setGuests(guests);
+    public void setGuests(List<Guest> guests) {
+        this.guests.setGuests(guests);
     }
 
     /**
@@ -169,7 +169,7 @@ public class AddressBook implements ReadOnlyAddressBook {
     public void resetData(ReadOnlyAddressBook newData) {
         requireNonNull(newData);
 
-        setPersons(newData.getPersonList());
+        setGuests(newData.getGuestList());
         setRooms(newData.getRoomList());
         setMenu(newData.getMenuMap());
     }
@@ -179,9 +179,9 @@ public class AddressBook implements ReadOnlyAddressBook {
     /**
      * Returns true if a guest with the same identity as {@code guest} exists in the address book.
      */
-    public boolean hasPerson(Guest guest) {
+    public boolean hasGuest(Guest guest) {
         requireNonNull(guest);
-        return persons.contains(guest);
+        return guests.contains(guest);
     }
 
     /**

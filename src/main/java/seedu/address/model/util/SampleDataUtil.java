@@ -67,7 +67,7 @@ public class SampleDataUtil {
         UniqueRoomList uniqueRoomList = new UniqueRoomList(RoomNumber.MAX_ROOM_NUMBER);
         uniqueRoomList.getRoom(new RoomNumber("001"))
             .addBooking(
-                new Booking(getSamplePersons()[0],
+                new Booking(getSampleGuests()[0],
                 new BookingPeriod(
                     LocalDate.now().format(BookingPeriod.DATE_TO_STRING_FORMAT),
                     LocalDate.now().plusDays(1).format(BookingPeriod.DATE_TO_STRING_FORMAT))));
