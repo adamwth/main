@@ -2,7 +2,6 @@ package seedu.address.logic;
 
 import static java.util.Objects.requireNonNull;
 
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
