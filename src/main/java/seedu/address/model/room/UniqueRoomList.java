@@ -38,7 +38,7 @@ public class UniqueRoomList implements Iterable<Room> {
      * @param maxRoomNumber The maximum room number as a string
      */
     public UniqueRoomList(String maxRoomNumber) {
-        this.internalList.setAll(Stream.iterate(1, i -> i <= Integer.parseInt(maxRoomNumber), i -> i + 1)
+        Stream.iterate(1, i -> i <= Integer.parseInt(maxRoomNumber), i -> i + 1)
             .map(i -> {
                 RoomNumber roomNumber = new RoomNumber(String.format("%03d", i));
                 if (i % 10 == 0) { // All rooms with room number that is multiple of 10 is a SuiteRoom.
@@ -50,7 +50,7 @@ public class UniqueRoomList implements Iterable<Room> {
                 // ALl rooms with odd room number is a SingleRoom.
                 return new SingleRoom(roomNumber);
             })
-            .collect(Collectors.toList()));
+            .forEachOrdered(internalList::add);
     }
     //=========== Getters =============================================================
 

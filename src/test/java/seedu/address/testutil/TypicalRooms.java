@@ -64,8 +64,7 @@ public class TypicalRooms {
      * Note: All rooms do not have bookings or expenses. Use @Before in tests to initialize bookings and expenses.
      */
     public static UniqueRoomList getTypicalUniqueRoomList() {
-        UniqueRoomList uniqueRoomList = new UniqueRoomList();
-        uniqueRoomList.setRooms(getTypicalRooms());
+        UniqueRoomList uniqueRoomList = new UniqueRoomList("100");
         return uniqueRoomList;
     }
 }
