@@ -44,7 +44,6 @@ public class RoomCard extends UiPart<Region> {
         roomNumber.setText("Room: " + room.getRoomNumber().toString());
         capacity.setText("Capacity: " + room.getCapacity().toString());
         bookings.getChildren().add(new Label("Active booking\n" + room.getFirstBooking()
-        expenses.setText("Expenses: " + room.getExpenses().toStringTotalCost());
             .map(Booking::toStringShortDescription).orElse("")));
         room.getTags().forEach(tag -> tags.getChildren().add(new Label(tag.tagName)));
     }
