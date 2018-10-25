@@ -320,6 +320,12 @@ image::UndoRedoActivityDiagram.png[width="650"]
 // end::undoredo[]
 
 === Rooms List Feature
+The rooms list feature builds upon, and reuses functions from the originally implemented ListCommand.
+
+The UML Diagram for the current implementation of ListCommand is as follows:
+
+image::ListCommandUml.png[width="600"]
+
 ==== Current Implementation
 The list function is facilitated by a modified `ListCommand` class, of which the input from the CommandBox is parsed by a `ListCommandParser` class.
 
@@ -328,13 +334,20 @@ The list function now requires a flag after the 'list' command. Below are the tw
 * `list -g` - Lists all guests.
 * `list -r` - Lists all rooms.
 
+A `ListCommandParser` class was created to obtain and compare the flags from inputs, which required a different approach to the rest of the commands. The input string is simply split using a String function, obtaining an array of strings, of which the flags will be at index 1.
+
+Modification of existing FXML files, and creation of new FXML files was done to achieve separate listing of guests and rooms, and the browser panel was replaced with a panel to focus on, and display more detailed information on the selected guest/room.
+
+In order to stack the UI elements on top of one another to reuse and display the separate lists under the same column, modifications were made to the `MainWindow.fxml` file.
+The GuestListPanel and RoomListPanel each has a "VBox" element encapsulating them, which visibility is toggled and the element itself enabled or disabled based on the flag that was obtained from the parser. This feature extends to the GuestDetailedPanel and RoomDetailedPanel and is achieved in the same way.
+
 ==== Design Considerations
 ===== Aspect: How to display each list
-* **Alternative 1 (current choice):** Maintain two columns on the MainWindow UI to display both rooms and guests
+* **Alternative 1 :** Maintain two columns on the MainWindow UI to display both rooms and guests
 ** Pros: Easier to modify UI by adding on instead of modifying and replacing, and modifications in the future will not be too tedious.
 ** Cons: UI looks cluttered with an empty column when not displaying the other, not an efficient use of screen space.
 
-* **Alternative 2 :** Separately display the two lists within the same MainWindow UI space/column.
+* **Alternative 2 (current choice):** Separately display the two lists within the same MainWindow UI space/column.
 ** Pros: Cleaner looking, fully utilises empty spaces. Better visual feedback from commands as inputs.
 ** Cons: Requires heavy modification of MainWindow UI files, future features must stick with the restriction of having a list of either guests or rooms.
 
@@ -502,8 +515,8 @@ We do not record the `Room` details in the `Guest` to minimise coupling.
 === Expense, Expenses and ExpenseType
 In Concierge, users will be given the feature of tracking the expenditure of each individual
 guest, in order to facilitate checkout charges. Hence, the three classes, `Expenses`, `Expense`
-and `ExpenseType` have been created for this purpose. In addition, the hotel also has a menu of
-goods and services available.
+and `ExpenseType` have been created for this purpose. In addition, the hotel also has a
+`menu` of goods and services available.
 
 ==== Current Implementation
 `ExpenseType` objects are essentially immutable objects that represent a single item or service
@@ -512,9 +525,10 @@ usual price, and description. The main purpose of this class is for convenience;
 charge a customer by simply providing the menu number of the item and the cost and description
 of the item will be able to be referenced. `ExpenseType` information is stored in a `Menu`
 object, which is then stored on the hard disk, since users should have the ability to modify
-the menu at any time. The `Menu` object is internally represented with a `HashMap<String, ExpenseType>`,
+the menu manually. The `Menu` object is internally represented with a `HashMap<String, ExpenseType>`,
 with the menu number as keys and the `ExpenseType` objects as values. This allows for the
 serialisation of the `Menu` into XML, since `HashMap` is supported by JAXB.
+
 * **Alternative 1: Use a List<ExpenseType> to store the menu.** While there may be negligible
 differences for a small menu, searching for an `ExpenseType` object still takes linear time
 and there may be significant performance drops for a large menu.
@@ -525,12 +539,43 @@ of expenditure.
 
 The `Expenses` object is essentially a `List<Expense>`. Every room contains an `Expenses`
 object, to represent the collection of all the expenses of the guests in the room.
+
 * **Alternative 1: Use a `List<Expense>` object**: Defining the `Expenses` class allows us
 to restrict access to the collection, and only allow certain methods such as adding an
 `Expense` or displaying on screen.
 * **Alternative 2: Use a `Set<Expense>` object**: Having the expenses ordered (e.g.
 chronologically) will be useful for generating a nice view of all the expenses incurred.
-// end::dataencryption[]
+
+Here is a simple UML describing the roles of these classes.
+
+image::expense_uml.png[width="600"]
+
+==== Design Considerations
+
+===== Aspect: Immutability of Menu
+While it is conceivable that the items sold may change from time to time,
+for various reasons such as unpopularity or seasonal products, giving users
+the ability to add and remove items from the menu may result in more
+problems than benefits. We expect that alterations to the menu will not be
+performed frequently, and that the majority of our users, receptionists,
+will not be required to add and remove items to the menu. The menu also does
+not have to be altered during operational hours. Hence, by making
+`Menu` immutable, we eliminate the possibility of making accidental or
+unwarranted changes to the menu. The only method to modify `Menu` would
+thus be through the XML file, which we believe is suitable for these
+purposes.
+
+===== Aspect: Immutability of ExpenseType
+The `ExpenseType` object is meant to hold the default values of the name and
+price of each item. In other words, since an `Expense` object references an
+`ExpenseType` object, the `Expense` object is allowed to have a cost that
+is different from the cost in the corresponding `ExpenseType` object, to
+account for cases such as the guest having a personalised discount due to
+the usage of vouchers or certain credit cards. Thus, ExpenseType does not
+need to be modified by users in the application. Nonetheless, it is still
+possible to modify the default information through editing the XML file.
+
+// end::expense[]
 
 == Documentation
 
