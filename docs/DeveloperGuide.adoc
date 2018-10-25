@@ -433,6 +433,10 @@ Assuming there is a booking already added to room 001,
 .. throw `NoActiveOrExpiredBookingException` if the room has no active or expired bookings
 .. delete the first booking from the list of bookings
 
+The following sequence diagram shows how to CheckinCommand operations works:
+
+image::CheckinCommandSequenceDiagram.png[width="1280"]
+
 ==== Design Considerations
 
 ===== Aspect: How check-in/checkout executes
@@ -456,7 +460,7 @@ The ability to delete upcoming bookings is planned for v1.3.
 * **Alternative 2:** Check-in a room by changing its check-in flag to true.
 ** Pros: Check-in method is intuitive, and does not return a new room.
 ** Cons: Harder to debug. Tests also become troublesome since changes are made to the same referenced room.
-// tag::checkin[]
+// end::checkin[]
 
 // tag::dataencryption[]
 === [Proposed] Data Encryption
