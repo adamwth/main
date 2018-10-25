@@ -32,6 +32,7 @@ public class CommandHistory {
          * class where the latest command can be extracted and added to commandFile.txt which tracks all the keystrokes
          * of a user with a timestamp
          */
+        /*
         String newLine = System.getProperty("line.separator");
         StringBuilder string = new StringBuilder();
         Iterator<?> it = userInputHistory.descendingIterator();
@@ -43,6 +44,7 @@ public class CommandHistory {
         System.out.println(inputString);
         // Fix this!!!
         // CommandArchive.stringToFile(inputString);
+        */
     }
 
     /**
