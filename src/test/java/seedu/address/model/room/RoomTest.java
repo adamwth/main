@@ -1,29 +1,13 @@
 package seedu.address.model.room;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static seedu.address.logic.commands.CommandTestUtil.VALID_CAPACITY_DOUBLE;
-import static seedu.address.logic.commands.CommandTestUtil.VALID_ROOM_NUMBER_BOB;
-import static seedu.address.logic.commands.CommandTestUtil.VALID_TAG_HANDICAP;
-import static seedu.address.testutil.TypicalRooms.DOUBLE_002;
-import static seedu.address.testutil.TypicalRooms.SINGLE_001;
-
 import org.junit.Rule;
-import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
-import seedu.address.model.room.booking.Booking;
-import seedu.address.model.room.booking.exceptions.NoActiveBookingException;
-import seedu.address.model.room.booking.exceptions.NoActiveOrExpiredBookingException;
-import seedu.address.model.room.booking.exceptions.NoBookingException;
-import seedu.address.model.room.exceptions.OccupiedRoomCheckinException;
-import seedu.address.testutil.RoomBuilder;
-import seedu.address.testutil.TypicalBookings;
 
 public class RoomTest {
     @Rule
     public ExpectedException thrown = ExpectedException.none();
-
+    /*
     private final Room testRoomWithLastWeekYesterdayBooking = new RoomBuilder()
         .withBookings(TypicalBookings.getTypicalBookingsLastWeekYesterday()).build();
     private final Room testRoomWithLastWeekYesterdayBookingCheckedIn = new RoomBuilder()
@@ -201,11 +185,10 @@ public class RoomTest {
         editedSingle001 = new RoomBuilder(SINGLE_001).withCapacity(VALID_CAPACITY_DOUBLE).build();
         assertTrue(SINGLE_001.isSameRoom(editedSingle001));
 
-        /* KIV Expenses
+        KIV Expenses
         // same room number, different expenses -> returns true
         editedSingle001 = new RoomBuilder(SINGLE_001).withExpenses(new Expenses()).build();
         assertTrue(SINGLE_001.isSameRoom(editedSingle001));
-        */
 
         // same room number, different bookings -> returns true
         editedSingle001 = new RoomBuilder(SINGLE_001).withBookings(TypicalBookings.getTypicalBookingsTodayTomorrow())
@@ -243,11 +226,10 @@ public class RoomTest {
         editedSingle001 = new RoomBuilder(SINGLE_001).withCapacity(VALID_CAPACITY_DOUBLE).build();
         assertFalse(SINGLE_001.equals(editedSingle001));
 
-        /* KIV Expenses
+        KIV Expenses
         // different capacity -> returns false
         editedSingle001 = new RoomBuilder(SINGLE_001).withExpenses(new Expenses()).build();
         assertFalse(SINGLE_001.equals(editedSingle001));
-        */
 
         // different bookings -> returns false
         editedSingle001 = new RoomBuilder(SINGLE_001).withBookings(TypicalBookings.getTypicalBookingsTodayTomorrow())
@@ -258,4 +240,5 @@ public class RoomTest {
         editedSingle001 = new RoomBuilder(SINGLE_001).withTags(VALID_TAG_HANDICAP).build();
         assertFalse(SINGLE_001.equals(editedSingle001));
     }
+    */
 }

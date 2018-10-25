@@ -15,10 +15,10 @@ public class CheckinCommand extends Command {
     public static final String COMMAND_WORD = "checkin";
 
     public static final String MESSAGE_USAGE = COMMAND_WORD
-            + ": Checks in the room identified by the room number.\n"
-            + "Parameters: ROOM_NUMBER (must be a 3-digit positive integer from 001 to "
-            + RoomNumber.MAX_ROOM_NUMBER + " )\n"
-            + "Example: " + COMMAND_WORD + " 001";
+        + ": Checks in the room identified by the room number.\n"
+        + "Parameters: ROOM_NUMBER (must be a 3-digit positive integer from 001 to "
+        + RoomNumber.MAX_ROOM_NUMBER + " )\n"
+        + "Example: " + COMMAND_WORD + " 001";
 
     public static final String MESSAGE_CHECKIN_ROOM_SUCCESS = "Checked in Room: %1$s";
     public static final String MESSAGE_NO_ACTIVE_BOOKING_CHECKIN =
@@ -46,7 +46,7 @@ public class CheckinCommand extends Command {
         if (model.isRoomCheckedIn(roomNumber)) {
             throw new CommandException(String.format(MESSAGE_OCCUPIED_ROOM_CHECKIN, roomNumber));
         }
-        model.checkinRoom(roomNumber);
+        model.checkInRoom(roomNumber);
         model.commitAddressBook();
         return new CommandResult(String.format(MESSAGE_CHECKIN_ROOM_SUCCESS, roomNumber));
     }
@@ -54,7 +54,7 @@ public class CheckinCommand extends Command {
     @Override
     public boolean equals(Object other) {
         return other == this // short circuit if same object
-                || (other instanceof CheckinCommand // instanceof handles nulls
-                && roomNumber.equals(((CheckinCommand) other).roomNumber)); // state check
+            || (other instanceof CheckinCommand // instanceof handles nulls
+            && roomNumber.equals(((CheckinCommand) other).roomNumber)); // state check
     }
 }

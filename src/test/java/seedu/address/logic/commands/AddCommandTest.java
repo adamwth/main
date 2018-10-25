@@ -54,11 +54,11 @@ public class AddCommandTest {
         BookingPeriod validBookingPeriod = TypicalBookingPeriods.TODAY_TOMORROW;
 
         CommandResult commandResult =
-                new AddCommand(validGuest, validRoomNumber, validBookingPeriod)
-                        .execute(modelStub, commandHistory);
+            new AddCommand(validGuest, validRoomNumber, validBookingPeriod)
+                .execute(modelStub, commandHistory);
 
         assertEquals(String.format(AddCommand.MESSAGE_SUCCESS, validGuest,
-                validRoomNumber, validBookingPeriod), commandResult.feedbackToUser);
+            validRoomNumber, validBookingPeriod), commandResult.feedbackToUser);
         assertEquals(Arrays.asList(validGuest), modelStub.guestsAdded);
         assertEquals(EMPTY_COMMAND_HISTORY, commandHistory);
     }
@@ -185,7 +185,7 @@ public class AddCommandTest {
         }
 
         @Override
-        public void checkinRoom(RoomNumber roomNumber) {
+        public void checkInRoom(RoomNumber roomNumber) {
             throw new AssertionError("This method should not be called.");
         }
 

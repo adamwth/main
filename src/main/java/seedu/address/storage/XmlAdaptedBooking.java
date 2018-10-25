@@ -37,7 +37,7 @@ public class XmlAdaptedBooking {
     public XmlAdaptedBooking(Booking source) {
         guest = new XmlAdaptedGuest(source.getGuest());
         bookingPeriod = new XmlAdaptedBookingPeriod(source.getBookingPeriod());
-        checkin = source.isCheckedIn();
+        checkin = source.getIsCheckedIn();
     }
 
     /**
@@ -49,7 +49,7 @@ public class XmlAdaptedBooking {
 
         if (guest == null) {
             throw new IllegalValueException(
-                    String.format(MISSING_FIELD_MESSAGE_FORMAT, Guest.class.getSimpleName()));
+                String.format(MISSING_FIELD_MESSAGE_FORMAT, Guest.class.getSimpleName()));
         }
         if (bookingPeriod == null) {
             throw new IllegalValueException(
@@ -75,7 +75,7 @@ public class XmlAdaptedBooking {
 
         XmlAdaptedBooking otherbooking = (XmlAdaptedBooking) other;
         return Objects.equals(guest, otherbooking.guest)
-                && Objects.equals(bookingPeriod, otherbooking.bookingPeriod)
-                && Objects.equals(checkin, otherbooking.checkin);
+            && Objects.equals(bookingPeriod, otherbooking.bookingPeriod)
+            && Objects.equals(checkin, otherbooking.checkin);
     }
 }

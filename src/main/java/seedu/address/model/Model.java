@@ -99,7 +99,7 @@ public interface Model {
     /**
      * Checks in the room by its room number
      */
-    void checkinRoom(RoomNumber roomNumber);
+    void checkInRoom(RoomNumber roomNumber);
 
     /**
      * Checks out the room.
@@ -113,7 +113,6 @@ public interface Model {
     boolean isRoomCheckedIn(RoomNumber roomNumber);
 
     /* =========== Methods for undo and redo. =================================
-
     /**
      * Returns true if the model has previous address book states to restore.
      */
