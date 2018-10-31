@@ -111,7 +111,7 @@
     -fx-background-color: #424d5f;
 }
 
-.list-cell:filled:selected #cardPane {
+.list-cell:filled:selected #cardPane #roomCardPane {
     -fx-border-color: #3e7b91;
     -fx-border-width: 1;
 }
@@ -120,10 +120,25 @@
     -fx-text-fill: white;
 }
 
+.cell_header {
+   -fx-font-family: "Segoe UI Semibold";
+   -fx-font-size: 18px;
+   -fx-text-fill: #010504;
+   -fx-underline: true;
+}
+
+.cell_name_label {
+    -fx-font-family: "Segoe UI Semibold";
+    -fx-font-size: 18px;
+    -fx-text-fill: #010504;
+    -fx-padding: -2 0 -2 0;
+}
+
 .cell_big_label {
     -fx-font-family: "Segoe UI Semibold";
     -fx-font-size: 16px;
     -fx-text-fill: #010504;
+    -fx-padding: -2 0 -2 0;
 }
 
 .cell_small_label {
@@ -306,7 +321,7 @@
     -fx-padding: 8 1 8 1;
 }
 
-#cardPane {
+#cardPane #roomCardPane{
     -fx-background-color: transparent;
     -fx-border-width: 0;
 }
@@ -327,7 +342,7 @@
     -fx-text-fill: white;
 }
 
-#filterField, #personListPanel, #personWebpage {
+#filterField, #guestListPanel, #personWebpage {
     -fx-effect: innershadow(gaussian, black, 10, 0, 0, 0);
 }
 
@@ -337,6 +352,7 @@
 }
 
 #tags {
+    -fx-padding: 3 0 3 0;
     -fx-hgap: 7;
     -fx-vgap: 3;
 }
@@ -350,14 +366,30 @@
     -fx-font-size: 11;
 }
 
-#bookings {
+#activeBooking {
+    -fx-padding: 3 0 3 0;
     -fx-hgap: 7;
     -fx-vgap: 3;
 }
 
-#bookings .label {
+#activeBooking .label {
     -fx-text-fill: white;
     -fx-background-color: #3D997f;
+    -fx-padding: 3 5 3 5;
+    -fx-border-radius: 2;
+    -fx-background-radius: 4;
+    -fx-font-size: 13;
+}
+
+#allOtherBookings {
+    -fx-padding: 3 0 3 0;
+    -fx-hgap: 7;
+    -fx-vgap: 3;
+}
+
+#allOtherBookings .label {
+    -fx-text-fill: white;
+    -fx-background-color: #E39338;
     -fx-padding: 3 5 3 5;
     -fx-border-radius: 2;
     -fx-background-radius: 4;

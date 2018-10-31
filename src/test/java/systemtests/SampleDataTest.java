@@ -1,24 +1,27 @@
 package systemtests;
 
-import static seedu.address.ui.testutil.GuiTestAssert.assertListMatching;
+import static seedu.address.ui.testutil.GuiTestAssert.assertGuestListMatching;
+import static seedu.address.ui.testutil.GuiTestAssert.assertRoomListMatching;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.List;
 
 import org.junit.Test;
 
-import seedu.address.model.AddressBook;
-import seedu.address.model.person.Guest;
+import seedu.address.model.Concierge;
+import seedu.address.model.guest.Guest;
+import seedu.address.model.room.Room;
 import seedu.address.model.util.SampleDataUtil;
 import seedu.address.testutil.TestUtil;
 
-public class SampleDataTest extends AddressBookSystemTest {
+public class SampleDataTest extends ConciergeSystemTest {
     /**
      * Returns null to force test app to load data of the file in {@code getDataFileLocation()}.
      */
     @Override
-    protected AddressBook getInitialData() {
+    protected Concierge getInitialData() {
         return null;
     }
 
@@ -44,8 +47,12 @@ public class SampleDataTest extends AddressBookSystemTest {
     }
 
     @Test
-    public void addressBook_dataFileDoesNotExist_loadSampleData() {
-        Guest[] expectedList = SampleDataUtil.getSamplePersons();
-        assertListMatching(getPersonListPanel(), expectedList);
+    public void concierge_dataFileDoesNotExist_loadSampleData() {
+        Guest[] expectedGuestList = SampleDataUtil.getSampleGuests();
+        assertGuestListMatching(getGuestListPanel(), expectedGuestList);
+
+        List<Room> expectedRoomList = SampleDataUtil.getSampleRooms();
+        assertRoomListMatching(getRoomListPanel(), expectedRoomList);
+
     }
 }

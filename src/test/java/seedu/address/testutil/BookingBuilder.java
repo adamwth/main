@@ -2,7 +2,7 @@ package seedu.address.testutil;
 
 import java.time.LocalDate;
 
-import seedu.address.model.person.Guest;
+import seedu.address.model.guest.Guest;
 import seedu.address.model.room.booking.Booking;
 import seedu.address.model.room.booking.BookingPeriod;
 
@@ -11,7 +11,7 @@ import seedu.address.model.room.booking.BookingPeriod;
  */
 public class BookingBuilder {
 
-    public static final Guest DEFAULT_GUEST = new GuestBuilder().build();
+    public static final Guest DEFAULT_GUEST = TypicalGuests.ALICE;
     public static final BookingPeriod DEFAULT_BOOKING_PERIOD_TODAY_TOMORROW =
         new BookingPeriod(LocalDate.now().format(BookingPeriod.DATE_TO_STRING_FORMAT),
             LocalDate.now().plusDays(1).format(BookingPeriod.DATE_TO_STRING_FORMAT));
@@ -33,7 +33,7 @@ public class BookingBuilder {
     public BookingBuilder(Booking bookingToCopy) {
         guest = bookingToCopy.getGuest();
         bookingPeriod = bookingToCopy.getBookingPeriod();
-        checkIn = bookingToCopy.isCheckedIn();
+        checkIn = bookingToCopy.getIsCheckedIn();
     }
 
     /**
@@ -48,7 +48,8 @@ public class BookingBuilder {
      * Sets the {@code BookingPeriod} of the {@code Booking} that we are building.
      */
     public BookingBuilder withBookingPeriod(BookingPeriod bookingPeriod) {
-        this.bookingPeriod = new BookingPeriod(bookingPeriod);
+        this.bookingPeriod = new BookingPeriod(bookingPeriod.getStartDateAsFormattedString(),
+            bookingPeriod.getEndDateAsFormattedString());
         return this;
     }
 

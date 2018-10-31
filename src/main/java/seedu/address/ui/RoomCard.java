@@ -6,7 +6,6 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import seedu.address.model.room.Room;
-import seedu.address.model.room.booking.Booking;
 
 /**
  * An UI component that displays information of a {@code Room}.
@@ -20,23 +19,19 @@ public class RoomCard extends UiPart<Region> {
      * As a consequence, UI elements' variable names cannot be set to such keywords
      * or an exception will be thrown by JavaFX during runtime.
      *
-     * @see <a href="https://github.com/se-edu/addressbook-level4/issues/336">The issue on AddressBook level 4</a>
+     * @see <a href="https://github.com/se-edu/addressbook-level4/issues/336">The issue on Concierge level 4</a>
      */
 
     public final Room room;
 
     @FXML
-    private HBox cardPane;
+    private HBox roomCardPane;
     @FXML
     private Label roomNumber;
     @FXML
     private Label capacity;
     @FXML
-    private Label expenses;
-    @FXML
-    private FlowPane bookings;
-    @FXML
-    private FlowPane occupant;
+    private FlowPane activeBooking;
     @FXML
     private FlowPane tags;
 
@@ -45,9 +40,8 @@ public class RoomCard extends UiPart<Region> {
         this.room = room;
         roomNumber.setText("Room: " + room.getRoomNumber().toString());
         capacity.setText("Capacity: " + room.getCapacity().toString());
-        expenses.setText("Expenses: " + room.getExpenses().toStringTotalCost());
-        bookings.getChildren().add(new Label("Current booking\n" + room.getFirstBooking()
-            .map(Booking::toStringShortDescription).orElse("")));
+        activeBooking.getChildren().add(new Label("Active booking:\n"
+                + room.getBookings().toStringActiveBookingShortDescription()));
         room.getTags().forEach(tag -> tags.getChildren().add(new Label(tag.tagName)));
     }
 

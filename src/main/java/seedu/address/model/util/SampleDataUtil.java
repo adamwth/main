@@ -8,15 +8,15 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import seedu.address.model.AddressBook;
-import seedu.address.model.ReadOnlyAddressBook;
+import seedu.address.model.Concierge;
+import seedu.address.model.ReadOnlyConcierge;
 import seedu.address.model.expenses.Expense;
 import seedu.address.model.expenses.ExpenseType;
-import seedu.address.model.person.Address;
-import seedu.address.model.person.Email;
-import seedu.address.model.person.Guest;
-import seedu.address.model.person.Name;
-import seedu.address.model.person.Phone;
+import seedu.address.model.expenses.Money;
+import seedu.address.model.guest.Email;
+import seedu.address.model.guest.Guest;
+import seedu.address.model.guest.Name;
+import seedu.address.model.guest.Phone;
 import seedu.address.model.room.Room;
 import seedu.address.model.room.RoomNumber;
 import seedu.address.model.room.UniqueRoomList;
@@ -25,29 +25,19 @@ import seedu.address.model.room.booking.BookingPeriod;
 import seedu.address.model.tag.Tag;
 
 /**
- * Contains utility methods for populating {@code AddressBook} with sample data.
+ * Contains utility methods for populating {@code Concierge} with sample data.
  */
 public class SampleDataUtil {
-    public static Guest[] getSamplePersons() {
+    public static Guest[] getSampleGuests() {
         return new Guest[] {
             new Guest(new Name("Alex Yeoh"), new Phone("87438807"), new Email("alexyeoh@example.com"),
-                new Address("Blk 30 Geylang Street 29, #06-40"),
-                getTagSet("friends")),
+                    getTagSet("friends")),
             new Guest(new Name("Bernice Yu"), new Phone("99272758"), new Email("berniceyu@example.com"),
-                new Address("Blk 30 Lorong 3 Serangoon Gardens, #07-18"),
-                getTagSet("colleagues", "friends")),
+                    getTagSet("colleagues", "friends")),
             new Guest(new Name("Charlotte Oliveiro"), new Phone("93210283"), new Email("charlotte@example.com"),
-                new Address("Blk 11 Ang Mo Kio Street 74, #11-04"),
-                getTagSet("neighbours")),
+                    getTagSet("neighbours")),
             new Guest(new Name("David Li"), new Phone("91031282"), new Email("lidavid@example.com"),
-                new Address("Blk 436 Serangoon Gardens Street 26, #16-43"),
-                getTagSet("family")),
-            new Guest(new Name("Irfan Ibrahim"), new Phone("92492021"), new Email("irfan@example.com"),
-                new Address("Blk 47 Tampines Street 20, #17-35"),
-                getTagSet("classmates")),
-            new Guest(new Name("Roy Balakrishnan"), new Phone("92624417"), new Email("royb@example.com"),
-                new Address("Blk 45 Aljunied Street 85, #11-31"),
-                getTagSet("colleagues"))
+                    getTagSet("family"))
         };
     }
 
@@ -55,34 +45,59 @@ public class SampleDataUtil {
      * Returns a room list initialized with the maximum number of rooms as set in RoomNumber class
      */
     public static List<Room> getSampleRooms() {
-        return new UniqueRoomList(RoomNumber.MAX_ROOM_NUMBER).asUnmodifiableObservableList();
+        return new UniqueRoomList().asUnmodifiableObservableList();
     }
 
     /**
-     * Returns a room list initialized with the maximum number of rooms, and 1 sample booking for testing
-     * Use to see if xml file reflects changes
-     * DELETE WHEN TESTED IN UNIT TESTS
+     * Returns a room list initialized with the maximum number of rooms, and a few sample bookings
+     * Use to see if XML file reflects changes
+     * TODO DELETE WHEN TESTED IN UNIT TESTS
      */
     public static List<Room> getSampleRoomsWithBookingsExpenses() {
-        UniqueRoomList uniqueRoomList = new UniqueRoomList(RoomNumber.MAX_ROOM_NUMBER);
-        uniqueRoomList.addBooking(new RoomNumber("001"),
-            new Booking(getSamplePersons()[0],
-            new BookingPeriod(LocalDate.now().format(BookingPeriod.DATE_TO_STRING_FORMAT),
-                LocalDate.now().plusDays(1).format(BookingPeriod.DATE_TO_STRING_FORMAT))));
-        uniqueRoomList.addExpense(new RoomNumber("001"), new Expense(getSampleExpenseTypes()[0]));
+        UniqueRoomList uniqueRoomList = new UniqueRoomList();
+
+        Room oldRoom001 = uniqueRoomList.getRoom(new RoomNumber("001"));
+        Room newRoom001 = oldRoom001
+                .addBooking(new Booking(getSampleGuests()[0], new BookingPeriod(
+                        LocalDate.now().format(BookingPeriod.DATE_TO_STRING_FORMAT),
+                        LocalDate.now().plusDays(1).format(BookingPeriod.DATE_TO_STRING_FORMAT))))
+                .addExpense(new Expense(getSampleExpenseTypes()[0]));
+        uniqueRoomList.setRoom(oldRoom001, newRoom001);
+
+        Room oldRoom002 = uniqueRoomList.getRoom(new RoomNumber("002"));
+        Room newRoom002 = oldRoom002
+                .addBooking(new Booking(getSampleGuests()[1], new BookingPeriod(
+                        LocalDate.now().format(BookingPeriod.DATE_TO_STRING_FORMAT),
+                        LocalDate.now().plusDays(2).format(BookingPeriod.DATE_TO_STRING_FORMAT))));
+        uniqueRoomList.setRoom(oldRoom002, newRoom002);
+
+        Room oldRoom003 = uniqueRoomList.getRoom(new RoomNumber("003"));
+        Room newRoom003 = oldRoom003
+                .addBooking(new Booking(getSampleGuests()[2], new BookingPeriod(
+                        LocalDate.now().plusDays(1).format(BookingPeriod.DATE_TO_STRING_FORMAT),
+                        LocalDate.now().plusDays(2).format(BookingPeriod.DATE_TO_STRING_FORMAT))));
+        uniqueRoomList.setRoom(oldRoom003, newRoom003);
+
+        Room oldRoom004 = uniqueRoomList.getRoom(new RoomNumber("004"));
+        Room newRoom004 = oldRoom004
+                .addBooking(new Booking(getSampleGuests()[3], new BookingPeriod(
+                        LocalDate.now().minusDays(1).format(BookingPeriod.DATE_TO_STRING_FORMAT),
+                        LocalDate.now().plusDays(2).format(BookingPeriod.DATE_TO_STRING_FORMAT))));
+        uniqueRoomList.setRoom(oldRoom004, newRoom004);
+
         return uniqueRoomList.asUnmodifiableObservableList();
     }
 
     public static ExpenseType[] getSampleExpenseTypes() {
         return new ExpenseType[] {
-            new ExpenseType("RS01", "Room service: Red wine", 50),
-            new ExpenseType("RS02", "Room service: Beef steak", 70),
-            new ExpenseType("RS03", "Room service: Thai massage", 100),
-            new ExpenseType("SP01", "Swimming pool: Entry", 5),
-            new ExpenseType("MB01", "Minibar: Coca cola", 3),
-            new ExpenseType("MB02", "Minibar: Sprite", 3),
-            new ExpenseType("MB03", "Minibar: Tiger beer", 6),
-            new ExpenseType("MB04", "Minibar: Mineral water", 3),
+            new ExpenseType("RS01", "Room service: Red wine", new Money(50, 0)),
+            new ExpenseType("RS02", "Room service: Beef steak", new Money(70, 0)),
+            new ExpenseType("RS03", "Room service: Thai massage", new Money(100, 0)),
+            new ExpenseType("SP01", "Swimming pool: Entry", new Money(5, 0)),
+            new ExpenseType("MB01", "Minibar: Coca cola", new Money(3, 0)),
+            new ExpenseType("MB02", "Minibar: Sprite", new Money(3, 0)),
+            new ExpenseType("MB03", "Minibar: Tiger beer", new Money(6, 0)),
+            new ExpenseType("MB04", "Minibar: Mineral water", new Money(3, 0)),
         };
     }
 
@@ -94,12 +109,19 @@ public class SampleDataUtil {
         return sampleMenuMap;
     }
 
-    public static ReadOnlyAddressBook getSampleAddressBook() {
-        AddressBook sampleAb = new AddressBook();
-        for (Guest sampleGuest : getSamplePersons()) {
-            sampleAb.addPerson(sampleGuest);
-        }
+    public static ReadOnlyConcierge getEmptyConcierge() {
+        Concierge sampleAb = new Concierge();
         sampleAb.setRooms(getSampleRooms());
+        sampleAb.setMenu(getSampleMenuMap());
+        return sampleAb;
+    }
+
+    public static ReadOnlyConcierge getSampleConcierge() {
+        Concierge sampleAb = new Concierge();
+        for (Guest sampleGuest : getSampleGuests()) {
+            sampleAb.addGuest(sampleGuest);
+        }
+        sampleAb.setRooms(getSampleRoomsWithBookingsExpenses());
         sampleAb.setMenu(getSampleMenuMap());
         return sampleAb;
     }

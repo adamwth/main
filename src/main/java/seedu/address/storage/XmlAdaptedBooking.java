@@ -1,12 +1,14 @@
 package seedu.address.storage;
 
 import java.util.Objects;
+
 import javax.xml.bind.annotation.XmlElement;
 
 import seedu.address.commons.exceptions.IllegalValueException;
-import seedu.address.model.person.Guest;
+import seedu.address.model.guest.Guest;
 import seedu.address.model.room.Capacity;
 import seedu.address.model.room.booking.Booking;
+import seedu.address.model.room.booking.BookingPeriod;
 
 /**
  * JAXB-friendly version of the Booking.
@@ -16,11 +18,11 @@ public class XmlAdaptedBooking {
     public static final String MISSING_FIELD_MESSAGE_FORMAT = "Booking's %s field is missing!";
 
     @XmlElement(required = true)
-    private XmlAdaptedPerson guest;
+    private XmlAdaptedGuest guest;
     @XmlElement(required = true)
     private XmlAdaptedBookingPeriod bookingPeriod;
     @XmlElement(required = true)
-    private Boolean checkin;
+    private Boolean isCheckedIn;
 
     /**
      * Constructs an XmlAdaptedBooking.
@@ -29,14 +31,23 @@ public class XmlAdaptedBooking {
     public XmlAdaptedBooking() {}
 
     /**
+     * Constructor FOR TESTING in XmlAdaptedBookingTest
+     */
+    public XmlAdaptedBooking(Guest guest, BookingPeriod bookingPeriod, Boolean isCheckedIn) {
+        this.guest = new XmlAdaptedGuest(guest);
+        this.bookingPeriod = new XmlAdaptedBookingPeriod(bookingPeriod);
+        this.isCheckedIn = isCheckedIn;
+    }
+
+    /**
      * Converts a given booking into this class for JAXB use.
      *
      * @param source future changes to this will not affect the created XmlAdaptedBooking
      */
     public XmlAdaptedBooking(Booking source) {
-        guest = new XmlAdaptedPerson(source.getGuest());
+        guest = new XmlAdaptedGuest(source.getGuest());
         bookingPeriod = new XmlAdaptedBookingPeriod(source.getBookingPeriod());
-        checkin = source.isCheckedIn();
+        isCheckedIn = source.getIsCheckedIn();
     }
 
     /**
@@ -54,12 +65,12 @@ public class XmlAdaptedBooking {
             throw new IllegalValueException(
                 String.format(MISSING_FIELD_MESSAGE_FORMAT, Capacity.class.getSimpleName()));
         }
-        if (checkin == null) {
+        if (isCheckedIn == null) {
             throw new IllegalValueException(
                 String.format(MISSING_FIELD_MESSAGE_FORMAT, Boolean.class.getSimpleName()));
         }
 
-        return new Booking(guest.toModelType(), bookingPeriod.toModelType(), checkin);
+        return new Booking(guest.toModelType(), bookingPeriod.toModelType(), isCheckedIn);
     }
 
     @Override
@@ -75,6 +86,6 @@ public class XmlAdaptedBooking {
         XmlAdaptedBooking otherbooking = (XmlAdaptedBooking) other;
         return Objects.equals(guest, otherbooking.guest)
                 && Objects.equals(bookingPeriod, otherbooking.bookingPeriod)
-                && Objects.equals(checkin, otherbooking.checkin);
+                && Objects.equals(isCheckedIn, otherbooking.isCheckedIn);
     }
 }
