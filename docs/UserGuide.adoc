@@ -87,7 +87,7 @@ Examples:
 
 === Check-in room: `checkin`
 
-Checks in the room's first active booking. A booking is considered **active** if 
+Checks in the room's first active booking. A booking is considered **active** if
 its start and end date includes today's date, inclusively. +
 The guest who made the booking will be added to both the checked-in guest list and the archived guest list. +
 Format: `checkin r/ROOM_NUMBER`
@@ -100,7 +100,7 @@ Checks in room 085 and marks room 085's current booking as checked-in.
 === Checkout room: `checkout`
 
 Checks out the room's first (i.e. earliest) booking, or its booking with the specified start and end dates.
-The guest is deleted from the checked-in guest list and added to the archived guest list. + 
+The guest is deleted from the checked-in guest list and added to the archived guest list. +
 A receipt is generated for his expenses. [red]#Coming in v2.0# +
 Format: `checkout r/ROOM_NUMBER [from/START_DATE to/END_DATE]`
 
