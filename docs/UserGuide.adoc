@@ -60,22 +60,31 @@ Adds a guest to the guest list for the purpose of assigning a room +
 Format: `add n/NAME p/PHONE_NUMBER e/EMAIL [t/TAG] r/ROOM_NUMBER
 from/START_DATE to/END_DATE`
 
-The room number must be a 3-digit number from 001 to 100. For example, 074 is
-valid but 128 is not.
-
-The dates can be expressed in DD/MM/YY or DD/MM/YYYY.
-
-Currently, a guest can only make one booking with the hotel. This will
-subsequently be modified such that a guest can make an unlimited number of
-bookings.
-
 [TIP]
 A guest can have any number of tags (including 0)
 
-Examples:
+****
+* The room number must be a 3-digit number from 001 to 100. For example, 074 is
+valid but 128 is not.
+* The dates can be expressed in DD/MM/YY or DD/MM/YYYY.
+* A guest can make an unlimited number of bookings with the hotel, as long as
+the booking is valid.
+****
 
-* `add n/John Smith p/98765432 e/johnsmith@gmail.com t/VIP r/085 from/09/12/18 to/10/12/18`
+[TIP]
+A valid booking cannot clash with an existing booking
+
+Example:
+
+`add n/John Smith p/98765432 e/johnsmith@gmail.com t/VIP r/085 from/09/12/18 to/10/12/18`
+
 Add a guest "John Smith" to room 085 for a period of stay from 09/12/18 to 10/12/18.
+
+.Adding an active booking
+image::AddCommand-userguide-active.png[width="800"]
+
+.Adding an inactive booking (i.e. booking is in the future)
+image::AddCommand-userguide-notactive.png[width="800"]
 
 === Adding a guest: `addx` [red]#Coming in v2.0#
 
@@ -208,22 +217,53 @@ List all checked-in guests
 Logs in to the Concierge application. +
 Format: `login user/USERNAME pw/PASSWORD`
 
-Note: the username and password are both case-sensitive.
+****
+* The username and password are both case-sensitive.
+* A login allows the user to access the commands which can affect the bookings.
+****
 
-Examples:
+Commands which require login:
 
-* login user/damithz pw/forgotpassword
+** `add`, `edit` [red]#Coming in v2.0#
+** `checkin`, `checkout` [red]#Coming in v2.0#
+** `clear`
+
+Example: `login user/damithz pw/forgotpassword`
+
+.Without login, Concierge cannot be cleared
+image::LogInCommand-notsignedin.png[width="400"]
+
+.Login with a valid account
+image::LogInCommand-loginsuccess.png[width="400"]
+
+.`clear` command can now be executed
+image::LogInCommand-clearsuccess.png[width="400"]
+
+=== Logout : `logout`
+
+Logs out of the Concierge application. +
+Format: `logout`
+
+image::LogOutCommand-success.png[width="400"]
+
+****
+* The special classes of commands (as documented in `login`) can no longer be
+executed.
+* Unable to undo/ redo before logout [red]#Coming in v2.0#
+** The `logout` command will erase the command history, so users cannot undo/
+redo commands executed before the logout.
+** This is the same as closing and re-opening Concierge after a logout.
+****
 
 === Selecting a guest : `select`
 
-Selects the guest/room identified by the index number used in the displayed list. +
+Selects the guest identified by the index number used in the displayed list. +
 Format: `select INDEX`
 
 ****
-* Selects the guest/room and loads the information of the guest/room at the specified `INDEX`.
+* Selects the guest and loads the information of the guest/room at the specified `INDEX`.
 * The index refers to the index number shown in the displayed list.
 * The index *must be a positive integer* `1, 2, 3, ...`
-
 ****
 
 Examples:
@@ -232,7 +272,14 @@ Examples:
 `select 2` +
 Selects the 2nd room in the displayed list.
 
-=== Provide Room Service: `service` [red]#Coming in v1.3#
+Selects from displayed room list [red]#Coming in v1.4#
+
+* Currently, `select` only works on the displayed guest list.
+* Select while on the displayed room list, (i.e. executing `list -r`,
+then `select INDEX`) will still result in the selection being done on
+the displayed guest list.
+
+=== Provide Room Service: `service`
 
 Charges a room service to a room  +
 Format: `service r/ROOM_NUMBER no/ITEM_NUMBER [c/COST]`
@@ -349,8 +396,13 @@ The `redo` command fails as there are no `undo` commands executed previously.
 Clears all entries from the application. +
 Format: `clear`
 
+This command requires a login.
+
 The rooms are maintained - only all their current and future bookings are
 cleared. I.e. all maintenance requests and faults will still be recorded.
+
+.Empty room listing with all bookings deleted and expenses reset
+image::ClearCommand-success.png[width="400"]
 
 === Export log: `export` [red]#Coming in v2.0#
 
@@ -374,7 +426,8 @@ There is no need to save manually.
 // tag::dataencryption[]
 === Encrypting data files [red]#Coming in v2.0#
 
-_{explain how the user can enable/disable data encryption}_
+Encryption of Guests' personal data is still in the works. If you are
+interested in contributing, please refer to the Developer Guide.
 // end::dataencryption[]
 
 == FAQ
@@ -388,17 +441,18 @@ _{explain how the user can enable/disable data encryption}_
 t/TAG r/ROOM_NUMBER from/START_DATE to/END_DATE`
 * *Checkin* : `checkin`
 * *Checkout* : `checkout`
-* *Edit* : `edit INDEX [n/NAME] [p/PHONE_NUMBER] [e/EMAIL] [t/TAG]...`
-* *Find* : `find KEYWORD [MORE_KEYWORDS]`
+* *Edit* : `edit INDEX [n/NAME] [p/PHONE_NUMBER] [e/EMAIL] [t/TAG]...` [red]#Coming in v2.0#
+* *Find* : `find KEYWORD [MORE_KEYWORDS]` [red]#Coming in v2.0#
 * *List* : `list`
 * *Login* : `login user/USERNAME pw/PASSWORD`
+* *Logout* : `logout`
 * *Select* : `select INDEX`
 * *Room Service* : `service`
-* *Mark Room as faulty* : `fault`
+* *Mark Room as faulty* : `fault` [red]#Coming in v2.0#
 * *History* : `history`
 * *Undo* : `undo`
 * *Redo* : `redo`
 * *Clear* : `clear`
-* *Export log* : `export`
+* *Export log* : `export` [red]#Coming in v2.0#
 * *Help* : `help`
 * *Exit* : `exit`
