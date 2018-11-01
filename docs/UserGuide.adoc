@@ -87,8 +87,9 @@ Examples:
 
 === Check-in room: `checkin`
 
-Checks in the room, which marks the room's current booking as checked-in. +
-The guest who made the booking will be added to both the guest list and the archived guest list. [red]#Coming in v2.0# +
+Checks in the room's first active booking. A booking is considered **active** if 
+its start and end date includes today's date, inclusively. +
+The guest who made the booking will be added to both the checked-in guest list and the archived guest list. +
 Format: `checkin r/ROOM_NUMBER`
 
 Examples:
@@ -98,8 +99,9 @@ Checks in room 085 and marks room 085's current booking as checked-in.
 
 === Checkout room: `checkout`
 
-Checks out the room and its first (i.e. earliest) booking. +
-The guest is deleted from the guest list and a receipt is generated for his expenses. [red]#Coming in v2.0# +
+Checks out the room's first (i.e. earliest) booking, or its booking with the specified start and end dates.
+The guest is deleted from the checked-in guest list and added to the archived guest list. + 
+A receipt is generated for his expenses. [red]#Coming in v2.0# +
 Format: `checkout r/ROOM_NUMBER [from/START_DATE to/END_DATE]`
 
 Examples:
@@ -109,7 +111,7 @@ Checks out room 085 and the room's first booking.
 * `checkout r/085 from/01/11/18 to/02/11/18`
 Checks out the booking with start date 01/11/18 and end date 02/11/18 from room 085.
 
-=== Editing a guest : `edit`
+=== Editing a guest : `edit` [red]#Coming in v2.0#
 
 Edits an existing guest in the guest list. +
 Format: `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [t/TAG]...`
@@ -160,7 +162,7 @@ Find rooms that are available from 09/12/18 10/12/18. Input dates must be in DD/
 
 === Listing all guests : `list`
 
-Shows the entire list of rooms, or guests, depending on the input flag +
+Shows the entire list of rooms, checked-in guests, or archived guests, depending on the input flag +
 Format: `list [flag]`
 
 Examples:
@@ -168,7 +170,9 @@ Examples:
 * `list -r` +
 List all rooms
 * `list -g` +
-List all guests
+List all archived guests
+* `list -cg` +
+List all checked-in guests
 
 === Login : `login`
 
@@ -181,7 +185,7 @@ Examples:
 
 * login user/damithz pw/forgotpassword
 
-=== Selecting a guest : `select` [red]#Coming in v1.3#
+=== Selecting a guest : `select`
 
 Selects the guest/room identified by the index number used in the displayed list. +
 Format: `select INDEX`
@@ -198,9 +202,6 @@ Examples:
 * `list -g` +
 `select 2` +
 Selects the 2nd room in the displayed list.
-* `find -g Betsy` +
-`select 1` +
-Selects the 1st guest in the results of the `find` command.
 
 === Provide Room Service: `service` [red]#Coming in v1.3#
 
@@ -303,7 +304,7 @@ Format: `clear`
 The rooms are maintained - only all their current and future bookings are
 cleared. I.e. all maintenance requests and faults will still be recorded.
 
-=== Export log: `export` [red]#Coming in v1.3#
+=== Export log: `export` [red]#Coming in v2.0#
 
 Exports a log of all history of commands into a text file +
 Format: `export`
@@ -336,7 +337,7 @@ _{explain how the user can enable/disable data encryption}_
 == Command Summary
 
 * *Add a Guest and assign a Room* : `add n/NAME p/PHONE_NUMBER e/EMAIL
-t/TAG r/ROOMNUMBER from/START_DATE to/END_DATE`
+t/TAG r/ROOM_NUMBER from/START_DATE to/END_DATE`
 * *Checkin* : `checkin`
 * *Checkout* : `checkout`
 * *Edit* : `edit INDEX [n/NAME] [p/PHONE_NUMBER] [e/EMAIL] [t/TAG]...`
