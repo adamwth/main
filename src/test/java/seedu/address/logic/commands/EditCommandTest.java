@@ -197,7 +197,7 @@ public class EditCommandTest {
      */
     @Test
     public void executeUndoRedo_validIndexFilteredList_sameGuestEdited() throws Exception {
-        Guest editedGuest = new GuestBuilder().withName(CommandTestUtil.VALID_NAME_BOB).build();
+        Guest editedGuest = new GuestBuilder().withName(VALID_NAME_BOB).build();
         EditGuestDescriptor descriptor = new EditGuestDescriptorBuilder(editedGuest).build();
         EditCommand editCommand = new EditCommand(INDEX_FIRST_GUEST, descriptor);
         Model expectedModel = new ModelManager(new Concierge(model.getConcierge()), new UserPrefs());

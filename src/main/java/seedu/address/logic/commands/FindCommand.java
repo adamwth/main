@@ -33,7 +33,7 @@ public class FindCommand extends Command {
     public CommandResult execute(Model model, CommandHistory history) {
         requireNonNull(model);
         model.updateFilteredGuestList(predicate);
-        EventsCenter.getInstance().post(new ListingChangedEvent(FLAG_GUEST.toString()));
+        EventsCenter.getInstance().post(new ListingChangedEvent(FLAG_GUEST));
 
         return new CommandResult(
                 String.format(Messages.MESSAGE_GUESTS_LISTED_OVERVIEW, model.getFilteredGuestList().size()));

@@ -10,8 +10,8 @@
             <tagged>vip</tagged>
         </guest>
         <bookingPeriod>
-            <startDate>24/10/2018</startDate>
-            <endDate>30/10/2018</endDate>
+            <startDate>25/10/2018</startDate>
+            <endDate>31/10/2018</endDate>
         </bookingPeriod>
         <isCheckedIn>false</isCheckedIn>
     </bookings>
