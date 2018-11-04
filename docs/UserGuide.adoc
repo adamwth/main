@@ -240,6 +240,15 @@ the hash for your password. You can use this website for this: https://passwords
 
 Example: `login user/damithz pw/forgotpassword`
 
+There are a few default accounts which can be used:
+* `login user/admin pw/admin-pw`
+* `login user/<name> pw/<name>-pw`, where `<name>` is any of the developer
+team's GitHub username
+
+[NOTE]
+More users can be added at `src/data/passwords.json`. When adding passwords
+to the reference list, be sure to add the SHA-256 hashed password.
+
 .Without login, Concierge cannot be cleared
 image::LogInCommand-notsignedin.png[width="400"]
 
