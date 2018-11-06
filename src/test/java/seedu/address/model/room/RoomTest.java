@@ -1,5 +1,6 @@
 package seedu.address.model.room;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_ROOM_NUMBER_BOB;
@@ -21,7 +22,6 @@ import seedu.address.model.room.booking.exceptions.RoomNotCheckedInException;
 import seedu.address.model.room.exceptions.BookingAlreadyCheckedInException;
 import seedu.address.testutil.ExpenseBuilder;
 import seedu.address.testutil.RoomBuilder;
-import seedu.address.testutil.TypicalBookingPeriods;
 import seedu.address.testutil.TypicalBookings;
 import seedu.address.testutil.TypicalExpenses;
 
@@ -52,7 +52,7 @@ public class RoomTest {
     public void addBooking() {
         Booking bookingToAdd = testRoomWithTodayTomorrowBooking.getBookings().getFirstBooking();
         Room editedRoom = testRoomWithoutBooking.addBooking(bookingToAdd);
-        assertTrue(editedRoom.equals(testRoomWithTodayTomorrowBooking));
+        assertEquals(testRoomWithTodayTomorrowBooking, editedRoom);
     }
 
     @Test
@@ -94,38 +94,42 @@ public class RoomTest {
 
     @Test
     public void checkOut_lastweekYesterday_success() {
-        Room editedRoom = testRoomWithLastWeekYesterdayBookingCheckedIn.checkout();
-        assertTrue(editedRoom.equals(testRoomWithoutBooking));
+        Room editedRoom = testRoomWithLastWeekYesterdayBookingCheckedIn
+                .checkout(TypicalBookings.LASTWEEK_YESTERDAY_CHECKED_IN);
+        assertEquals(testRoomWithoutBooking, editedRoom);
     }
 
     @Test
     public void checkOut_yesterdayToday_success() {
-        Room editedRoom = testRoomWithYesterdayTodayBooking.checkIn().checkout();
-        assertTrue(editedRoom.equals(testRoomWithoutBooking));
+        Room editedRoom = testRoomWithYesterdayTodayBooking.checkIn()
+                .checkout(TypicalBookings.YESTERDAY_TODAY);
+        assertEquals(testRoomWithoutBooking, editedRoom);
     }
 
     @Test
     public void checkOut_todayTomorrow_success() {
-        Room editedRoom = testRoomWithTodayTomorrowBooking.checkIn().checkout();
-        assertTrue(editedRoom.equals(testRoomWithoutBooking));
+        Room editedRoom = testRoomWithTodayTomorrowBooking.checkIn()
+                .checkout(TypicalBookings.TODAY_TOMORROW);
+        assertEquals(testRoomWithoutBooking, editedRoom);
     }
 
     @Test
     public void checkOut_bookingPeriod_success() {
-        Room editedRoom = testRoomWithTodayTomorrowBooking.checkIn().checkout(TypicalBookingPeriods.TODAY_TOMORROW);
-        assertTrue(editedRoom.equals(testRoomWithoutBooking));
+        Room editedRoom = testRoomWithTodayTomorrowBooking.checkIn()
+                .checkout(TypicalBookings.TODAY_TOMORROW);
+        assertEquals(testRoomWithoutBooking, editedRoom);
     }
 
     @Test
     public void checkOut_bookingPeriodNotFound_throwsBookingNotFoundException() {
         thrown.expect(BookingNotFoundException.class);
-        testRoomWithTodayTomorrowBooking.checkout(TypicalBookingPeriods.YESTERDAY_TODAY);
+        testRoomWithTodayTomorrowBooking.checkout(TypicalBookings.YESTERDAY_TODAY);
     }
 
     @Test
     public void checkOut_noBooking_throwsNoBookingException() {
         thrown.expect(NoBookingException.class);
-        testRoomWithoutBooking.checkout();
+        testRoomWithoutBooking.checkout(TypicalBookings.TODAY_TOMORROW);
     }
 
     @Test
@@ -207,23 +211,21 @@ public class RoomTest {
         Expense expenseToAdd = new ExpenseBuilder().build();
         Room editedRoom = testRoomWithTodayTomorrowBooking.checkIn().addExpense(expenseToAdd);
         List<Expense> actualExpenseList = editedRoom.getExpenses().getExpensesList();
-        assertTrue(actualExpenseList.size() == 1);
-        assertTrue(actualExpenseList.get(0).equals(expenseToAdd));
+        assertEquals(1, actualExpenseList.size());
+        assertEquals(expenseToAdd, actualExpenseList.get(0));
     }
 
     @Test
     public void addExpense_noBookings_throwsNoBookingException() {
         Expense expenseToAdd = new ExpenseBuilder().build();
-        Room editedRoom = testRoomWithoutBooking;
         thrown.expect(NoBookingException.class);
-        editedRoom.addExpense(expenseToAdd);
+        testRoomWithoutBooking.addExpense(expenseToAdd);
     }
 
     @Test
     public void addExpense_notCheckedIn_throwsRoomNotCheckedInException() {
         Expense expenseToAdd = new ExpenseBuilder().build();
-        Room editedRoom = testRoomWithTodayTomorrowBooking;
         thrown.expect(RoomNotCheckedInException.class);
-        editedRoom.addExpense(expenseToAdd);
+        testRoomWithTodayTomorrowBooking.addExpense(expenseToAdd);
     }
 }

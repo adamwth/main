@@ -17,6 +17,8 @@ import seedu.address.testutil.TypicalBookingPeriods;
 import seedu.address.testutil.TypicalConcierge;
 import seedu.address.testutil.TypicalRoomNumbers;
 
+import java.time.LocalDate;
+
 /**
  * Contains integration tests (interaction with the Model, UndoCommand and RedoCommand) and unit tests for
  * {@code CheckoutCommand}.
@@ -71,13 +73,13 @@ public class CheckoutCommandTest {
     @Test
     public void execute_validCheckoutBookingPeriod_success() {
         RoomNumber roomNumberToCheckout = TypicalRoomNumbers.ROOM_NUMBER_022;
-        BookingPeriod bookingPeriodToCheckOut = TypicalBookingPeriods.TOMORROW_NEXTWEEK;
-        CheckoutCommand checkoutCommand = new CheckoutCommand(roomNumberToCheckout, bookingPeriodToCheckOut);
+        LocalDate startDate = TypicalBookingPeriods.TOMORROW_NEXTWEEK.getStartDate();
+        CheckoutCommand checkoutCommand = new CheckoutCommand(roomNumberToCheckout, startDate);
 
         String expectedMessage = String.format(CheckoutCommand.MESSAGE_CHECKOUT_ROOM_SUCCESS, roomNumberToCheckout);
 
         Model expectedModel = new ModelManager(model.getConcierge(), new UserPrefs());
-        expectedModel.checkoutRoom(roomNumberToCheckout, bookingPeriodToCheckOut);
+        expectedModel.checkoutRoom(roomNumberToCheckout, startDate);
         expectedModel.commitConcierge();
 
         assertCommandSuccess(checkoutCommand, model, commandHistory, expectedMessage, expectedModel);
@@ -87,11 +89,11 @@ public class CheckoutCommandTest {
     @Test
     public void execute_invalidCheckoutBookingPeriod_throwsCommandException() {
         RoomNumber roomNumberToCheckout = TypicalRoomNumbers.ROOM_NUMBER_010;
-        BookingPeriod invalidBookingPeriodToCheckOut = TypicalBookingPeriods.TODAY_TOMORROW;
-        CheckoutCommand checkoutCommand = new CheckoutCommand(roomNumberToCheckout, invalidBookingPeriodToCheckOut);
+        LocalDate startDate = TypicalBookingPeriods.TODAY_TOMORROW.getStartDate();
+        CheckoutCommand checkoutCommand = new CheckoutCommand(roomNumberToCheckout, startDate);
 
         String expectedMessage = String.format(CheckoutCommand.MESSAGE_BOOKING_NOT_FOUND,
-                roomNumberToCheckout, invalidBookingPeriodToCheckOut);
+                roomNumberToCheckout, startDate);
 
         assertCommandFailure(checkoutCommand, model, commandHistory, expectedMessage);
     }
@@ -110,11 +112,11 @@ public class CheckoutCommandTest {
     @Test
     public void executeUndoRedo_validCheckout_success() throws Exception {
         RoomNumber roomNumberToCheckout = TypicalRoomNumbers.ROOM_NUMBER_022;
-        BookingPeriod bookingPeriodToCheckOut = TypicalBookingPeriods.TOMORROW_NEXTWEEK;
-        CheckoutCommand checkoutCommand = new CheckoutCommand(roomNumberToCheckout, bookingPeriodToCheckOut);
+        LocalDate startDate = TypicalBookingPeriods.TOMORROW_NEXTWEEK.getStartDate();
+        CheckoutCommand checkoutCommand = new CheckoutCommand(roomNumberToCheckout,startDate);
 
         Model expectedModel = new ModelManager(model.getConcierge(), new UserPrefs());
-        expectedModel.checkoutRoom(roomNumberToCheckout, bookingPeriodToCheckOut);
+        expectedModel.checkoutRoom(roomNumberToCheckout, startDate);
         expectedModel.commitConcierge();
 
         // checkout -> room booking checked out
@@ -130,10 +132,11 @@ public class CheckoutCommandTest {
     }
 
     @Test
-    public void executeUndoRedo_invalidCheckout_failure() throws Exception {
+    public void executeUndoRedo_invalidCheckout_failure() {
         RoomNumber roomNumberToCheckout = TypicalRoomNumbers.ROOM_NUMBER_010;
         BookingPeriod invalidBookingPeriodToCheckOut = TypicalBookingPeriods.TODAY_TOMORROW;
-        CheckoutCommand checkoutCommand = new CheckoutCommand(roomNumberToCheckout, invalidBookingPeriodToCheckOut);
+        LocalDate startDate = TypicalBookingPeriods.TODAY_TOMORROW.getStartDate();
+        CheckoutCommand checkoutCommand = new CheckoutCommand(roomNumberToCheckout, startDate);
 
         String expectedMessage = String.format(CheckoutCommand.MESSAGE_BOOKING_NOT_FOUND,
             roomNumberToCheckout, invalidBookingPeriodToCheckOut);

@@ -55,9 +55,9 @@ public class TypicalConcierge {
 
         /*  Special case of adding checked-in expired booking. Note Concierge does not allow checking-in of expired
         bookings, which is why a pre-checked-in booking is added and the checked-in guest is manually added via
-        addCheckedInGuest. Contrast with the standard way below. */
+        addCheckedInGuestIfNotPresent. Contrast with the standard way below. */
         ab.addBooking(TypicalRoomNumbers.ROOM_NUMBER_002, TypicalBookings.LASTWEEK_YESTERDAY_CHECKED_IN);
-        ab.addCheckedInGuest(TypicalBookings.LASTWEEK_YESTERDAY_CHECKED_IN.getGuest());
+        ab.addCheckedInGuestIfNotPresent(TypicalBookings.LASTWEEK_YESTERDAY_CHECKED_IN.getGuest());
         ab.addRoomTags(TypicalRoomNumbers.ROOM_NUMBER_002, TypicalTags.ROOM_TAG_MAINTENANCE);
 
         ab.addBooking(TypicalRoomNumbers.ROOM_NUMBER_010, TypicalBookings.YESTERDAY_TODAY);
@@ -73,7 +73,7 @@ public class TypicalConcierge {
         // Rooms with multiple bookings
         TypicalBookings.getMultipleBookingsSet()
                 .forEach(booking -> ab.addBooking(TypicalRoomNumbers.ROOM_NUMBER_022, booking));
-        ab.addCheckedInGuest(TypicalBookings.LASTWEEK_YESTERDAY_CHECKED_IN.getGuest());
+        ab.addCheckedInGuestIfNotPresent(TypicalBookings.LASTWEEK_YESTERDAY_CHECKED_IN.getGuest());
 
         // Room 031 will have no bookings. This comment is put here to inform you in case you come across Room 031 in
         // any of the tests.

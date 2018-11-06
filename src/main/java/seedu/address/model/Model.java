@@ -1,5 +1,6 @@
 package seedu.address.model;
 
+import java.time.LocalDate;
 import java.util.Optional;
 import java.util.function.Predicate;
 
@@ -150,9 +151,9 @@ public interface Model {
     void checkoutRoom(RoomNumber roomNumber);
 
     /**
-     * Checks out a room's booking using its room number and the specified booking period
+     * Checks out a room's booking using its room number and the specified start date
      */
-    void checkoutRoom(RoomNumber roomNumber, BookingPeriod bookingPeriod);
+    void checkoutRoom(RoomNumber roomNumber, LocalDate startDate);
 
     /**
      * Adds an Expense to a room.

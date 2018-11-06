@@ -2,6 +2,7 @@ package seedu.address.model.room;
 
 import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
 
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
@@ -127,19 +128,9 @@ public class Room {
     }
 
     /**
-     * Checks out the first booking of this room.
-     */
-    public Room checkout() {
-        Booking firstBooking = bookings.getFirstBooking();
-        return new Room(this.roomNumber, this.capacity, this.expenses, bookings.remove(firstBooking), this.tags);
-    }
-
-    /**
      * Checks out the given booking
      */
-    public Room checkout(BookingPeriod bookingPeriod) {
-        Booking bookingToCheckout = bookings
-                .getFirstBookingByPredicate(booking -> booking.getBookingPeriod().equals(bookingPeriod));
+    public Room checkout(Booking bookingToCheckout) {
         return new Room(this.roomNumber, this.capacity, this.expenses, bookings.remove(bookingToCheckout), this.tags);
     }
 

@@ -16,7 +16,6 @@ import seedu.address.model.room.Room;
 import seedu.address.model.room.RoomNumber;
 import seedu.address.model.room.UniqueRoomList;
 import seedu.address.model.room.booking.Booking;
-import seedu.address.model.room.booking.BookingPeriod;
 import seedu.address.model.tag.Tag;
 
 /**
@@ -83,6 +82,18 @@ public class Concierge implements ReadOnlyConcierge {
     //=========== Guest operations =============================================================
 
     /**
+     * Replaces the given guest {@code target} in the guest list with {@code editedGuest}.
+     * {@code target} must exist in Concierge's guest list.
+     * The guest identity of {@code editedGuest} must not be the same as another existing guest in Concierge's
+     * guest list.
+     */
+    public void updateGuest(Guest target, Guest editedGuest) {
+        requireNonNull(editedGuest);
+
+        guests.setGuest(target, editedGuest);
+    }
+    
+    /**
      * Replaces the contents of the guest list with {@code guests}.
      * {@code guests} must not contain duplicate guests.
      */
@@ -112,23 +123,11 @@ public class Concierge implements ReadOnlyConcierge {
      * behavior because a guest can make multiple bookings over overlapping booking periods (just for different
      * rooms).
      */
-    public void addCheckedInGuest(Guest g) {
+    public void addCheckedInGuestIfNotPresent(Guest g) {
         if (hasCheckedInGuest(g)) {
             return;
         }
         checkedInGuests.add(g);
-    }
-
-    /**
-     * Replaces the given guest {@code target} in the guest list with {@code editedGuest}.
-     * {@code target} must exist in Concierge's guest list.
-     * The guest identity of {@code editedGuest} must not be the same as another existing guest in Concierge's
-     * guest list.
-     */
-    public void updateGuest(Guest target, Guest editedGuest) {
-        requireNonNull(editedGuest);
-
-        guests.setGuest(target, editedGuest);
     }
 
     /**
@@ -197,73 +196,66 @@ public class Concierge implements ReadOnlyConcierge {
         // First active booking is guaranteed to be present after executing room.checkIn() above
         Guest guestToCheckIn = checkedInRoom.getBookings().getFirstBooking().getGuest();
 
-        addCheckedInGuest(guestToCheckIn);
+        addCheckedInGuestIfNotPresent(guestToCheckIn);
     }
 
     /**
-     * Checks out a room's first booking using its room number and remove the guest from the checked-in guest list
+     * Checks out a room's first booking
      */
     public void checkoutRoom(RoomNumber roomNumber) {
         Room room = rooms.getRoom(roomNumber);
-        rooms.setRoom(room, room.checkout());
-
-        Booking bookingToCheckout = room.getBookings().getFirstBooking();
-        Guest guestToCheckout = bookingToCheckout.getGuest();
-
-        // If the guest exists in the archived guest list, this block does nothing. This is expected because a guest
-        // may have stayed in the hotel before, so he would already be in the archived guest list.
-        if (!hasGuest(guestToCheckout)) {
-            addGuest(guestToCheckout);
-        }
-
-        // If the guest does not exist in the checked-in guest list, or still has checked-in bookings in other rooms,
-        // this code below does nothing. This is expected
-        // behavior, because a guest can have multiple bookings at once and checkout one before another.
-        // Though not ideal, this is the current implementation.
-        // TODO Check if guest to remove from checked-in list still has other bookings in other rooms OR
-        // TODO Create new guest subclass that stores the room information, and add instances of that into
-        // checked-in guest list
-        if (!hasCheckedInGuest(guestToCheckout)
-                || rooms.asUnmodifiableObservableList().stream()
-                    .anyMatch(r -> r.getBookings().getSortedBookingsSet().stream()
-                        .anyMatch(b -> b.getIsCheckedIn() && b.getGuest().equals(guestToCheckout)))) {
-            return;
-        }
-        removeCheckedInGuest(guestToCheckout);
+        checkoutRoom(room, room.getBookings().getFirstBooking());
     }
 
     /**
-     * Checks out a room's booking using its room number and the specified booking period and remove the guest
-     * from the checked-in guest list
+     * Checks out a room's booking using the specified start date
      */
-    public void checkoutRoom(RoomNumber roomNumber, BookingPeriod bookingPeriod) {
+    public void checkoutRoom(RoomNumber roomNumber, LocalDate startDate) {
         Room room = rooms.getRoom(roomNumber);
-        rooms.setRoom(room, room.checkout(bookingPeriod));
+        checkoutRoom(room, room
+                .getBookings()
+                .getFirstBookingByPredicate(booking -> booking.getBookingPeriod().getStartDate().equals(startDate)));
+    }
 
-        Booking bookingToCheckout = room.getBookings()
-            .getFirstBookingByPredicate(booking -> booking.getBookingPeriod().equals(bookingPeriod));
+    /**
+     * Checks out the given booking from the given room
+     */
+    private void checkoutRoom(Room room, Booking bookingToCheckout) {
+        rooms.setRoom(room, room.checkout(bookingToCheckout));
+        
         Guest guestToCheckout = bookingToCheckout.getGuest();
+        addGuestIfNotPresent(guestToCheckout);
+        removeCheckedInGuestIfNeeded(guestToCheckout);
+    }
 
-        // If the guest exists in the archived guest list, this block does nothing. This is expected because a guest
-        // may have stayed in the hotel before, so he would already be in the archived guest list.
-        if (!hasGuest(guestToCheckout)) {
-            addGuest(guestToCheckout);
-        }
-
-        // If the guest does not exist in the checked-in guest list, or still has checked-in bookings in other rooms,
-        // this code below does nothing. This is expected
-        // behavior, because a guest can have multiple bookings at once and checkout one before another.
-        // Though not ideal, this is the current implementation.
-        // TODO Check if guest to remove from checked-in list still has other bookings in other rooms OR
-        // TODO Create new guest subclass that stores the room information, and add instances of that into
-        // checked-in guest list
-        if (!hasCheckedInGuest(guestToCheckout)
-                || rooms.asUnmodifiableObservableList().stream()
-                    .anyMatch(r -> r.getBookings().getSortedBookingsSet().stream()
-                        .anyMatch(b -> b.getIsCheckedIn() && b.getGuest().equals(guestToCheckout)))) {
+    /**
+     * Adds a guest to the archived guest list if he is not already in it.
+     * If the guest exists in the archived guest list, this block does nothing.
+     * This is expected because a guest may have stayed in the hotel before,
+     * so he would already be in the archived guest list.
+     */
+    private void addGuestIfNotPresent(Guest guest) {
+        if (hasGuest(guest)) {
             return;
         }
-        removeCheckedInGuest(guestToCheckout);
+        addGuest(guest);
+    }
+
+    /**
+     * Removes a guest from the checked-in guest list if needed.
+     * If the guest does not exist in the checked-in guest list (i.e. delete non-checked-in bookings), do nothing.
+     * This is allowed, because `checkout` can be used to remove any booking.
+     * If the guest still has checked-in bookings in other rooms, also do nothing.
+     * This is allowed, because a guest can have multiple checked-in bookings at once.
+     */
+    private void removeCheckedInGuestIfNeeded(Guest guest) {
+        if (!hasCheckedInGuest(guest)
+                || rooms.asUnmodifiableObservableList().stream()
+                    .anyMatch(r -> r.getBookings().getSortedBookingsSet().stream()
+                        .anyMatch(b -> b.getIsCheckedIn() && b.getGuest().equals(guest)))) {
+            return;
+        }
+        removeCheckedInGuest(guest);
     }
 
     public void setMenu(Map<String, ExpenseType> menu) {
