@@ -36,8 +36,8 @@ image::Ui.png[width="790"]
 e.g. typing *`help`* and pressing kbd:[Enter] will open the help window.
 .  Some example commands you can try:
 
-* *`list`* : lists all rooms types and cost of room
-* **`checkout`**`S9465789B` : checks out guest with NRIC no. S9465789B from his/her room
+* *`list -r`* : lists all rooms
+* **`checkin`**`r/085` : checks in the first active booking of room 085
 * *`exit`* : exits the app
 
 .  Refer to <<Features>> for details of each command.
@@ -224,11 +224,30 @@ Format: `login user/USERNAME pw/PASSWORD`
 
 Commands which require login:
 
+****
+* `login user/<name> pw/<name>-pw`, where <name> is any of the developer team’s GitHub username
+* As of v1.3, you must create your own passwords.json file with your username and passwords.
+For demo purposes, go to https://github.com/CS2103-AY1819S1-F11-2/main and copy the passwords.json file there
+into the same folder as the Concierge.jar file.
+Alternatively, create a new passwords.json and use SHA-256 Hash to generate
+the hash for your password. You can use this website for this: https://passwordsgenerator.net/sha256-hash-generator/
+
+****
+
 ** `add`, `edit` [red]#Coming in v2.0#
 ** `checkin`, `checkout` [red]#Coming in v2.0#
 ** `clear`
 
 Example: `login user/damithz pw/forgotpassword`
+
+There are a few default accounts which can be used:
+* `login user/admin pw/admin-pw`
+* `login user/<name> pw/<name>-pw`, where `<name>` is any of the developer
+team's GitHub username
+
+[NOTE]
+More users can be added at `src/data/passwords.json`. When adding passwords
+to the reference list, be sure to add the SHA-256 hashed password.
 
 .Without login, Concierge cannot be cleared
 image::LogInCommand-notsignedin.png[width="400"]
@@ -293,6 +312,7 @@ Format: `service r/ROOM_NUMBER no/ITEM_NUMBER [c/COST]`
   not exceed `Integer.MAX_VALUE`.
 * Any expenses added with this command will be accounted for under the Expenses portion
   of the respective rooms.
+* Only occupied rooms (i.e. rooms with checked-in guests) can have expenses charged to it.
 * The default `Menu` that comes with Concierge consists of the following items. Items
   may be modified, added, or removed through `concierge.xml`.
 ** *RS01* -- Room service: Red wine -- $50.00
@@ -312,6 +332,11 @@ Adds an expenditure of the item *RS01* to the room's expenses.
 
 * `service r/096 no/RS03 c/12.34` +
 Adds an expenditure of the item *RS03* to the room's expenses and charge $12.34 for it.
+
+=== Display menu: `menu` [red]#Coming in v1.4#
+
+Displays the menu to help users in the use of the `service` command. +
+Format: `menu`
 
 === Room maintenance: `maintenance` [red]#Coming in v2.0#
 
