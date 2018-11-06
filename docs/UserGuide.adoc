@@ -133,23 +133,70 @@ Checks out the booking with start date 01/11/18 and end date 02/11/18 from room 
 
 === Editing a guest : `edit` [red]#Coming in v1.4#
 
-Edits an existing guest in the guest list. +
-Format: `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [t/TAG]...`
+Edits an existing guest in the guest list or room in the room list. +
+Format: `edit [FLAG] [IDENTIFIERS] [NEW_VALUE]`
 
 ****
-* Edits the guest at the specified `INDEX`. The index refers to the index number shown in the displayed guest list. The index *must be a positive integer* 1, 2, 3, ...
-* At least one of the optional fields must be provided.
-* Existing values will be updated to the input values.
+* First, specify the type of field you want to edit by using a FLAG.
+* Next, specify the unique identifier of the field(s).
+* Lastly, provide the new values of the field(s).
 * When editing tags, the existing tags of the guest will be removed i.e adding of tags is not cumulative.
 * You can remove all the guest's tags by typing `t/` without specifying any tags after it.
 ****
 
+[TIP]
+All new values must start with a prefix preceded by the character `n`. For example, new tag = `nt/`. 
+
+Flags for possible fields to edit:
+
+* `-r` - room fields
+* `-b` - booking period field
+* `-g` - guest field
+
+Identifiers:
+
+* `r/` - room number
+* `from/` - start date of a booking period
+* `n/` - guest name
+* `p/` - guest phone
+* `e/` - guest email
+
+New values:
+
+* `nc/` - new room capacity
+* `nt/` - new tag (both guest and room, replaces old tags)
+* `nfrom/` - new start date of booking
+* `nto/` - new end date of booking
+* `nn/` - new guest name
+* `np/` - new guest phone
+* `ne/` - new guest email
+
 Examples:
 
-* `edit 1 p/91234567 e/johndoe@example.com` +
-Edits the phone number and email address of the 1st guest to be `91234567` and `johndoe@example.com` respectively.
-* `edit 2 n/Betsy Crower t/` +
-Edits the name of the 2nd guest to be `Betsy Crower` and clears all existing tags.
+* `edit -r r/001 nc/1` +
+Edits room 001's capacity to be 1
+
+* `edit -r r/001 nt/vip nt/specialneeds` +
+Edits room 001's tags to be `vip` and `specialneeds`
+
+* `edit -r r/001 nc/2 nt/` +
+Edits room 001's capacity to be 2 and clears all existing tags
+
+* `edit -b r/001 from/05/11/18 nfrom/09/11/18` +
+Edits room 001's booking that starts on 05/11/18 to start on 09/11/18.
+
+* `edit -b r/001 from/05/11/18 nfrom/09/11/18 nto/11/11/18` +
+Edits room 001's booking that starts on 05/11/18 to start on 09/11/18 and end on 11/11/18.
+
+* `edit -g r/001 from/05/11/18 nn/Popo np/999 ne/popo@spf.com nt/vip` +
+Edits the guest of the booking that starts from 05/11/18 in room 001 to have new name `Popo`, new phone `999`,
+new email `popo@spf.com`, and new tag `vip`.
+
+* `edit -g r/001 n/John p/123 nn/Popo np/999` +
+Edits all guests with name `John` and phone number `123` in room 001 to have new name `Popo` and new phone `999`.
+
+* `edit -g n/John e/john@john.com ne/phua@phua.com` +
+Edits all guests with name `John` and email `john@john.com` in all rooms to have new email `phua@phua.com`. 
 
 === Locating guests and rooms : `find`
 
