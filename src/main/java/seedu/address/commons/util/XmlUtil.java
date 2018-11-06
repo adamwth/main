@@ -70,7 +70,7 @@ public class XmlUtil {
     }
 
     /**
-     * Saves the data in the file in xml format.
+     * Saves the data in the file in xml format. Creates the file if it doesn't yet exist.
      *
      * @param file Points to a valid xml file containing data that match the {@code classToConvert}.
      *             Cannot be null.
