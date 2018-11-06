@@ -169,15 +169,15 @@ Filters for Rooms (-r):
 * `r/ - Room Number`
 * `c/ - Capacity`
 * `t/ - Room Tags`
+* `-hb - Has Bookings Flag`*
+* `-nb - No Bookings Flag`*
+* `from/ - Booking Start Date`^
+* `to/ - Booking End Date`^
 
-The following are filters for room bookings. The flags cannot be mixed.
-The flags can be used independently, or with a from/to specified date.
+[TIP]
+Flags marked with * cannot be used together in the same command.
+These flags can be used independently, or with flags marked with ^ . +
 Input dates must be in DD/MM/YY or DD/MM/YYYY format.
-
-* `-hb - Has Bookings Flag`
-* `-nb - No Bookings Flag`
-* `from/ - Booking Start Date`
-* `to/ - Booking End Date`
 
 Find Command Examples:
 

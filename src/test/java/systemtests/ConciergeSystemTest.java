@@ -151,6 +151,14 @@ public abstract class ConciergeSystemTest {
     }
 
     /**
+     * Displays all rooms with any parts of their fields matching those found in {@code keyword} (case-insensitive).
+     */
+    protected void showRoomWithKeywords(String keywords) {
+        executeCommand(FindCommand.COMMAND_WORD + " " + FLAG_GUEST + " " + PREFIX_NAME + keywords);
+        assertTrue(getModel().getFilteredGuestList().size() < getModel().getConcierge().getGuestList().size());
+    }
+
+    /**
      * Selects the guest at {@code index} of the displayed list.
      */
     protected void selectGuest(Index index) {

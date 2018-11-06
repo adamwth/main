@@ -21,7 +21,7 @@ import seedu.address.testutil.ListUtil;
 
 public class SelectCommandSystemTest extends ConciergeSystemTest {
     @Test
-    public void selectArchivedGuests() {
+    public void selectArchivedGuest() {
         /* ------------------------ Perform select operations on the shown unfiltered guest list ----------------- */
         executeCommand(ListUtil.getListGuestCommand());
         /* Case: select the first card in the guest list, command with leading spaces and trailing spaces
@@ -97,6 +97,85 @@ public class SelectCommandSystemTest extends ConciergeSystemTest {
         deleteAllGuests();
         assertCommandFailure(SelectCommand.COMMAND_WORD + " " + INDEX_FIRST.getOneBased(),
                 MESSAGE_INVALID_GUEST_DISPLAYED_INDEX);
+    }
+
+    @Test
+    public void selectRoom() {
+        /* ---------------- Perform select operations on the shown unfiltered room list ----------------- */
+        executeCommand(ListUtil.getListRoomCommand());
+        /* Case: select the first card in the room list, command with leading spaces and trailing spaces
+         * -> selected
+         */
+        String command = "   " + SelectCommand.COMMAND_WORD + " " + INDEX_FIRST.getOneBased() + "   ";
+        assertCommandSuccess(command, INDEX_FIRST);
+
+        /* Case: select the last card in the room list -> selected */
+        Index roomCount = getLastIndex(getModel());
+        command = SelectCommand.COMMAND_WORD + " " + roomCount.getOneBased();
+        assertCommandSuccess(command, roomCount);
+
+        /* Case: undo previous selection -> rejected */
+        command = UndoCommand.COMMAND_WORD;
+        String expectedResultMessage = UndoCommand.MESSAGE_FAILURE;
+        assertCommandFailure(command, expectedResultMessage);
+
+        /* Case: redo selecting last card in the list -> rejected */
+        command = RedoCommand.COMMAND_WORD;
+        expectedResultMessage = RedoCommand.MESSAGE_FAILURE;
+        assertCommandFailure(command, expectedResultMessage);
+
+        /* Case: select the middle card in the room list -> selected */
+        Index middleIndex = getMidIndex(getModel());
+        command = SelectCommand.COMMAND_WORD + " " + middleIndex.getOneBased();
+        assertCommandSuccess(command, middleIndex);
+
+        /* Case: select the current selected card -> selected */
+        assertCommandSuccess(command, middleIndex);
+
+        /* --------------- Perform select operations on the shown filtered room list ---------------------------- */
+
+        /* Case: filtered room list, select index within bounds of Concierge but out of bounds of room list
+         * -> rejected
+         */
+        showGuestsWithName(KEYWORD_MATCHING_MEIER);
+        int invalidIndex = getModel().getConcierge().getGuestList().size();
+        assertCommandFailure(SelectCommand.COMMAND_WORD + " " + invalidIndex, MESSAGE_INVALID_GUEST_DISPLAYED_INDEX);
+
+        /* Case: filtered guest list, select index within bounds of Concierge and guest list -> selected */
+        Index validIndex = Index.fromOneBased(1);
+        assertTrue(validIndex.getZeroBased() < getModel().getFilteredGuestList().size());
+        command = SelectCommand.COMMAND_WORD + " " + validIndex.getOneBased();
+        assertCommandSuccess(command, validIndex);
+
+        /* ------------------ Perform invalid select operations on guest list ------------------------------------ */
+
+        /* Case: invalid index (0) -> rejected */
+        assertCommandFailure(SelectCommand.COMMAND_WORD + " " + 0,
+            String.format(MESSAGE_INVALID_COMMAND_FORMAT, SelectCommand.MESSAGE_USAGE));
+
+        /* Case: invalid index (-1) -> rejected */
+        assertCommandFailure(SelectCommand.COMMAND_WORD + " " + -1,
+            String.format(MESSAGE_INVALID_COMMAND_FORMAT, SelectCommand.MESSAGE_USAGE));
+
+        /* Case: invalid index (size + 1) -> rejected */
+        invalidIndex = getModel().getFilteredGuestList().size() + 1;
+        assertCommandFailure(SelectCommand.COMMAND_WORD + " " + invalidIndex, MESSAGE_INVALID_GUEST_DISPLAYED_INDEX);
+
+        /* Case: invalid arguments (alphabets) -> rejected */
+        assertCommandFailure(SelectCommand.COMMAND_WORD + " abc",
+            String.format(MESSAGE_INVALID_COMMAND_FORMAT, SelectCommand.MESSAGE_USAGE));
+
+        /* Case: invalid arguments (extra argument) -> rejected */
+        assertCommandFailure(SelectCommand.COMMAND_WORD + " 1 abc",
+            String.format(MESSAGE_INVALID_COMMAND_FORMAT, SelectCommand.MESSAGE_USAGE));
+
+        /* Case: mixed case command word -> rejected */
+        assertCommandFailure("SeLeCt 1", MESSAGE_UNKNOWN_COMMAND);
+
+        /* Case: select from empty Concierge -> rejected */
+        deleteAllGuests();
+        assertCommandFailure(SelectCommand.COMMAND_WORD + " " + INDEX_FIRST.getOneBased(),
+            MESSAGE_INVALID_GUEST_DISPLAYED_INDEX);
     }
 
     /**
