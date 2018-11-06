@@ -21,7 +21,7 @@ import seedu.address.testutil.ListUtil;
 
 public class SelectCommandSystemTest extends ConciergeSystemTest {
     @Test
-    public void select() {
+    public void selectArchivedGuests() {
         /* ------------------------ Perform select operations on the shown unfiltered guest list ----------------- */
         executeCommand(ListUtil.getListGuestCommand());
         /* Case: select the first card in the guest list, command with leading spaces and trailing spaces
@@ -53,7 +53,7 @@ public class SelectCommandSystemTest extends ConciergeSystemTest {
         /* Case: select the current selected card -> selected */
         assertCommandSuccess(command, middleIndex);
 
-        /* ------------------------ Perform select operations on the shown filtered list ---------------------------- */
+        /* --------------- Perform select operations on the shown filtered guest list ---------------------------- */
 
         /* Case: filtered guest list, select index within bounds of Concierge but out of bounds of guest list
          * -> rejected
@@ -68,7 +68,7 @@ public class SelectCommandSystemTest extends ConciergeSystemTest {
         command = SelectCommand.COMMAND_WORD + " " + validIndex.getOneBased();
         assertCommandSuccess(command, validIndex);
 
-        /* ----------------------------------- Perform invalid select operations ------------------------------------ */
+        /* ------------------ Perform invalid select operations on guest list ------------------------------------ */
 
         /* Case: invalid index (0) -> rejected */
         assertCommandFailure(SelectCommand.COMMAND_WORD + " " + 0,
