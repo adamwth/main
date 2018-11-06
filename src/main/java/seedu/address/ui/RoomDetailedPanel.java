@@ -87,11 +87,4 @@ public class RoomDetailedPanel extends UiPart<Region> {
         }
     }
 
-    /**
-     * Clears the items from this list view
-     */
-    public void clearSelection() {
-        roomDetailedView.getItems().clear();
-    }
-
 }
