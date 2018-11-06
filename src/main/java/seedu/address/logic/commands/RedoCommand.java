@@ -3,6 +3,8 @@ package seedu.address.logic.commands;
 import static java.util.Objects.requireNonNull;
 import static seedu.address.model.Model.PREDICATE_SHOW_ALL_GUESTS;
 
+import seedu.address.commons.core.EventsCenter;
+import seedu.address.commons.events.ui.DeselectGuestListEvent;
 import seedu.address.logic.CommandHistory;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
@@ -23,6 +25,8 @@ public class RedoCommand extends Command {
         if (!model.canRedoConcierge()) {
             throw new CommandException(MESSAGE_FAILURE);
         }
+
+        EventsCenter.getInstance().post(new DeselectGuestListEvent());
 
         model.redoConcierge();
         model.updateFilteredGuestList(PREDICATE_SHOW_ALL_GUESTS);
