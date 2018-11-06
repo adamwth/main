@@ -14,7 +14,6 @@ import org.junit.rules.ExpectedException;
 
 import seedu.address.model.expenses.Expense;
 import seedu.address.model.room.booking.Booking;
-import seedu.address.model.room.booking.exceptions.BookingNotFoundException;
 import seedu.address.model.room.booking.exceptions.ExpiredBookingCheckInException;
 import seedu.address.model.room.booking.exceptions.InactiveBookingCheckInException;
 import seedu.address.model.room.booking.exceptions.NoBookingException;
@@ -93,43 +92,23 @@ public class RoomTest {
     }
 
     @Test
-    public void checkOut_lastweekYesterday_success() {
+    public void checkOutExpiredBooking_lastweekYesterday_success() {
         Room editedRoom = testRoomWithLastWeekYesterdayBookingCheckedIn
                 .checkout(TypicalBookings.LASTWEEK_YESTERDAY_CHECKED_IN);
         assertEquals(testRoomWithoutBooking, editedRoom);
     }
 
     @Test
-    public void checkOut_yesterdayToday_success() {
-        Room editedRoom = testRoomWithYesterdayTodayBooking.checkIn()
+    public void checkOutActiveBooking_yesterdayToday_success() {
+        Room editedRoom = testRoomWithYesterdayTodayBooking
                 .checkout(TypicalBookings.YESTERDAY_TODAY);
         assertEquals(testRoomWithoutBooking, editedRoom);
     }
 
     @Test
-    public void checkOut_todayTomorrow_success() {
-        Room editedRoom = testRoomWithTodayTomorrowBooking.checkIn()
-                .checkout(TypicalBookings.TODAY_TOMORROW);
+    public void checkOutUpcomingBooking_tomorrowNextWeek_success() {
+        Room editedRoom = testRoomWithTomorrowNextWeekBooking.checkout(TypicalBookings.TOMORROW_NEXTWEEK);
         assertEquals(testRoomWithoutBooking, editedRoom);
-    }
-
-    @Test
-    public void checkOut_bookingPeriod_success() {
-        Room editedRoom = testRoomWithTodayTomorrowBooking.checkIn()
-                .checkout(TypicalBookings.TODAY_TOMORROW);
-        assertEquals(testRoomWithoutBooking, editedRoom);
-    }
-
-    @Test
-    public void checkOut_bookingPeriodNotFound_throwsBookingNotFoundException() {
-        thrown.expect(BookingNotFoundException.class);
-        testRoomWithTodayTomorrowBooking.checkout(TypicalBookings.YESTERDAY_TODAY);
-    }
-
-    @Test
-    public void checkOut_noBooking_throwsNoBookingException() {
-        thrown.expect(NoBookingException.class);
-        testRoomWithoutBooking.checkout(TypicalBookings.TODAY_TOMORROW);
     }
 
     @Test

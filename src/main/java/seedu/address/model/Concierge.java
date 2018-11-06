@@ -92,7 +92,7 @@ public class Concierge implements ReadOnlyConcierge {
 
         guests.setGuest(target, editedGuest);
     }
-    
+
     /**
      * Replaces the contents of the guest list with {@code guests}.
      * {@code guests} must not contain duplicate guests.
@@ -222,7 +222,7 @@ public class Concierge implements ReadOnlyConcierge {
      */
     private void checkoutRoom(Room room, Booking bookingToCheckout) {
         rooms.setRoom(room, room.checkout(bookingToCheckout));
-        
+
         Guest guestToCheckout = bookingToCheckout.getGuest();
         addGuestIfNotPresent(guestToCheckout);
         removeCheckedInGuestIfNeeded(guestToCheckout);

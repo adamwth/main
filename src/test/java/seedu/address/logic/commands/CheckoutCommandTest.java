@@ -5,6 +5,8 @@ import static org.junit.Assert.assertTrue;
 import static seedu.address.logic.commands.CommandTestUtil.assertCommandFailure;
 import static seedu.address.logic.commands.CommandTestUtil.assertCommandSuccess;
 
+import java.time.LocalDate;
+
 import org.junit.Test;
 
 import seedu.address.logic.CommandHistory;
@@ -12,12 +14,9 @@ import seedu.address.model.Model;
 import seedu.address.model.ModelManager;
 import seedu.address.model.UserPrefs;
 import seedu.address.model.room.RoomNumber;
-import seedu.address.model.room.booking.BookingPeriod;
 import seedu.address.testutil.TypicalBookingPeriods;
 import seedu.address.testutil.TypicalConcierge;
 import seedu.address.testutil.TypicalRoomNumbers;
-
-import java.time.LocalDate;
 
 /**
  * Contains integration tests (interaction with the Model, UndoCommand and RedoCommand) and unit tests for
@@ -113,7 +112,7 @@ public class CheckoutCommandTest {
     public void executeUndoRedo_validCheckout_success() throws Exception {
         RoomNumber roomNumberToCheckout = TypicalRoomNumbers.ROOM_NUMBER_022;
         LocalDate startDate = TypicalBookingPeriods.TOMORROW_NEXTWEEK.getStartDate();
-        CheckoutCommand checkoutCommand = new CheckoutCommand(roomNumberToCheckout,startDate);
+        CheckoutCommand checkoutCommand = new CheckoutCommand(roomNumberToCheckout, startDate);
 
         Model expectedModel = new ModelManager(model.getConcierge(), new UserPrefs());
         expectedModel.checkoutRoom(roomNumberToCheckout, startDate);
@@ -134,12 +133,11 @@ public class CheckoutCommandTest {
     @Test
     public void executeUndoRedo_invalidCheckout_failure() {
         RoomNumber roomNumberToCheckout = TypicalRoomNumbers.ROOM_NUMBER_010;
-        BookingPeriod invalidBookingPeriodToCheckOut = TypicalBookingPeriods.TODAY_TOMORROW;
         LocalDate startDate = TypicalBookingPeriods.TODAY_TOMORROW.getStartDate();
         CheckoutCommand checkoutCommand = new CheckoutCommand(roomNumberToCheckout, startDate);
 
         String expectedMessage = String.format(CheckoutCommand.MESSAGE_BOOKING_NOT_FOUND,
-            roomNumberToCheckout, invalidBookingPeriodToCheckOut);
+                roomNumberToCheckout, startDate);
 
         assertCommandFailure(checkoutCommand, model, commandHistory, expectedMessage);
 

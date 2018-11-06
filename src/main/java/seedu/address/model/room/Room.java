@@ -2,7 +2,6 @@ package seedu.address.model.room;
 
 import static seedu.address.commons.util.CollectionUtil.requireAllNonNull;
 
-import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
@@ -12,7 +11,6 @@ import java.util.Set;
 import seedu.address.model.expenses.Expense;
 import seedu.address.model.expenses.Expenses;
 import seedu.address.model.room.booking.Booking;
-import seedu.address.model.room.booking.BookingPeriod;
 import seedu.address.model.room.booking.Bookings;
 import seedu.address.model.room.booking.exceptions.ExpiredBookingCheckInException;
 import seedu.address.model.room.booking.exceptions.InactiveBookingCheckInException;

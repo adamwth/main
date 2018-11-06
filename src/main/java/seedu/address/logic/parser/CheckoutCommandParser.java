@@ -2,16 +2,15 @@ package seedu.address.logic.parser;
 
 import static java.util.Objects.requireNonNull;
 import static seedu.address.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
-import static seedu.address.logic.parser.CliSyntax.PREFIX_DATE_END;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_DATE_START;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ROOM;
+
+import java.time.LocalDate;
+import java.util.Optional;
 
 import seedu.address.logic.commands.CheckoutCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.room.RoomNumber;
-import seedu.address.model.room.booking.BookingPeriod;
-
-import java.time.LocalDate;
 
 /**
  * Parses input arguments and creates a new CheckoutCommand object
@@ -25,16 +24,15 @@ public class CheckoutCommandParser implements Parser<CheckoutCommand> {
      */
     public CheckoutCommand parse(String args) throws ParseException {
         requireNonNull(args);
-        ArgumentMultimap argMultimap =
-                ArgumentTokenizer.tokenize(args, PREFIX_ROOM, PREFIX_DATE_START);
+        ArgumentMultimap argMultimap = ArgumentTokenizer.tokenize(args, PREFIX_ROOM, PREFIX_DATE_START);
         if (!argMultimap.getValue(PREFIX_ROOM).isPresent() || !argMultimap.getPreamble().isEmpty()) {
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, CheckoutCommand.MESSAGE_USAGE));
         }
         try {
             RoomNumber roomNumber = ParserUtil.parseRoomNumber(argMultimap.getValue(PREFIX_ROOM).get());
-            if (argMultimap.getValue(PREFIX_DATE_START).isPresent()) {
-                LocalDate startDate = LocalDate.parse(
-                        argMultimap.getValue(PREFIX_DATE_START).get(), BookingPeriod.STRING_TO_DATE_FORMAT);
+            Optional<String> optionalStartDate = argMultimap.getValue(PREFIX_DATE_START);
+            if (optionalStartDate.isPresent()) {
+                LocalDate startDate = ParserUtil.parseLocalDate(optionalStartDate.get());
                 return new CheckoutCommand(roomNumber, startDate);
             }
             return new CheckoutCommand(roomNumber);

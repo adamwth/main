@@ -4,15 +4,14 @@ import static java.util.Objects.requireNonNull;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_DATE_START;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ROOM;
 
+import java.time.LocalDate;
+
 import seedu.address.logic.CommandHistory;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
 import seedu.address.model.room.RoomNumber;
-import seedu.address.model.room.booking.BookingPeriod;
 import seedu.address.model.room.booking.exceptions.BookingNotFoundException;
 import seedu.address.model.room.booking.exceptions.NoBookingException;
-
-import java.time.LocalDate;
 
 /**
  * Check out a room identified using its room number and remove its registered guest from the guest list.
@@ -23,15 +22,16 @@ public class CheckoutCommand extends Command {
 
     public static final String MESSAGE_USAGE = COMMAND_WORD
             + ": Delete the booking of the room identified by the room number.\n"
-            + "You can opt to specify the start date of a booking to specify which booking to checkout (i.e. delete)."
-            + "If you do not specify a start date, the first (i.e. earliest) booking will be deleted."
-            + "The start date must be in dd/MM/yy or dd/MM/yyyy format.\n"
-            + "Parameters: " + PREFIX_ROOM + "ROOM_NUMBER (must be a 3-digit positive integer from 001 to "
-            + RoomNumber.MAX_ROOM_NUMBER + ") "
-            + "[" + PREFIX_DATE_START + "START_DATE "
-            + "\n"
-            + "Example: " + COMMAND_WORD + " " + PREFIX_ROOM + "001 "
-            + PREFIX_DATE_START + "01/01/18 ";
+            + "You can opt to specify the start date of a booking to specify which booking to checkout (i.e. delete).\n"
+            + "If you do not specify a start date, the first (i.e. earliest) booking will be deleted.\n"
+            + "The room number must be a 3-digit positive integer from 001 to " + RoomNumber.MAX_ROOM_NUMBER + "\n"
+            + "The start date must be in dd/MM/yy or dd/MM/yyyy format and valid according to the Gregorian calendar.\n"
+            + "Parameters: "
+            + PREFIX_ROOM + "ROOM_NUMBER "
+            + "[" + PREFIX_DATE_START + "START_DATE " + "]\n"
+            + "Example: "
+            + COMMAND_WORD + " " + PREFIX_ROOM + "001 "
+            + PREFIX_DATE_START + "01/01/18";
 
     public static final String MESSAGE_CHECKOUT_ROOM_SUCCESS = "Checked out Room: %1$s";
     public static final String MESSAGE_NO_ROOM_BOOKING = "Room %1$s has no bookings.";
