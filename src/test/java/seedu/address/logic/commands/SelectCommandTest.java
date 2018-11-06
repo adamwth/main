@@ -268,7 +268,7 @@ public class SelectCommandTest {
             return SelectCommand.MESSAGE_SELECT_GUEST_SUCCESS;
         } else if (displayedListFlag.equals(FLAG_CHECKED_IN_GUEST)) {
             return SelectCommand.MESSAGE_SELECT_CHECKED_IN_GUEST_SUCCESS;
-        } else if (displayedListFlag.equals(CliSyntax.FLAG_ROOM)) {
+        } else if (displayedListFlag.equals(FLAG_ROOM)) {
             return SelectCommand.MESSAGE_SELECT_ROOM_SUCCESS;
         } else {
             throw new TestAbortedException("Invalid list flag!");
@@ -283,7 +283,7 @@ public class SelectCommandTest {
             return Messages.MESSAGE_INVALID_GUEST_DISPLAYED_INDEX;
         } else if (displayedListFlag.equals(FLAG_CHECKED_IN_GUEST)) {
             return Messages.MESSAGE_INVALID_CHECKED_IN_GUEST_DISPLAYED_INDEX;
-        } else if (displayedListFlag.equals(CliSyntax.FLAG_ROOM)) {
+        } else if (displayedListFlag.equals(FLAG_ROOM)) {
             return Messages.MESSAGE_INVALID_ROOM_DISPLAYED_INDEX;
         } else {
             throw new TestAbortedException("Invalid list flag!");

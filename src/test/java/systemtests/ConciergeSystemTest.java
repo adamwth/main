@@ -257,7 +257,6 @@ public abstract class ConciergeSystemTest {
      */
     protected void assertSelectedRoomCardChanged(Index expectedSelectedCardIndex) {
         getRoomListPanel().navigateToCard(getRoomListPanel().getSelectedCardIndex());
-        String selectedCardName = getRoomListPanel().getHandleToSelectedCard().getRoomNumber();
         assertEquals(expectedSelectedCardIndex.getZeroBased(), getRoomListPanel().getSelectedCardIndex());
     }
 
