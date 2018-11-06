@@ -8,7 +8,7 @@ import static seedu.address.logic.commands.SelectCommand.MESSAGE_SELECT_GUEST_SU
 import static seedu.address.testutil.TestUtil.getLastIndex;
 import static seedu.address.testutil.TestUtil.getMidIndex;
 import static seedu.address.testutil.TypicalGuests.KEYWORD_MATCHING_MEIER;
-import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST_GUEST;
+import static seedu.address.testutil.TypicalIndexes.INDEX_FIRST;
 
 import org.junit.Test;
 
@@ -27,8 +27,8 @@ public class SelectCommandSystemTest extends ConciergeSystemTest {
         /* Case: select the first card in the guest list, command with leading spaces and trailing spaces
          * -> selected
          */
-        String command = "   " + SelectCommand.COMMAND_WORD + " " + INDEX_FIRST_GUEST.getOneBased() + "   ";
-        assertCommandSuccess(command, INDEX_FIRST_GUEST);
+        String command = "   " + SelectCommand.COMMAND_WORD + " " + INDEX_FIRST.getOneBased() + "   ";
+        assertCommandSuccess(command, INDEX_FIRST);
 
         /* Case: select the last card in the guest list -> selected */
         Index guestCount = getLastIndex(getModel());
@@ -95,7 +95,7 @@ public class SelectCommandSystemTest extends ConciergeSystemTest {
 
         /* Case: select from empty Concierge -> rejected */
         deleteAllGuests();
-        assertCommandFailure(SelectCommand.COMMAND_WORD + " " + INDEX_FIRST_GUEST.getOneBased(),
+        assertCommandFailure(SelectCommand.COMMAND_WORD + " " + INDEX_FIRST.getOneBased(),
                 MESSAGE_INVALID_GUEST_DISPLAYED_INDEX);
     }
 
