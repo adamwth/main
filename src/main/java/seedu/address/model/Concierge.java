@@ -171,9 +171,14 @@ public class Concierge implements ReadOnlyConcierge {
      */
     public void reassignBooking(RoomNumber roomNumber, LocalDate startDate, RoomNumber newRoomNumber) {
         Room room = rooms.getRoom(roomNumber);
-        Room newRoom = rooms.getRoom(newRoomNumber);
         Booking bookingToReassign = room.getBookings()
                 .getFirstBookingByPredicate(booking -> booking.getBookingPeriod().getStartDate().equals(startDate));
+        Room editedRoom = room.checkout(bookingToReassign);
+        rooms.setRoom(room, editedRoom);
+
+        Room newRoom = rooms.getRoom(newRoomNumber);
+        Room editedNewRoom = newRoom.addBooking(bookingToReassign);
+        rooms.setRoom(newRoom, editedNewRoom);
     }
 
     /**
