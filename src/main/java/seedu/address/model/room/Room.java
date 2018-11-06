@@ -128,23 +128,19 @@ public class Room {
 
     /**
      * Checks out the first booking of this room.
-     * TODO: Future features to include exporting of receipt, setting room to housekeeping status for __x__ hours.
      */
     public Room checkout() {
         Booking firstBooking = bookings.getFirstBooking();
         return new Room(this.roomNumber, this.capacity, this.expenses, bookings.remove(firstBooking), this.tags);
-        // expenses.report(); // TODO: wait for WZ to implement
     }
 
     /**
      * Checks out the given booking
-     * TODO: Future features to include exporting of receipt, setting room to housekeeping status for __x__ hours.
      */
     public Room checkout(BookingPeriod bookingPeriod) {
         Booking bookingToCheckout = bookings
                 .getFirstBookingByPredicate(booking -> booking.getBookingPeriod().equals(bookingPeriod));
         return new Room(this.roomNumber, this.capacity, this.expenses, bookings.remove(bookingToCheckout), this.tags);
-        // expenses.report(); // TODO: wait for WZ to implement
     }
 
     //=========== Expenses operations =============================================================

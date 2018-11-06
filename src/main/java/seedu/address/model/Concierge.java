@@ -2,6 +2,7 @@ package seedu.address.model;
 
 import static java.util.Objects.requireNonNull;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -163,6 +164,17 @@ public class Concierge implements ReadOnlyConcierge {
      */
     public void setRooms(List<Room> rooms) {
         this.rooms.setRooms(rooms);
+    }
+
+    /**
+     * Reassigns the booking identified by {@code startDate} in the room identified by {@code roomNumber} to the room
+     * identified by {@code newRoomNumber}
+     */
+    public void reassignBooking(RoomNumber roomNumber, LocalDate startDate, RoomNumber newRoomNumber) {
+        Room room = rooms.getRoom(roomNumber);
+        Room newRoom = rooms.getRoom(newRoomNumber);
+        Booking bookingToReassign = room.getBookings()
+                .getFirstBookingByPredicate(booking -> booking.getBookingPeriod().getStartDate().equals(startDate));
     }
 
     /**
