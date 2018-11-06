@@ -145,7 +145,7 @@ Format: `edit [FLAG] [IDENTIFIERS] [NEW_VALUE]`
 ****
 
 [TIP]
-All new values must start with a prefix preceded by the character `n`. For example, new tag = `nt/`. 
+All new values must start with a prefix preceded by the character `n`. For example, new tag = `nt/`.
 
 Flags for possible fields to edit:
 
@@ -196,7 +196,7 @@ new email `popo@spf.com`, and new tag `vip`.
 Edits all guests with name `John` and phone number `123` in room 001 to have new name `Popo` and new phone `999`.
 
 * `edit -g n/John e/john@john.com ne/phua@phua.com` +
-Edits all guests with name `John` and email `john@john.com` in all rooms to have new email `phua@phua.com`. 
+Edits all guests with name `John` and email `john@john.com` in all rooms to have new email `phua@phua.com`.
 
 === Locating guests and rooms : `find`
 
