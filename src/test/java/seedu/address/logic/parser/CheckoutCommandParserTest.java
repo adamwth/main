@@ -7,6 +7,7 @@ import static seedu.address.logic.commands.CommandTestUtil.ROOM_DESC_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_DATE_START_AMY;
 import static seedu.address.logic.parser.CommandParserTestUtil.assertParseFailure;
 import static seedu.address.logic.parser.CommandParserTestUtil.assertParseSuccess;
+import static seedu.address.testutil.TypicalRoomNumbers.ROOM_NUMBER_AMY;
 
 import java.time.LocalDate;
 
@@ -15,11 +16,10 @@ import org.junit.Test;
 import seedu.address.logic.commands.CheckoutCommand;
 import seedu.address.model.room.RoomNumber;
 import seedu.address.model.room.booking.BookingPeriod;
-import seedu.address.testutil.TypicalRoomNumbers;
 
 /**
  * As we are only doing white-box testing, our test cases do not cover path variations
- * outside of the CheckoutCommand code. For example, inputs "1", "01" , and "0001" take the
+ * outside of the CheckoutCommand code. For example, inputs "r/1", "r/01" , and "r/0001" take the
  * same path through the CheckoutCommand, and therefore we test only one of
  * them. The path variation for those two cases occur inside the ParserUtil, and
  * therefore should be covered by the ParserUtilTest.
@@ -30,7 +30,7 @@ public class CheckoutCommandParserTest {
 
     @Test
     public void parse_validArgs_returnsCheckoutCommand() {
-        RoomNumber expectedRoomNumber = TypicalRoomNumbers.ROOM_NUMBER_AMY;
+        RoomNumber expectedRoomNumber = ROOM_NUMBER_AMY;
         LocalDate expectedStartDate = LocalDate.parse(VALID_DATE_START_AMY, BookingPeriod.STRING_TO_DATE_FORMAT);
         assertParseSuccess(parser, ROOM_DESC_AMY, new CheckoutCommand(expectedRoomNumber));
         assertParseSuccess(parser, ROOM_DESC_AMY + DATE_START_DESC_AMY,
@@ -43,8 +43,9 @@ public class CheckoutCommandParserTest {
         assertParseFailure(parser, "", String.format(MESSAGE_INVALID_COMMAND_FORMAT, CheckoutCommand.MESSAGE_USAGE));
 
         // invalid room numbers
-        assertParseFailure(parser, "1", String.format(MESSAGE_INVALID_COMMAND_FORMAT, CheckoutCommand.MESSAGE_USAGE));
-        assertParseFailure(parser, "01", String.format(MESSAGE_INVALID_COMMAND_FORMAT, CheckoutCommand.MESSAGE_USAGE));
+        assertParseFailure(parser, "r/1", String.format(MESSAGE_INVALID_COMMAND_FORMAT, CheckoutCommand.MESSAGE_USAGE));
+        assertParseFailure(parser, "r/01",
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT, CheckoutCommand.MESSAGE_USAGE));
 
         // missing room flag prefix
         assertParseFailure(parser, "001", String.format(MESSAGE_INVALID_COMMAND_FORMAT, CheckoutCommand.MESSAGE_USAGE));
@@ -62,11 +63,11 @@ public class CheckoutCommandParserTest {
                 String.format(MESSAGE_INVALID_COMMAND_FORMAT, CheckoutCommand.MESSAGE_USAGE));
 
         // invalid calendar dates (30 Feb does not exist)
-        assertParseFailure(parser, " r/001 from/30/02/18",
+        assertParseFailure(parser, ROOM_DESC_AMY + " from/30/02/18",
                 String.format(MESSAGE_INVALID_COMMAND_FORMAT, CheckoutCommand.MESSAGE_USAGE));
 
         // invalid date format (needs to be d/M/y)
-        assertParseFailure(parser, " r/001 from/2018/01/01",
+        assertParseFailure(parser, ROOM_DESC_AMY + " from/2018/01/01",
                 String.format(MESSAGE_INVALID_COMMAND_FORMAT, CheckoutCommand.MESSAGE_USAGE));
     }
 }
