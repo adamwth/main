@@ -3,6 +3,7 @@ package seedu.address.logic.parser;
 import static seedu.address.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.address.logic.commands.CommandTestUtil.DATE_END_DESC_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.DATE_START_DESC_AMY;
+import static seedu.address.logic.commands.CommandTestUtil.NEW_ROOM_DESC_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.ROOM_DESC_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.ROOM_DESC_BOB;
 import static seedu.address.logic.parser.CommandParserTestUtil.assertParseFailure;
@@ -34,7 +35,7 @@ public class ReassignCommandParserTest {
         RoomNumber expectedRoomNumber = ROOM_NUMBER_AMY;
         LocalDate expectedStartDate = BOOKING_PERIOD_AMY.getStartDate();
         RoomNumber expectedNewRoomNumber = TypicalRoomNumbers.ROOM_NUMBER_BOB;
-        assertParseSuccess(parser, ROOM_DESC_AMY + DATE_START_DESC_AMY + ROOM_DESC_BOB,
+        assertParseSuccess(parser, ROOM_DESC_AMY + DATE_START_DESC_AMY + NEW_ROOM_DESC_BOB,
                 new ReassignCommand(expectedRoomNumber, expectedStartDate, expectedNewRoomNumber));
     }
 
