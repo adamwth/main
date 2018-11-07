@@ -16,6 +16,7 @@ import seedu.address.model.room.Room;
 import seedu.address.model.room.RoomNumber;
 import seedu.address.model.room.UniqueRoomList;
 import seedu.address.model.room.booking.Booking;
+import seedu.address.model.room.exceptions.RoomAlreadyCheckedInException;
 import seedu.address.model.tag.Tag;
 
 /**
@@ -167,18 +168,27 @@ public class Concierge implements ReadOnlyConcierge {
 
     /**
      * Reassigns the booking identified by {@code startDate} in the room identified by {@code roomNumber} to the room
-     * identified by {@code newRoomNumber}
+     * identified by {@code newRoomNumber}. New room MUST NOT be checked-in.
+     * First, attempt to add booking to new room.
+     * Then, remove booking from old room.
+     * Note: if new room does not accept booking, old room's booking will not be removed.
+     * @throws RoomAlreadyCheckedInException    if the new room is already checked-in
      */
-    public void reassignBooking(RoomNumber roomNumber, LocalDate startDate, RoomNumber newRoomNumber) {
+    public void reassignRoom(RoomNumber roomNumber, LocalDate startDate, RoomNumber newRoomNumber) {
         Room room = rooms.getRoom(roomNumber);
         Booking bookingToReassign = room.getBookings()
                 .getFirstBookingByPredicate(booking -> booking.getBookingPeriod().getStartDate().equals(startDate));
-        Room editedRoom = room.checkout(bookingToReassign);
-        rooms.setRoom(room, editedRoom);
 
         Room newRoom = rooms.getRoom(newRoomNumber);
+        if (newRoom.isCheckedIn()) {
+            throw new RoomAlreadyCheckedInException();
+        }
+
         Room editedNewRoom = newRoom.addBooking(bookingToReassign);
         rooms.setRoom(newRoom, editedNewRoom);
+
+        Room editedRoom = room.checkout(bookingToReassign);
+        rooms.setRoom(room, editedRoom);
     }
 
     /**

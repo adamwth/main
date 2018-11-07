@@ -211,6 +211,13 @@ public class ModelManager extends ComponentManager implements Model {
     @Override
     public void addRoomTags(RoomNumber roomNumber, Tag... tags) {
         versionedConcierge.addRoomTags(roomNumber, tags);
+        indicateConciergeChanged();
+    }
+    
+    @Override
+    public void reassignRoom(RoomNumber roomNumber, LocalDate startDate, RoomNumber newRoomNumber) {
+        versionedConcierge.reassignRoom(roomNumber, startDate, newRoomNumber);
+        indicateConciergeChanged();
     }
 
     @Override

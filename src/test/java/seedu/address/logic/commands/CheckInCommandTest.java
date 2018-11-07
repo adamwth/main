@@ -53,7 +53,7 @@ public class CheckInCommandTest {
         RoomNumber roomNumberToCheckIn = TypicalRoomNumbers.ROOM_NUMBER_021;
         CheckInCommand checkInCommand = new CheckInCommand(roomNumberToCheckIn);
 
-        String expectedMessage = String.format(CheckInCommand.MESSAGE_INACTIVE_BOOKING_CHECKIN, roomNumberToCheckIn);
+        String expectedMessage = String.format(CheckInCommand.MESSAGE_INACTIVE_BOOKING_CHECK_IN, roomNumberToCheckIn);
 
         assertCommandFailure(checkInCommand, model, commandHistory, expectedMessage);
     }

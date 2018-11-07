@@ -128,6 +128,13 @@ public interface Model {
      */
     public void addRoomTags(RoomNumber roomNumber, Tag... tags);
 
+
+    /**
+     * Reassigns the booking identified by {@code startDate} in the room identified by {@code roomNumber} to the room
+     * identified by {@code newRoomNumber}
+     */
+    public void reassignRoom(RoomNumber roomNumber, LocalDate startDate, RoomNumber newRoomNumber);
+
     /**
      * Add a booking to a room identified by its room number.
      */

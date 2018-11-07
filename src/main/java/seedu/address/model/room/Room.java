@@ -153,6 +153,17 @@ public class Room {
     //=========== Boolean checkers =============================================================
 
     /**
+     * Returns true if the first booking of this room is checked-in.
+     */
+    public boolean isCheckedIn() {
+        try {
+            return bookings.getFirstBooking().getIsCheckedIn();
+        } catch (NoBookingException e) {
+            return false;
+        }
+    }
+
+    /**
      * Returns true if both rooms of the same name have the same room number.
      * This defines a weaker notion of equality between two rooms.
      */

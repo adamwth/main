@@ -214,6 +214,11 @@ public class ServiceCommandTest {
         public void addRoomTags(RoomNumber roomNumber, Tag... tags) {
             throw new AssertionError("This method should not be called.");
         }
+        
+        @Override
+        public void reassignRoom(RoomNumber roomNumber, LocalDate startDate, RoomNumber newRoomNumber) {
+            throw new AssertionError("This method should not be called.");
+        }
 
         @Override
         public boolean isSignedIn() {
