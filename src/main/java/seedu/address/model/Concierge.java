@@ -221,7 +221,7 @@ public class Concierge implements ReadOnlyConcierge {
         Room checkedInRoom = room.checkIn();
         rooms.setRoom(room, checkedInRoom);
 
-        // First active booking is guaranteed to be present after executing room.checkIn() above
+        // First booking is guaranteed to be present after executing room.checkIn() above
         Guest guestToCheckIn = checkedInRoom.getBookings().getFirstBooking().getGuest();
 
         addCheckedInGuestIfNotPresent(guestToCheckIn);
@@ -246,44 +246,34 @@ public class Concierge implements ReadOnlyConcierge {
     }
 
     /**
-     * Checks out the given booking from the given room
+     * Checks out the given booking from the given room.
+     * 
+     * If the booking's guest was checked-in (i.e. exists in the checked-in guest list), check:
+     * 1) If the guest does not have checked-in bookings in other rooms, remove him from the checked-in guest list.
+     * 2) If the guest exists in the archived guest list. add him to the archived guest list
+     * 
+     * Reason for initial check: Guests who did not check-in do not count as having stayed in the hotel before.
+     * Reason for 1): Guests can have multiple checked-in bookings at once.
+     * Reason for 2): Guests may have stayed in the hotel before, and would thus already be in the archived guest list.
      */
     private void checkoutRoom(Room room, Booking bookingToCheckout) {
         rooms.setRoom(room, room.checkout(bookingToCheckout));
 
         Guest guestToCheckout = bookingToCheckout.getGuest();
-        addGuestIfNotPresent(guestToCheckout);
-        removeCheckedInGuestIfNeeded(guestToCheckout);
-    }
 
-    /**
-     * Adds a guest to the archived guest list if he is not already in it.
-     * If the guest exists in the archived guest list, this block does nothing.
-     * This is expected because a guest may have stayed in the hotel before,
-     * so he would already be in the archived guest list.
-     */
-    private void addGuestIfNotPresent(Guest guest) {
-        if (hasGuest(guest)) {
-            return;
-        }
-        addGuest(guest);
-    }
+        if (hasCheckedInGuest(guestToCheckout)) {
+            boolean guestHasOtherBookings = rooms.asUnmodifiableObservableList()
+                    .stream().anyMatch(r -> r.getBookings().getSortedBookingsSet()
+                        .stream().anyMatch(b -> b.getIsCheckedIn() && b.getGuest().equals(guestToCheckout)));
+            if (!guestHasOtherBookings) {
+                removeCheckedInGuest(guestToCheckout);
+            }
 
-    /**
-     * Removes a guest from the checked-in guest list if needed.
-     * If the guest does not exist in the checked-in guest list (i.e. delete non-checked-in bookings), do nothing.
-     * This is allowed, because `checkout` can be used to remove any booking.
-     * If the guest still has checked-in bookings in other rooms, also do nothing.
-     * This is allowed, because a guest can have multiple checked-in bookings at once.
-     */
-    private void removeCheckedInGuestIfNeeded(Guest guest) {
-        if (!hasCheckedInGuest(guest)
-                || rooms.asUnmodifiableObservableList().stream()
-                    .anyMatch(r -> r.getBookings().getSortedBookingsSet().stream()
-                        .anyMatch(b -> b.getIsCheckedIn() && b.getGuest().equals(guest)))) {
-            return;
+            if (!hasGuest(guestToCheckout)) {
+                addGuest(guestToCheckout);
+            }
         }
-        removeCheckedInGuest(guest);
+
     }
 
     public void setMenu(Map<String, ExpenseType> menu) {

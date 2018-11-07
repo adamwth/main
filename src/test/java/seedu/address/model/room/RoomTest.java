@@ -5,6 +5,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_ROOM_NUMBER_BOB;
 import static seedu.address.logic.commands.CommandTestUtil.VALID_TAG_HANDICAP;
+import static seedu.address.testutil.Assert.assertThrows;
 import static seedu.address.testutil.TypicalBookings.LASTWEEK_YESTERDAY_CHECKED_IN;
 import static seedu.address.testutil.TypicalBookings.TOMORROW_NEXTWEEK;
 import static seedu.address.testutil.TypicalBookings.YESTERDAY_TODAY;
@@ -25,6 +26,7 @@ import seedu.address.model.room.booking.Booking;
 import seedu.address.model.room.booking.exceptions.ExpiredBookingException;
 import seedu.address.model.room.booking.exceptions.InactiveBookingCheckInException;
 import seedu.address.model.room.booking.exceptions.NoBookingException;
+import seedu.address.model.room.booking.exceptions.OverlappingBookingException;
 import seedu.address.model.room.booking.exceptions.RoomNotCheckedInException;
 import seedu.address.model.room.exceptions.BookingAlreadyCheckedInException;
 import seedu.address.testutil.ExpenseBuilder;
@@ -59,6 +61,9 @@ public class RoomTest {
         Booking bookingToAdd = testRoomWithTodayTomorrowBooking.getBookings().getFirstBooking();
         Room editedRoom = testRoomWithoutBooking.addBooking(bookingToAdd);
         assertEquals(testRoomWithTodayTomorrowBooking, editedRoom);
+
+        // add overlapping booking -> throw exception
+        assertThrows(OverlappingBookingException.class, () -> editedRoom.addBooking(bookingToAdd));
     }
 
     @Test
