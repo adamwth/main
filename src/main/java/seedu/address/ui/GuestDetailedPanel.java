@@ -67,4 +67,11 @@ public class GuestDetailedPanel extends UiPart<Region> {
         setGuestDetails(event.getNewSelection());
     }
 
+    /**
+     * Clears the items from this list view
+     */
+    public void clearSelection() {
+        guestDetailedView.getItems().clear();
+    }
+
 }

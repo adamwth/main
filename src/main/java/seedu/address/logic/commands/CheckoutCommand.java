@@ -7,6 +7,8 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_ROOM;
 import java.time.LocalDate;
 
 import seedu.address.commons.core.Messages;
+import seedu.address.commons.core.EventsCenter;
+import seedu.address.commons.events.ui.DeselectGuestListEvent;
 import seedu.address.logic.CommandHistory;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.logic.parser.ParserUtil;
@@ -61,8 +63,12 @@ public class CheckoutCommand extends Command {
             } else {
                 model.checkoutRoom(roomNumber, startDate);
             }
+
+            EventsCenter.getInstance().post(new DeselectGuestListEvent());
+
             model.commitConcierge();
             return new CommandResult(String.format(MESSAGE_CHECKOUT_ROOM_SUCCESS, roomNumber));
+
         } catch (NoBookingException e) {
             throw new CommandException(String.format(MESSAGE_NO_ROOM_BOOKING, roomNumber));
         } catch (BookingNotFoundException e) {
