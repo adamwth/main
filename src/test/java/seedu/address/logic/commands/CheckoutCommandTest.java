@@ -4,6 +4,15 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static seedu.address.logic.commands.CommandTestUtil.assertCommandFailure;
 import static seedu.address.logic.commands.CommandTestUtil.assertCommandSuccess;
+import static seedu.address.testutil.TypicalBookingPeriods.TODAY_TOMORROW;
+import static seedu.address.testutil.TypicalBookingPeriods.TOMORROW_NEXTWEEK;
+import static seedu.address.testutil.TypicalRoomNumbers.ROOM_NUMBER_001;
+import static seedu.address.testutil.TypicalRoomNumbers.ROOM_NUMBER_002;
+import static seedu.address.testutil.TypicalRoomNumbers.ROOM_NUMBER_010;
+import static seedu.address.testutil.TypicalRoomNumbers.ROOM_NUMBER_011;
+import static seedu.address.testutil.TypicalRoomNumbers.ROOM_NUMBER_012;
+import static seedu.address.testutil.TypicalRoomNumbers.ROOM_NUMBER_022;
+import static seedu.address.testutil.TypicalRoomNumbers.ROOM_NUMBER_031;
 
 import java.time.LocalDate;
 
@@ -15,9 +24,7 @@ import seedu.address.model.Model;
 import seedu.address.model.ModelManager;
 import seedu.address.model.UserPrefs;
 import seedu.address.model.room.RoomNumber;
-import seedu.address.testutil.TypicalBookingPeriods;
 import seedu.address.testutil.TypicalConcierge;
-import seedu.address.testutil.TypicalRoomNumbers;
 
 /**
  * Contains integration tests (interaction with the Model, UndoCommand and RedoCommand) and unit tests for
@@ -30,7 +37,7 @@ public class CheckoutCommandTest {
 
     @Test
     public void execute_validCheckoutExpiredBookingLastweekYesterday_success() {
-        RoomNumber roomNumberToCheckout = TypicalRoomNumbers.ROOM_NUMBER_001;
+        RoomNumber roomNumberToCheckout = ROOM_NUMBER_001;
         CheckoutCommand checkoutCommand = new CheckoutCommand(roomNumberToCheckout);
 
         String expectedMessage = String.format(CheckoutCommand.MESSAGE_CHECKOUT_ROOM_SUCCESS, roomNumberToCheckout);
@@ -44,7 +51,7 @@ public class CheckoutCommandTest {
 
     @Test
     public void execute_validCheckoutBookingNotCheckedIn_success() {
-        RoomNumber roomNumberToCheckout = TypicalRoomNumbers.ROOM_NUMBER_011;
+        RoomNumber roomNumberToCheckout = ROOM_NUMBER_011;
         CheckoutCommand checkoutCommand = new CheckoutCommand(roomNumberToCheckout);
 
         String expectedMessage = String.format(CheckoutCommand.MESSAGE_CHECKOUT_ROOM_SUCCESS, roomNumberToCheckout);
@@ -58,7 +65,7 @@ public class CheckoutCommandTest {
 
     @Test
     public void execute_validCheckoutBookingCheckedIn_success() {
-        RoomNumber roomNumberToCheckout = TypicalRoomNumbers.ROOM_NUMBER_012;
+        RoomNumber roomNumberToCheckout = ROOM_NUMBER_012;
         CheckoutCommand checkoutCommand = new CheckoutCommand(roomNumberToCheckout);
 
         String expectedMessage = String.format(CheckoutCommand.MESSAGE_CHECKOUT_ROOM_SUCCESS, roomNumberToCheckout);
@@ -72,8 +79,8 @@ public class CheckoutCommandTest {
 
     @Test
     public void execute_validCheckoutBookingPeriod_success() {
-        RoomNumber roomNumberToCheckout = TypicalRoomNumbers.ROOM_NUMBER_022;
-        LocalDate startDate = TypicalBookingPeriods.TOMORROW_NEXTWEEK.getStartDate();
+        RoomNumber roomNumberToCheckout = ROOM_NUMBER_022;
+        LocalDate startDate = TOMORROW_NEXTWEEK.getStartDate();
         CheckoutCommand checkoutCommand = new CheckoutCommand(roomNumberToCheckout, startDate);
 
         String expectedMessage = String.format(CheckoutCommand.MESSAGE_CHECKOUT_ROOM_SUCCESS, roomNumberToCheckout);
@@ -88,8 +95,8 @@ public class CheckoutCommandTest {
 
     @Test
     public void execute_invalidCheckoutBookingPeriod_throwsCommandException() {
-        RoomNumber roomNumberToCheckout = TypicalRoomNumbers.ROOM_NUMBER_010;
-        LocalDate startDate = TypicalBookingPeriods.TODAY_TOMORROW.getStartDate();
+        RoomNumber roomNumberToCheckout = ROOM_NUMBER_010;
+        LocalDate startDate = TODAY_TOMORROW.getStartDate();
         CheckoutCommand checkoutCommand = new CheckoutCommand(roomNumberToCheckout, startDate);
 
         String expectedMessage = String.format(CheckoutCommand.MESSAGE_BOOKING_NOT_FOUND,
@@ -101,7 +108,7 @@ public class CheckoutCommandTest {
 
     @Test
     public void execute_invalidCheckoutNoBooking_throwsCommandException() {
-        RoomNumber roomNumberToCheckout = TypicalRoomNumbers.ROOM_NUMBER_031;
+        RoomNumber roomNumberToCheckout = ROOM_NUMBER_031;
         CheckoutCommand checkoutCommand = new CheckoutCommand(roomNumberToCheckout);
 
         String expectedMessage = String.format(CheckoutCommand.MESSAGE_NO_ROOM_BOOKING, roomNumberToCheckout);
@@ -111,8 +118,8 @@ public class CheckoutCommandTest {
 
     @Test
     public void executeUndoRedo_validCheckout_success() throws Exception {
-        RoomNumber roomNumberToCheckout = TypicalRoomNumbers.ROOM_NUMBER_022;
-        LocalDate startDate = TypicalBookingPeriods.TOMORROW_NEXTWEEK.getStartDate();
+        RoomNumber roomNumberToCheckout = ROOM_NUMBER_022;
+        LocalDate startDate = TOMORROW_NEXTWEEK.getStartDate();
         CheckoutCommand checkoutCommand = new CheckoutCommand(roomNumberToCheckout, startDate);
 
         Model expectedModel = new ModelManager(model.getConcierge(), new UserPrefs());
@@ -133,8 +140,8 @@ public class CheckoutCommandTest {
 
     @Test
     public void executeUndoRedo_invalidCheckout_failure() {
-        RoomNumber roomNumberToCheckout = TypicalRoomNumbers.ROOM_NUMBER_010;
-        LocalDate startDate = TypicalBookingPeriods.TODAY_TOMORROW.getStartDate();
+        RoomNumber roomNumberToCheckout = ROOM_NUMBER_010;
+        LocalDate startDate = TODAY_TOMORROW.getStartDate();
         CheckoutCommand checkoutCommand = new CheckoutCommand(roomNumberToCheckout, startDate);
 
         String expectedMessage = String.format(CheckoutCommand.MESSAGE_BOOKING_NOT_FOUND,
@@ -149,14 +156,14 @@ public class CheckoutCommandTest {
 
     @Test
     public void equals() {
-        CheckoutCommand checkoutFirstCommand = new CheckoutCommand(TypicalRoomNumbers.ROOM_NUMBER_001);
-        CheckoutCommand checkoutSecondCommand = new CheckoutCommand(TypicalRoomNumbers.ROOM_NUMBER_002);
+        CheckoutCommand checkoutFirstCommand = new CheckoutCommand(ROOM_NUMBER_001);
+        CheckoutCommand checkoutSecondCommand = new CheckoutCommand(ROOM_NUMBER_002);
 
         // same object -> returns true
         assertTrue(checkoutFirstCommand.equals(checkoutFirstCommand));
 
         // same values -> returns true
-        CheckoutCommand checkoutFirstCommandCopy = new CheckoutCommand(TypicalRoomNumbers.ROOM_NUMBER_001);
+        CheckoutCommand checkoutFirstCommandCopy = new CheckoutCommand(ROOM_NUMBER_001);
         assertTrue(checkoutFirstCommand.equals(checkoutFirstCommandCopy));
 
         // different types -> returns false

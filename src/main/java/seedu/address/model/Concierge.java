@@ -184,7 +184,7 @@ public class Concierge implements ReadOnlyConcierge {
 
         Booking bookingToReassign = room.getBookings()
                 .getFirstBookingByPredicate(booking -> booking.getBookingPeriod().getStartDate().equals(startDate));
-        
+
         if (bookingToReassign.isExpired()) {
             throw new ExpiredBookingException();
         }

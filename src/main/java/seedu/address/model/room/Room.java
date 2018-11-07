@@ -158,7 +158,7 @@ public class Room {
     public boolean hasBookings() {
         return !bookings.getSortedBookingsSet().isEmpty();
     }
-    
+
     /**
      * Returns true if both rooms of the same name have the same room number.
      * This defines a weaker notion of equality between two rooms.
