@@ -16,7 +16,9 @@ import seedu.address.model.room.Room;
 import seedu.address.model.room.RoomNumber;
 import seedu.address.model.room.UniqueRoomList;
 import seedu.address.model.room.booking.Booking;
-import seedu.address.model.room.exceptions.RoomAlreadyCheckedInException;
+import seedu.address.model.room.booking.exceptions.ExpiredBookingException;
+import seedu.address.model.room.exceptions.CheckedInRoomReassignException;
+import seedu.address.model.room.exceptions.OriginalRoomReassignException;
 import seedu.address.model.tag.Tag;
 
 /**
@@ -168,20 +170,31 @@ public class Concierge implements ReadOnlyConcierge {
 
     /**
      * Reassigns the booking identified by {@code startDate} in the room identified by {@code roomNumber} to the room
-     * identified by {@code newRoomNumber}. New room MUST NOT be checked-in.
-     * First, attempt to add booking to new room.
-     * Then, remove booking from old room.
-     * Note: if new room does not accept booking, old room's booking will not be removed.
-     * @throws RoomAlreadyCheckedInException    if the new room is already checked-in
+     * identified by {@code newRoomNumber}.<br>
+     * The following checks are conducted in succession:<br>
+     * If the booking does not exist, throw NoBookingFoundException.<br>
+     * If the booking is expired, throw ExpiredBookingException.<br>
+     * If room and new room are equal, throw OriginalRoomReassignException.<br>
+     * If new room has bookings and its first booking is already checked-in, throw CheckedInRoomReassignException.<br>
+     * If the booking overlaps with any of new room's bookings, throw OverlappingBookingException.
      */
     public void reassignRoom(RoomNumber roomNumber, LocalDate startDate, RoomNumber newRoomNumber) {
         Room room = rooms.getRoom(roomNumber);
+        Room newRoom = rooms.getRoom(newRoomNumber);
+
         Booking bookingToReassign = room.getBookings()
                 .getFirstBookingByPredicate(booking -> booking.getBookingPeriod().getStartDate().equals(startDate));
+        
+        if (bookingToReassign.isExpired()) {
+            throw new ExpiredBookingException();
+        }
 
-        Room newRoom = rooms.getRoom(newRoomNumber);
-        if (newRoom.isCheckedIn()) {
-            throw new RoomAlreadyCheckedInException();
+        if (room.equals(newRoom)) {
+            throw new OriginalRoomReassignException();
+        }
+
+        if (newRoom.hasBookings() && newRoom.getBookings().getFirstBooking().getIsCheckedIn()) {
+            throw new CheckedInRoomReassignException();
         }
 
         Room editedNewRoom = newRoom.addBooking(bookingToReassign);

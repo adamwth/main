@@ -8,7 +8,7 @@ import seedu.address.logic.CommandHistory;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.model.Model;
 import seedu.address.model.room.RoomNumber;
-import seedu.address.model.room.booking.exceptions.ExpiredBookingCheckInException;
+import seedu.address.model.room.booking.exceptions.ExpiredBookingException;
 import seedu.address.model.room.booking.exceptions.InactiveBookingCheckInException;
 import seedu.address.model.room.booking.exceptions.NoBookingException;
 import seedu.address.model.room.exceptions.BookingAlreadyCheckedInException;
@@ -51,7 +51,7 @@ public class CheckInCommand extends Command {
             return new CommandResult(String.format(MESSAGE_CHECKIN_ROOM_SUCCESS, roomNumber));
         } catch (NoBookingException e) {
             throw new CommandException(String.format(MESSAGE_NO_BOOKING_CHECK_IN, roomNumber));
-        } catch (ExpiredBookingCheckInException e) {
+        } catch (ExpiredBookingException e) {
             throw new CommandException(String.format(MESSAGE_EXPIRED_BOOKING_CHECK_IN, roomNumber));
         } catch (InactiveBookingCheckInException e) {
             throw new CommandException(String.format(MESSAGE_INACTIVE_BOOKING_CHECK_IN, roomNumber));

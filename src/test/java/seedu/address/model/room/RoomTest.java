@@ -14,7 +14,7 @@ import org.junit.rules.ExpectedException;
 
 import seedu.address.model.expenses.Expense;
 import seedu.address.model.room.booking.Booking;
-import seedu.address.model.room.booking.exceptions.ExpiredBookingCheckInException;
+import seedu.address.model.room.booking.exceptions.ExpiredBookingException;
 import seedu.address.model.room.booking.exceptions.InactiveBookingCheckInException;
 import seedu.address.model.room.booking.exceptions.NoBookingException;
 import seedu.address.model.room.booking.exceptions.RoomNotCheckedInException;
@@ -56,7 +56,7 @@ public class RoomTest {
 
     @Test
     public void checkIn_expiredBooking_throwsNoActiveBookingException() {
-        thrown.expect(ExpiredBookingCheckInException.class);
+        thrown.expect(ExpiredBookingException.class);
         testRoomWithLastWeekYesterdayBooking.checkIn();
     }
 

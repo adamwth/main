@@ -12,7 +12,7 @@ import seedu.address.model.expenses.Expense;
 import seedu.address.model.expenses.Expenses;
 import seedu.address.model.room.booking.Booking;
 import seedu.address.model.room.booking.Bookings;
-import seedu.address.model.room.booking.exceptions.ExpiredBookingCheckInException;
+import seedu.address.model.room.booking.exceptions.ExpiredBookingException;
 import seedu.address.model.room.booking.exceptions.InactiveBookingCheckInException;
 import seedu.address.model.room.booking.exceptions.NoBookingException;
 import seedu.address.model.room.booking.exceptions.RoomNotCheckedInException;
@@ -114,7 +114,7 @@ public class Room {
     public Room checkIn() {
         Booking firstBooking = bookings.getFirstBooking();
         if (firstBooking.isExpired()) {
-            throw new ExpiredBookingCheckInException();
+            throw new ExpiredBookingException();
         }
         if (!firstBooking.isActive()) {
             throw new InactiveBookingCheckInException();
@@ -153,16 +153,12 @@ public class Room {
     //=========== Boolean checkers =============================================================
 
     /**
-     * Returns true if the first booking of this room is checked-in.
+     * Returns true if this room has bookings
      */
-    public boolean isCheckedIn() {
-        try {
-            return bookings.getFirstBooking().getIsCheckedIn();
-        } catch (NoBookingException e) {
-            return false;
-        }
+    public boolean hasBookings() {
+        return !bookings.getSortedBookingsSet().isEmpty();
     }
-
+    
     /**
      * Returns true if both rooms of the same name have the same room number.
      * This defines a weaker notion of equality between two rooms.
