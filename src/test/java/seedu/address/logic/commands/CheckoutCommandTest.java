@@ -10,6 +10,7 @@ import java.time.LocalDate;
 import org.junit.Test;
 
 import seedu.address.logic.CommandHistory;
+import seedu.address.logic.parser.ParserUtil;
 import seedu.address.model.Model;
 import seedu.address.model.ModelManager;
 import seedu.address.model.UserPrefs;
@@ -92,7 +93,7 @@ public class CheckoutCommandTest {
         CheckoutCommand checkoutCommand = new CheckoutCommand(roomNumberToCheckout, startDate);
 
         String expectedMessage = String.format(CheckoutCommand.MESSAGE_BOOKING_NOT_FOUND,
-                roomNumberToCheckout, startDate);
+                roomNumberToCheckout, ParserUtil.parseDateToString(startDate));
 
         assertCommandFailure(checkoutCommand, model, commandHistory, expectedMessage);
     }
@@ -137,7 +138,7 @@ public class CheckoutCommandTest {
         CheckoutCommand checkoutCommand = new CheckoutCommand(roomNumberToCheckout, startDate);
 
         String expectedMessage = String.format(CheckoutCommand.MESSAGE_BOOKING_NOT_FOUND,
-                roomNumberToCheckout, startDate);
+                roomNumberToCheckout, ParserUtil.parseDateToString(startDate));
 
         assertCommandFailure(checkoutCommand, model, commandHistory, expectedMessage);
 

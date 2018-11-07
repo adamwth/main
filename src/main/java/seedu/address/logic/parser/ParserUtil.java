@@ -150,7 +150,7 @@ public class ParserUtil {
      * Leading and trailing whitespaces will be trimmed.
      * @throws ParseException if {@code date} is invalid
      */
-    public static LocalDate parseLocalDate(String date) throws ParseException {
+    public static LocalDate parseDate(String date) throws ParseException {
         requireNonNull(date);
         String trimmedDate = date.trim();
         try {
@@ -158,6 +158,15 @@ public class ParserUtil {
         } catch (DateTimeException e) {
             throw new ParseException(Messages.MESSAGE_INVALID_DATE);
         }
+    }
+
+    /**
+     * Parses a {@code date} into {@code String}
+     * @throws ParseException if {@code date} is invalid
+     */
+    public static String parseDateToString(LocalDate date) {
+        requireNonNull(date);
+        return date.format(BookingPeriod.DATE_TO_STRING_FORMAT);
     }
 
     /**

@@ -9,9 +9,9 @@ import java.time.LocalDate;
 import seedu.address.commons.core.Messages;
 import seedu.address.logic.CommandHistory;
 import seedu.address.logic.commands.exceptions.CommandException;
+import seedu.address.logic.parser.ParserUtil;
 import seedu.address.model.Model;
 import seedu.address.model.room.RoomNumber;
-import seedu.address.model.room.booking.BookingPeriod;
 import seedu.address.model.room.booking.exceptions.BookingNotFoundException;
 import seedu.address.model.room.booking.exceptions.NoBookingException;
 
@@ -67,7 +67,7 @@ public class CheckoutCommand extends Command {
             throw new CommandException(String.format(MESSAGE_NO_ROOM_BOOKING, roomNumber));
         } catch (BookingNotFoundException e) {
             throw new CommandException(String.format(MESSAGE_BOOKING_NOT_FOUND, roomNumber,
-                    startDate.format(BookingPeriod.DATE_TO_STRING_FORMAT)));
+                    ParserUtil.parseDateToString(startDate)));
         }
     }
 

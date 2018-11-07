@@ -1,21 +1,21 @@
 package seedu.address.logic.commands;
 
-import seedu.address.commons.core.Messages;
-import seedu.address.logic.CommandHistory;
-import seedu.address.logic.commands.exceptions.CommandException;
-import seedu.address.model.Model;
-import seedu.address.model.room.RoomNumber;
-import seedu.address.model.room.booking.BookingPeriod;
-import seedu.address.model.room.booking.exceptions.BookingNotFoundException;
-import seedu.address.model.room.booking.exceptions.OverlappingBookingException;
-import seedu.address.model.room.exceptions.RoomAlreadyCheckedInException;
-
-import java.time.LocalDate;
-
 import static java.util.Objects.requireNonNull;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_DATE_START;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NEW_ROOM;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ROOM;
+
+import java.time.LocalDate;
+
+import seedu.address.commons.core.Messages;
+import seedu.address.logic.CommandHistory;
+import seedu.address.logic.commands.exceptions.CommandException;
+import seedu.address.logic.parser.ParserUtil;
+import seedu.address.model.Model;
+import seedu.address.model.room.RoomNumber;
+import seedu.address.model.room.booking.exceptions.BookingNotFoundException;
+import seedu.address.model.room.booking.exceptions.OverlappingBookingException;
+import seedu.address.model.room.exceptions.RoomAlreadyCheckedInException;
 
 /**
  * Reassigns a room's booking to another room.
@@ -59,12 +59,12 @@ public class ReassignCommand extends Command {
     @Override
     public CommandResult execute(Model model, CommandHistory history) throws CommandException {
         requireNonNull(model);
-        
+
         try {
             model.reassignRoom(roomNumber, startDate, newRoomNumber);
             model.commitConcierge();
             return new CommandResult(String.format(MESSAGE_REASSIGN_SUCCESS,
-                startDate.format(BookingPeriod.DATE_TO_STRING_FORMAT), roomNumber, newRoomNumber));
+                    ParserUtil.parseDateToString(startDate), roomNumber, newRoomNumber));
 
         } catch (BookingNotFoundException e) {
             throw new CommandException(String.format(MESSAGE_BOOKING_NOT_FOUND, roomNumber, startDate));

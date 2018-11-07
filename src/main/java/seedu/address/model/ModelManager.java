@@ -213,7 +213,7 @@ public class ModelManager extends ComponentManager implements Model {
         versionedConcierge.addRoomTags(roomNumber, tags);
         indicateConciergeChanged();
     }
-    
+
     @Override
     public void reassignRoom(RoomNumber roomNumber, LocalDate startDate, RoomNumber newRoomNumber) {
         versionedConcierge.reassignRoom(roomNumber, startDate, newRoomNumber);

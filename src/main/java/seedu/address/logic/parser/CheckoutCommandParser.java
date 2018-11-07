@@ -32,7 +32,7 @@ public class CheckoutCommandParser implements Parser<CheckoutCommand> {
             RoomNumber roomNumber = ParserUtil.parseRoomNumber(argMultimap.getValue(PREFIX_ROOM).get());
             Optional<String> optionalStartDate = argMultimap.getValue(PREFIX_DATE_START);
             if (optionalStartDate.isPresent()) {
-                LocalDate startDate = ParserUtil.parseLocalDate(optionalStartDate.get());
+                LocalDate startDate = ParserUtil.parseDate(optionalStartDate.get());
                 return new CheckoutCommand(roomNumber, startDate);
             }
             return new CheckoutCommand(roomNumber);

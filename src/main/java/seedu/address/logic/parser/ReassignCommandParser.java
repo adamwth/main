@@ -1,17 +1,16 @@
 package seedu.address.logic.parser;
 
-import seedu.address.logic.commands.CheckInCommand;
-import seedu.address.logic.commands.ReassignCommand;
-import seedu.address.logic.parser.exceptions.ParseException;
-import seedu.address.model.room.RoomNumber;
-
-import java.time.LocalDate;
-
 import static java.util.Objects.requireNonNull;
 import static seedu.address.commons.core.Messages.MESSAGE_INVALID_COMMAND_FORMAT;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_DATE_START;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NEW_ROOM;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ROOM;
+
+import java.time.LocalDate;
+
+import seedu.address.logic.commands.ReassignCommand;
+import seedu.address.logic.parser.exceptions.ParseException;
+import seedu.address.model.room.RoomNumber;
 
 /**
  * Parses input arguments and creates a new ReassignCommand object
@@ -33,7 +32,7 @@ public class ReassignCommandParser implements Parser<ReassignCommand> {
         }
         try {
             RoomNumber roomNumber = ParserUtil.parseRoomNumber(argMultimap.getValue(PREFIX_ROOM).get());
-            LocalDate startDate = ParserUtil.parseLocalDate(argMultimap.getValue(PREFIX_DATE_START).get());
+            LocalDate startDate = ParserUtil.parseDate(argMultimap.getValue(PREFIX_DATE_START).get());
             RoomNumber newRoomNumber = ParserUtil.parseRoomNumber(argMultimap.getValue(PREFIX_NEW_ROOM).get());
             return new ReassignCommand(roomNumber, startDate, newRoomNumber);
         } catch (ParseException pe) {
