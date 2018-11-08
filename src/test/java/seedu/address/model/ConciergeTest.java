@@ -42,11 +42,12 @@ import seedu.address.model.room.RoomNumber;
 import seedu.address.model.room.booking.Booking;
 import seedu.address.model.room.booking.exceptions.BookingNotFoundException;
 import seedu.address.model.room.booking.exceptions.ExpiredBookingException;
+import seedu.address.model.room.booking.exceptions.NewBookingStartsBeforeOldBookingCheckedIn;
 import seedu.address.model.room.booking.exceptions.NoBookingException;
+import seedu.address.model.room.booking.exceptions.OldBookingStartsBeforeNewBookingCheckedIn;
 import seedu.address.model.room.booking.exceptions.OverlappingBookingException;
 import seedu.address.model.room.booking.exceptions.RoomNotCheckedInException;
 import seedu.address.model.room.exceptions.OriginalRoomReassignException;
-import seedu.address.model.room.booking.exceptions.OldBookingStartsBeforeNewBookingCheckedIn;
 import seedu.address.testutil.GuestBuilder;
 
 public class ConciergeTest {
@@ -192,6 +193,11 @@ public class ConciergeTest {
     }
 
     @Test
+    public void checkout_noBooking_throwNoBookingException() {
+        assertThrows(NoBookingException.class, () -> concierge.checkoutRoom(ROOM_NUMBER_050));
+    }
+
+    @Test
     public void checkout_guestNotCheckedIn_bothGuestListsNotModified() {
         RoomNumber roomNumber = ROOM_NUMBER_050;
         Booking booking = TODAY_TOMORROW;
@@ -267,6 +273,20 @@ public class ConciergeTest {
     }
 
     @Test
+    public void reassignRoom_newRoomSameAsOriginal_throwOriginalRoomReassignException() {
+        RoomNumber roomNumber = ROOM_NUMBER_050;
+        Booking booking = TODAY_TOMORROW;
+        concierge.addBooking(roomNumber, booking);
+
+        RoomNumber newRoomNumber = ROOM_NUMBER_050;
+        LocalDate startDate = booking.getBookingPeriod().getStartDate();
+
+        assertThrows(
+            OriginalRoomReassignException.class, () ->
+                concierge.reassignRoom(roomNumber, startDate, newRoomNumber));
+    }
+
+    @Test
     public void reassignRoom_nonExistentBooking_throwBookingNotFoundException() {
         RoomNumber roomNumber = ROOM_NUMBER_050;
         Booking booking = TODAY_TOMORROW;
@@ -296,38 +316,6 @@ public class ConciergeTest {
     }
 
     @Test
-    public void reassignRoom_newRoomSameAsOriginal_throwOriginalRoomReassignException() {
-        RoomNumber roomNumber = ROOM_NUMBER_050;
-        Booking booking = TODAY_TOMORROW;
-        concierge.addBooking(roomNumber, booking);
-
-        RoomNumber newRoomNumber = ROOM_NUMBER_050;
-        LocalDate startDate = booking.getBookingPeriod().getStartDate();
-
-        assertThrows(
-                OriginalRoomReassignException.class, () ->
-                concierge.reassignRoom(roomNumber, startDate, newRoomNumber));
-    }
-
-    @Test
-    public void reassignRoom_newRoomCheckedIn_throwReassignToCheckedInRoomException() {
-        RoomNumber roomNumber = ROOM_NUMBER_050;
-        Booking booking = TODAY_TOMORROW;
-        concierge.addBooking(roomNumber, booking);
-
-        RoomNumber newRoomNumber = ROOM_NUMBER_051;
-        Booking newRoomBooking = YESTERDAY_TODAY;
-        concierge.addBooking(newRoomNumber, newRoomBooking);
-        concierge.checkInRoom(newRoomNumber);
-
-        LocalDate startDate = booking.getBookingPeriod().getStartDate();
-
-        assertThrows(
-                OldBookingStartsBeforeNewBookingCheckedIn.class, () ->
-                concierge.reassignRoom(roomNumber, startDate, newRoomNumber));
-    }
-
-    @Test
     public void reassignRoom_overlappingBooking_throwOverlappingBookingException() {
         RoomNumber roomNumber = ROOM_NUMBER_050;
         Booking booking = TODAY_TOMORROW;
@@ -341,6 +329,43 @@ public class ConciergeTest {
 
         assertThrows(
                 OverlappingBookingException.class, () ->
+                concierge.reassignRoom(roomNumber, startDate, newRoomNumber));
+    }
+
+    @Test
+    public void reassignRoom_newBookingCheckedIn_throwOldBookingStartsBeforeNewBookingCheckedIn() {
+        RoomNumber roomNumber = ROOM_NUMBER_050;
+        Booking booking = YESTERDAY_TODAY;
+        concierge.addBooking(roomNumber, booking);
+
+        RoomNumber newRoomNumber = ROOM_NUMBER_051;
+        Booking newRoomBooking = TODAY_TOMORROW;
+        concierge.addBooking(newRoomNumber, newRoomBooking);
+        concierge.checkInRoom(newRoomNumber);
+
+        LocalDate startDate = booking.getBookingPeriod().getStartDate();
+
+        assertThrows(
+                OldBookingStartsBeforeNewBookingCheckedIn.class, () ->
+                concierge.reassignRoom(roomNumber, startDate, newRoomNumber));
+    }
+
+    @Test
+    public void reassignRoom_oldBookingCheckedIn_throwNewBookingStartsBeforeOldBookingCheckedIn() {
+        RoomNumber roomNumber = ROOM_NUMBER_050;
+        Booking booking = TODAY_TOMORROW;
+        concierge.addBooking(roomNumber, booking);
+        concierge.checkInRoom(roomNumber);
+
+        RoomNumber newRoomNumber = ROOM_NUMBER_051;
+        Booking newRoomBooking = YESTERDAY_TODAY;
+        concierge.addBooking(newRoomNumber, newRoomBooking);
+        concierge.checkInRoom(newRoomNumber);
+
+        LocalDate startDate = booking.getBookingPeriod().getStartDate();
+
+        assertThrows(
+                NewBookingStartsBeforeOldBookingCheckedIn.class, () ->
                 concierge.reassignRoom(roomNumber, startDate, newRoomNumber));
     }
 
@@ -364,6 +389,48 @@ public class ConciergeTest {
         concierge.reassignRoom(newRoomNumber, startDate, emptyRoom);
 
         assertTrue(getRoom(emptyRoom).getBookings().contains(booking));
+    }
+
+    @Test
+    public void reassignRoom_oldBookingCheckedIn_successExpensesCarriedOver() {
+        RoomNumber roomNumber = ROOM_NUMBER_050;
+        Booking booking = TODAY_TOMORROW;
+        concierge.addBooking(roomNumber, booking);
+        concierge.checkInRoom(roomNumber);
+        concierge.addExpense(roomNumber, EXPENSE_RS01);
+
+        RoomNumber newRoomNumber = ROOM_NUMBER_051;
+        Booking newRoomBooking = TOMORROW_NEXTWEEK;
+        concierge.addBooking(newRoomNumber, newRoomBooking);
+
+        LocalDate startDate = booking.getBookingPeriod().getStartDate();
+        concierge.reassignRoom(roomNumber, startDate, newRoomNumber);
+
+        assertFalse(getRoom(roomNumber).getBookings().contains(booking));
+
+        Booking checkedInBooking = booking.checkIn();
+        assertTrue(getRoom(newRoomNumber).getBookings().contains(checkedInBooking));
+        assertTrue(getRoom(newRoomNumber).getExpenses().getExpensesList().contains(EXPENSE_RS01));
+    }
+
+    @Test
+    public void reassignRoom_newBookingCheckedIn_successExpensesNotCarriedOver() {
+        RoomNumber roomNumber = ROOM_NUMBER_050;
+        Booking booking = TOMORROW_NEXTWEEK;
+        concierge.addBooking(roomNumber, booking);
+
+        RoomNumber newRoomNumber = ROOM_NUMBER_051;
+        Booking newRoomBooking = TODAY_TOMORROW;
+        concierge.addBooking(newRoomNumber, newRoomBooking);
+        concierge.checkInRoom(newRoomNumber);
+        concierge.addExpense(newRoomNumber, EXPENSE_RS01);
+
+        LocalDate startDate = booking.getBookingPeriod().getStartDate();
+        concierge.reassignRoom(roomNumber, startDate, newRoomNumber);
+
+        assertFalse(getRoom(roomNumber).getBookings().contains(booking));
+        assertTrue(getRoom(newRoomNumber).getBookings().contains(booking));
+        assertEquals(Arrays.asList(EXPENSE_RS01), getRoom(newRoomNumber).getExpenses().getExpensesList());
     }
 
     /*===================== Menu Test =========================================================== */

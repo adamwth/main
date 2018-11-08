@@ -16,8 +16,8 @@ import seedu.address.model.room.RoomNumber;
 import seedu.address.model.room.booking.exceptions.BookingNotFoundException;
 import seedu.address.model.room.booking.exceptions.ExpiredBookingException;
 import seedu.address.model.room.booking.exceptions.NewBookingStartsBeforeOldBookingCheckedIn;
-import seedu.address.model.room.booking.exceptions.OverlappingBookingException;
 import seedu.address.model.room.booking.exceptions.OldBookingStartsBeforeNewBookingCheckedIn;
+import seedu.address.model.room.booking.exceptions.OverlappingBookingException;
 import seedu.address.model.room.exceptions.OriginalRoomReassignException;
 
 /**
@@ -51,11 +51,11 @@ public class ReassignCommand extends Command {
     public static final String MESSAGE_OVERLAPPING_BOOKING =
             "Cannot reassign booking, because it overlaps with another booking in room %s.";
     public static final String MESSAGE_BOOKING_STARTS_BEFORE_NEW_BOOKING_CHECKED_IN =
-            "Cannot reassign booking, because it starts before new room's booking " +
-                "and new room's booking is already checked-in.";
+            "Cannot reassign booking, because this booking starts before new room's booking "
+                + "and new room's booking is already checked-in.";
     public static final String MESSAGE_NEW_BOOKING_STARTS_BEFORE_BOOKING_CHECKED_IN =
-            "Cannot reassign booking, because the new room's booking starts before it " +
-                "and it is already checked-in.";
+            "Cannot reassign booking, because the new room's booking starts before this booking "
+                + "and this booking is already checked-in.";
 
     private final RoomNumber roomNumber;
     private final LocalDate startDate;

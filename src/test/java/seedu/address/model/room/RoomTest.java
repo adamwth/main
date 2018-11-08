@@ -7,6 +7,7 @@ import static seedu.address.logic.commands.CommandTestUtil.VALID_ROOM_NUMBER_BOB
 import static seedu.address.logic.commands.CommandTestUtil.VALID_TAG_HANDICAP;
 import static seedu.address.testutil.Assert.assertThrows;
 import static seedu.address.testutil.TypicalBookings.LASTWEEK_YESTERDAY_CHECKED_IN;
+import static seedu.address.testutil.TypicalBookings.TODAY_TOMORROW;
 import static seedu.address.testutil.TypicalBookings.TOMORROW_NEXTWEEK;
 import static seedu.address.testutil.TypicalBookings.YESTERDAY_TODAY;
 import static seedu.address.testutil.TypicalBookings.getTypicalBookingsLastWeekYesterday;
@@ -23,12 +24,13 @@ import org.junit.rules.ExpectedException;
 
 import seedu.address.model.expenses.Expense;
 import seedu.address.model.room.booking.Booking;
+import seedu.address.model.room.booking.exceptions.BookingAlreadyCheckedInException;
+import seedu.address.model.room.booking.exceptions.BookingNotFoundException;
 import seedu.address.model.room.booking.exceptions.ExpiredBookingException;
 import seedu.address.model.room.booking.exceptions.InactiveBookingCheckInException;
 import seedu.address.model.room.booking.exceptions.NoBookingException;
 import seedu.address.model.room.booking.exceptions.OverlappingBookingException;
 import seedu.address.model.room.booking.exceptions.RoomNotCheckedInException;
-import seedu.address.model.room.booking.exceptions.BookingAlreadyCheckedInException;
 import seedu.address.testutil.ExpenseBuilder;
 import seedu.address.testutil.RoomBuilder;
 import seedu.address.testutil.TypicalExpenses;
@@ -104,16 +106,20 @@ public class RoomTest {
     }
 
     @Test
+    public void checkout_noBooking_throwsBookingNotFoundException() {
+        thrown.expect(BookingNotFoundException.class);
+        testRoomWithLastWeekYesterdayBooking.checkout(TODAY_TOMORROW);
+    }
+
+    @Test
     public void checkOutExpiredBooking_lastweekYesterday_success() {
-        Room editedRoom = testRoomWithLastWeekYesterdayBookingCheckedIn
-                .checkout(LASTWEEK_YESTERDAY_CHECKED_IN);
+        Room editedRoom = testRoomWithLastWeekYesterdayBookingCheckedIn.checkout(LASTWEEK_YESTERDAY_CHECKED_IN);
         assertEquals(testRoomWithoutBooking, editedRoom);
     }
 
     @Test
     public void checkOutActiveBooking_yesterdayToday_success() {
-        Room editedRoom = testRoomWithYesterdayTodayBooking
-                .checkout(YESTERDAY_TODAY);
+        Room editedRoom = testRoomWithYesterdayTodayBooking.checkout(YESTERDAY_TODAY);
         assertEquals(testRoomWithoutBooking, editedRoom);
     }
 

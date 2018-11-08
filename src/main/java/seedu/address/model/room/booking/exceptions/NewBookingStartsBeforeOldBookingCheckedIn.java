@@ -7,7 +7,7 @@ package seedu.address.model.room.booking.exceptions;
  */
 public class NewBookingStartsBeforeOldBookingCheckedIn extends RuntimeException {
     public NewBookingStartsBeforeOldBookingCheckedIn() {
-        super("Cannot reassign booking to new room, because new booking starts before old booking" +
-                "and old room is currently checked in!");
+        super("Cannot reassign booking to new room, because new booking starts before old booking"
+                + "and old room is currently checked in!");
     }
 }

@@ -10,7 +10,6 @@ import java.util.Objects;
 import javafx.collections.ObservableList;
 import seedu.address.model.expenses.Expense;
 import seedu.address.model.expenses.ExpenseType;
-import seedu.address.model.expenses.Expenses;
 import seedu.address.model.guest.Guest;
 import seedu.address.model.guest.UniqueGuestList;
 import seedu.address.model.room.Room;
@@ -19,9 +18,9 @@ import seedu.address.model.room.UniqueRoomList;
 import seedu.address.model.room.booking.Booking;
 import seedu.address.model.room.booking.exceptions.ExpiredBookingException;
 import seedu.address.model.room.booking.exceptions.NewBookingStartsBeforeOldBookingCheckedIn;
+import seedu.address.model.room.booking.exceptions.OldBookingStartsBeforeNewBookingCheckedIn;
 import seedu.address.model.room.booking.exceptions.OverlappingBookingException;
 import seedu.address.model.room.exceptions.OriginalRoomReassignException;
-import seedu.address.model.room.booking.exceptions.OldBookingStartsBeforeNewBookingCheckedIn;
 import seedu.address.model.tag.Tag;
 
 /**
@@ -194,11 +193,14 @@ public class Concierge implements ReadOnlyConcierge {
 
         Booking bookingToReassign = room.getBookings()
                 .getFirstBookingByPredicate(booking -> booking.getBookingPeriod().getStartDate().equals(startDate));
+        if (bookingToReassign.isExpired()) {
+            throw new ExpiredBookingException();
+        }
 
         if (newRoom.hasBookings()) {
             Booking newRoomFirstBooking = newRoom.getBookings().getFirstBooking();
 
-            if (bookingToReassign.isExpired() || newRoomFirstBooking.isExpired()) {
+            if (newRoomFirstBooking.isExpired()) {
                 throw new ExpiredBookingException();
             }
 

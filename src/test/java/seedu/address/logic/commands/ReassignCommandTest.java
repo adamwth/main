@@ -37,6 +37,18 @@ public class ReassignCommandTest {
     private CommandHistory commandHistory = new CommandHistory();
 
     @Test
+    public void execute_originalRoomReassign_throwsCommandException() {
+        RoomNumber roomNumber = ROOM_NUMBER_011;
+        LocalDate startDate = TODAY_TOMORROW.getStartDate();
+        RoomNumber newRoomNumber = ROOM_NUMBER_011;
+        ReassignCommand reassignCommand = new ReassignCommand(roomNumber, startDate, newRoomNumber);
+
+        String expectedMessage = ReassignCommand.MESSAGE_REASSIGN_TO_ORIGINAL_ROOM;
+
+        assertCommandFailure(reassignCommand, model, commandHistory, expectedMessage);
+    }
+
+    @Test
     public void execute_nonExistentBookingReassign_throwsCommandException() {
         RoomNumber roomNumber = ROOM_NUMBER_001;
         LocalDate startDate = LocalDate.now().minusYears(10);
@@ -62,30 +74,6 @@ public class ReassignCommandTest {
     }
 
     @Test
-    public void execute_originalRoomReassign_throwsCommandException() {
-        RoomNumber roomNumber = ROOM_NUMBER_011;
-        LocalDate startDate = TODAY_TOMORROW.getStartDate();
-        RoomNumber newRoomNumber = ROOM_NUMBER_011;
-        ReassignCommand reassignCommand = new ReassignCommand(roomNumber, startDate, newRoomNumber);
-
-        String expectedMessage = ReassignCommand.MESSAGE_REASSIGN_TO_ORIGINAL_ROOM;
-
-        assertCommandFailure(reassignCommand, model, commandHistory, expectedMessage);
-    }
-
-    @Test
-    public void execute_checkedInRoomReassign_throwsCommandException() {
-        RoomNumber roomNumber = ROOM_NUMBER_010;
-        LocalDate startDate = YESTERDAY_TODAY.getStartDate();
-        RoomNumber newRoomNumber = ROOM_NUMBER_012;
-        ReassignCommand reassignCommand = new ReassignCommand(roomNumber, startDate, newRoomNumber);
-
-        String expectedMessage = String.format(ReassignCommand.MESSAGE_REASSIGN_TO_CHECKED_IN_ROOM, newRoomNumber);
-
-        assertCommandFailure(reassignCommand, model, commandHistory, expectedMessage);
-    }
-
-    @Test
     public void execute_overlappingBookingReassign_throwsCommandException() {
         RoomNumber roomNumber = ROOM_NUMBER_011;
         LocalDate startDate = TODAY_TOMORROW.getStartDate();
@@ -93,6 +81,30 @@ public class ReassignCommandTest {
         ReassignCommand reassignCommand = new ReassignCommand(roomNumber, startDate, newRoomNumber);
 
         String expectedMessage = String.format(ReassignCommand.MESSAGE_OVERLAPPING_BOOKING, newRoomNumber);
+
+        assertCommandFailure(reassignCommand, model, commandHistory, expectedMessage);
+    }
+
+    @Test
+    public void execute_newRoomBookingCheckedIn_throwsCommandException() {
+        RoomNumber roomNumber = ROOM_NUMBER_010;
+        LocalDate startDate = YESTERDAY_TODAY.getStartDate();
+        RoomNumber newRoomNumber = ROOM_NUMBER_012;
+        ReassignCommand reassignCommand = new ReassignCommand(roomNumber, startDate, newRoomNumber);
+
+        String expectedMessage = ReassignCommand.MESSAGE_BOOKING_STARTS_BEFORE_NEW_BOOKING_CHECKED_IN;
+
+        assertCommandFailure(reassignCommand, model, commandHistory, expectedMessage);
+    }
+
+    @Test
+    public void execute_oldRoomBookingCheckedIn_throwsCommandException() {
+        RoomNumber roomNumber = ROOM_NUMBER_012;
+        LocalDate startDate = TODAY_TOMORROW.getStartDate();
+        RoomNumber newRoomNumber = ROOM_NUMBER_010;
+        ReassignCommand reassignCommand = new ReassignCommand(roomNumber, startDate, newRoomNumber);
+
+        String expectedMessage = ReassignCommand.MESSAGE_NEW_BOOKING_STARTS_BEFORE_BOOKING_CHECKED_IN;
 
         assertCommandFailure(reassignCommand, model, commandHistory, expectedMessage);
     }

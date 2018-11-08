@@ -12,11 +12,11 @@ import seedu.address.model.expenses.Expense;
 import seedu.address.model.expenses.Expenses;
 import seedu.address.model.room.booking.Booking;
 import seedu.address.model.room.booking.Bookings;
+import seedu.address.model.room.booking.exceptions.BookingAlreadyCheckedInException;
 import seedu.address.model.room.booking.exceptions.ExpiredBookingException;
 import seedu.address.model.room.booking.exceptions.InactiveBookingCheckInException;
 import seedu.address.model.room.booking.exceptions.NoBookingException;
 import seedu.address.model.room.booking.exceptions.RoomNotCheckedInException;
-import seedu.address.model.room.booking.exceptions.BookingAlreadyCheckedInException;
 import seedu.address.model.tag.Tag;
 
 /**
