@@ -16,7 +16,7 @@ import seedu.address.model.room.booking.exceptions.ExpiredBookingException;
 import seedu.address.model.room.booking.exceptions.InactiveBookingCheckInException;
 import seedu.address.model.room.booking.exceptions.NoBookingException;
 import seedu.address.model.room.booking.exceptions.RoomNotCheckedInException;
-import seedu.address.model.room.exceptions.BookingAlreadyCheckedInException;
+import seedu.address.model.room.booking.exceptions.BookingAlreadyCheckedInException;
 import seedu.address.model.tag.Tag;
 
 /**
@@ -129,7 +129,8 @@ public class Room {
      * Checks out the given booking
      */
     public Room checkout(Booking bookingToCheckout) {
-        return new Room(this.roomNumber, this.capacity, this.expenses, bookings.remove(bookingToCheckout), this.tags);
+        return new Room(this.roomNumber, this.capacity, this.expenses.clearExpenses(),
+                bookings.remove(bookingToCheckout), this.tags);
     }
 
     //=========== Expenses operations =============================================================

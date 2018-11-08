@@ -15,9 +15,10 @@ import seedu.address.model.Model;
 import seedu.address.model.room.RoomNumber;
 import seedu.address.model.room.booking.exceptions.BookingNotFoundException;
 import seedu.address.model.room.booking.exceptions.ExpiredBookingException;
+import seedu.address.model.room.booking.exceptions.NewBookingStartsBeforeOldBookingCheckedIn;
 import seedu.address.model.room.booking.exceptions.OverlappingBookingException;
+import seedu.address.model.room.booking.exceptions.OldBookingStartsBeforeNewBookingCheckedIn;
 import seedu.address.model.room.exceptions.OriginalRoomReassignException;
-import seedu.address.model.room.exceptions.ReassignToCheckedInRoomException;
 
 /**
  * Reassigns a room's booking to another room.
@@ -46,11 +47,15 @@ public class ReassignCommand extends Command {
     public static final String MESSAGE_REASSIGN_TO_ORIGINAL_ROOM =
             "Cannot reassign booking to its original room.";
     public static final String MESSAGE_EXPIRED_BOOKING_REASSIGN =
-            "Cannot reassign booking, because it is already expired.";
+            "Cannot reassign booking, because either it or the new room's first booking is expired.";
     public static final String MESSAGE_OVERLAPPING_BOOKING =
-            "Cannot reassign booking, because it overlaps with another booking in room %s";
-    public static final String MESSAGE_REASSIGN_TO_CHECKED_IN_ROOM =
-            "Cannot reassign booking, because room %s is currently checked-in.";
+            "Cannot reassign booking, because it overlaps with another booking in room %s.";
+    public static final String MESSAGE_BOOKING_STARTS_BEFORE_NEW_BOOKING_CHECKED_IN =
+            "Cannot reassign booking, because it starts before new room's booking " +
+                "and new room's booking is already checked-in.";
+    public static final String MESSAGE_NEW_BOOKING_STARTS_BEFORE_BOOKING_CHECKED_IN =
+            "Cannot reassign booking, because the new room's booking starts before it " +
+                "and it is already checked-in.";
 
     private final RoomNumber roomNumber;
     private final LocalDate startDate;
@@ -72,6 +77,9 @@ public class ReassignCommand extends Command {
             return new CommandResult(String.format(MESSAGE_REASSIGN_SUCCESS,
                     ParserUtil.parseDateToString(startDate), roomNumber, newRoomNumber));
 
+        } catch (OriginalRoomReassignException e) {
+            throw new CommandException(MESSAGE_REASSIGN_TO_ORIGINAL_ROOM);
+
         } catch (BookingNotFoundException e) {
             throw new CommandException(String.format(MESSAGE_BOOKING_NOT_FOUND, roomNumber,
                     ParserUtil.parseDateToString(startDate)));
@@ -79,11 +87,11 @@ public class ReassignCommand extends Command {
         } catch (ExpiredBookingException e) {
             throw new CommandException(MESSAGE_EXPIRED_BOOKING_REASSIGN);
 
-        } catch (OriginalRoomReassignException e) {
-            throw new CommandException(MESSAGE_REASSIGN_TO_ORIGINAL_ROOM);
+        } catch (OldBookingStartsBeforeNewBookingCheckedIn e) {
+            throw new CommandException(MESSAGE_BOOKING_STARTS_BEFORE_NEW_BOOKING_CHECKED_IN);
 
-        } catch (ReassignToCheckedInRoomException e) {
-            throw new CommandException(String.format(MESSAGE_REASSIGN_TO_CHECKED_IN_ROOM, newRoomNumber));
+        } catch (NewBookingStartsBeforeOldBookingCheckedIn e) {
+            throw new CommandException(MESSAGE_NEW_BOOKING_STARTS_BEFORE_BOOKING_CHECKED_IN);
 
         } catch (OverlappingBookingException e) {
             throw new CommandException(String.format(MESSAGE_OVERLAPPING_BOOKING, newRoomNumber));

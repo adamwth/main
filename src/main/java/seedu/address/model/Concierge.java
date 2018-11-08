@@ -10,6 +10,7 @@ import java.util.Objects;
 import javafx.collections.ObservableList;
 import seedu.address.model.expenses.Expense;
 import seedu.address.model.expenses.ExpenseType;
+import seedu.address.model.expenses.Expenses;
 import seedu.address.model.guest.Guest;
 import seedu.address.model.guest.UniqueGuestList;
 import seedu.address.model.room.Room;
@@ -17,8 +18,10 @@ import seedu.address.model.room.RoomNumber;
 import seedu.address.model.room.UniqueRoomList;
 import seedu.address.model.room.booking.Booking;
 import seedu.address.model.room.booking.exceptions.ExpiredBookingException;
+import seedu.address.model.room.booking.exceptions.NewBookingStartsBeforeOldBookingCheckedIn;
+import seedu.address.model.room.booking.exceptions.OverlappingBookingException;
 import seedu.address.model.room.exceptions.OriginalRoomReassignException;
-import seedu.address.model.room.exceptions.ReassignToCheckedInRoomException;
+import seedu.address.model.room.booking.exceptions.OldBookingStartsBeforeNewBookingCheckedIn;
 import seedu.address.model.tag.Tag;
 
 /**
@@ -170,34 +173,52 @@ public class Concierge implements ReadOnlyConcierge {
 
     /**
      * Reassigns the booking identified by {@code startDate} in the room identified by {@code roomNumber} to the room
-     * identified by {@code newRoomNumber}.<br>
+     * identified by {@code newRoomNumber}. The expenses are moved over to the new room as well.<br>
      * The following checks are conducted in succession, each possibly throwing an exception:<br>
-     * If the booking does not exist, throw NoBookingFoundException.<br>
-     * If the booking is expired, throw ExpiredBookingException.<br>
      * If room and new room are equal, throw OriginalRoomReassignException.<br>
-     * If new room has bookings and its first booking is already checked-in, throw ReassignToCheckedInRoomException.<br>
+     * If the booking does not exist, throw NoBookingFoundException.<br>
+     * If the booking is expired, or the new room's first booking is expired, throw ExpiredBookingException.<br>
+     * If the booking starts before the new booking, and the new booking is checked-in,
+     * throw OldBookingStartsBeforeNewBookingCheckedIn.<br>
+     * If the new booking starts before the old booking, and the old booking is checked-in,
+     * throw NewBookingStartsBeforeOldBookingCheckedIn.<br>
      * If the booking overlaps with any of new room's bookings, throw OverlappingBookingException.
      */
     public void reassignRoom(RoomNumber roomNumber, LocalDate startDate, RoomNumber newRoomNumber) {
         Room room = rooms.getRoom(roomNumber);
         Room newRoom = rooms.getRoom(newRoomNumber);
 
-        Booking bookingToReassign = room.getBookings()
-                .getFirstBookingByPredicate(booking -> booking.getBookingPeriod().getStartDate().equals(startDate));
-
-        if (bookingToReassign.isExpired()) {
-            throw new ExpiredBookingException();
-        }
-
         if (room.equals(newRoom)) {
             throw new OriginalRoomReassignException();
         }
 
-        if (newRoom.hasBookings() && newRoom.getBookings().getFirstBooking().getIsCheckedIn()) {
-            throw new ReassignToCheckedInRoomException();
+        Booking bookingToReassign = room.getBookings()
+                .getFirstBookingByPredicate(booking -> booking.getBookingPeriod().getStartDate().equals(startDate));
+
+        if (newRoom.hasBookings()) {
+            Booking newRoomFirstBooking = newRoom.getBookings().getFirstBooking();
+
+            if (bookingToReassign.isExpired() || newRoomFirstBooking.isExpired()) {
+                throw new ExpiredBookingException();
+            }
+
+            if (bookingToReassign.isOverlapping(newRoomFirstBooking)) {
+                throw new OverlappingBookingException();
+            }
+
+            if (bookingToReassign.startsBefore(newRoomFirstBooking) && newRoomFirstBooking.getIsCheckedIn()) {
+                throw new OldBookingStartsBeforeNewBookingCheckedIn();
+            }
+
+            if (newRoomFirstBooking.startsBefore(bookingToReassign) && bookingToReassign.getIsCheckedIn()) {
+                throw new NewBookingStartsBeforeOldBookingCheckedIn();
+            }
         }
 
         Room editedNewRoom = newRoom.addBooking(bookingToReassign);
+        for (Expense expense : room.getExpenses().getExpensesList()) {
+            editedNewRoom = editedNewRoom.addExpense(expense);
+        }
         rooms.setRoom(newRoom, editedNewRoom);
 
         Room editedRoom = room.checkout(bookingToReassign);
@@ -250,7 +271,7 @@ public class Concierge implements ReadOnlyConcierge {
      *
      * If the booking's guest was checked-in (i.e. exists in the checked-in guest list), check:
      * 1) If the guest does not have checked-in bookings in other rooms, remove him from the checked-in guest list.
-     * 2) If the guest exists in the archived guest list. add him to the archived guest list
+     * 2) If the guest does not exists in the archived guest list. add him to the archived guest list
      *
      * Reason for initial check: Guests who did not check-in do not count as having stayed in the hotel before.
      * Reason for 1): Guests can have multiple checked-in bookings at once.

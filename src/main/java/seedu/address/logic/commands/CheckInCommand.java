@@ -11,7 +11,7 @@ import seedu.address.model.room.RoomNumber;
 import seedu.address.model.room.booking.exceptions.ExpiredBookingException;
 import seedu.address.model.room.booking.exceptions.InactiveBookingCheckInException;
 import seedu.address.model.room.booking.exceptions.NoBookingException;
-import seedu.address.model.room.exceptions.BookingAlreadyCheckedInException;
+import seedu.address.model.room.booking.exceptions.BookingAlreadyCheckedInException;
 
 /**
  * Check in a room identified using its room number.

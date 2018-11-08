@@ -46,7 +46,7 @@ import seedu.address.model.room.booking.exceptions.NoBookingException;
 import seedu.address.model.room.booking.exceptions.OverlappingBookingException;
 import seedu.address.model.room.booking.exceptions.RoomNotCheckedInException;
 import seedu.address.model.room.exceptions.OriginalRoomReassignException;
-import seedu.address.model.room.exceptions.ReassignToCheckedInRoomException;
+import seedu.address.model.room.booking.exceptions.OldBookingStartsBeforeNewBookingCheckedIn;
 import seedu.address.testutil.GuestBuilder;
 
 public class ConciergeTest {
@@ -323,7 +323,7 @@ public class ConciergeTest {
         LocalDate startDate = booking.getBookingPeriod().getStartDate();
 
         assertThrows(
-                ReassignToCheckedInRoomException.class, () ->
+                OldBookingStartsBeforeNewBookingCheckedIn.class, () ->
                 concierge.reassignRoom(roomNumber, startDate, newRoomNumber));
     }
 

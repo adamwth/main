@@ -6,6 +6,7 @@ import static seedu.address.logic.commands.CommandTestUtil.assertCommandFailure;
 import static seedu.address.logic.commands.CommandTestUtil.assertCommandSuccess;
 import static seedu.address.testutil.TypicalBookingPeriods.LASTWEEK_YESTERDAY;
 import static seedu.address.testutil.TypicalBookingPeriods.TODAY_TOMORROW;
+import static seedu.address.testutil.TypicalBookingPeriods.YESTERDAY_TODAY;
 import static seedu.address.testutil.TypicalRoomNumbers.ROOM_NUMBER_001;
 import static seedu.address.testutil.TypicalRoomNumbers.ROOM_NUMBER_002;
 import static seedu.address.testutil.TypicalRoomNumbers.ROOM_NUMBER_010;
@@ -73,9 +74,9 @@ public class ReassignCommandTest {
     }
 
     @Test
-    public void execute_oheckedInRoomReassign_throwsCommandException() {
-        RoomNumber roomNumber = ROOM_NUMBER_011;
-        LocalDate startDate = TODAY_TOMORROW.getStartDate();
+    public void execute_checkedInRoomReassign_throwsCommandException() {
+        RoomNumber roomNumber = ROOM_NUMBER_010;
+        LocalDate startDate = YESTERDAY_TODAY.getStartDate();
         RoomNumber newRoomNumber = ROOM_NUMBER_012;
         ReassignCommand reassignCommand = new ReassignCommand(roomNumber, startDate, newRoomNumber);
 

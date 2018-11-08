@@ -28,7 +28,7 @@ import seedu.address.model.room.booking.exceptions.InactiveBookingCheckInExcepti
 import seedu.address.model.room.booking.exceptions.NoBookingException;
 import seedu.address.model.room.booking.exceptions.OverlappingBookingException;
 import seedu.address.model.room.booking.exceptions.RoomNotCheckedInException;
-import seedu.address.model.room.exceptions.BookingAlreadyCheckedInException;
+import seedu.address.model.room.booking.exceptions.BookingAlreadyCheckedInException;
 import seedu.address.testutil.ExpenseBuilder;
 import seedu.address.testutil.RoomBuilder;
 import seedu.address.testutil.TypicalExpenses;
