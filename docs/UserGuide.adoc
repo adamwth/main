@@ -166,10 +166,14 @@ Checks out the booking with start date 01/11/18 from room 085.
 
 === Reassigning a guest to another room : `reassign`
 
-Reassigns a guest and his booking from one room to another. +
-[TIP]
-You can only reassign to rooms that are not checked-in AND do not have overlapping bookings with the
-guest's booking that you want to reassign.
+Reassigns a booking from one room to another.
+
+** You can reassign a booking only if all of the following conditions are met:
+* The new room is different from the original.
+* Neither the booking nor any of the new room's bookings are expired.
+* The booking does not overlap with any of the new room's bookings.
+* If the booking ends the same day the new room's first booking starts, the new room's first booking cannot be checked-in.
+* If the booking starts the same day the new room's first booking ends, the booking cannot be checked-in.
 
 Format: `reassign r/ROOM_NUMBER from/START_DATE`
 
