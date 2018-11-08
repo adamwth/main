@@ -16,8 +16,8 @@ import seedu.address.model.room.RoomNumber;
 import seedu.address.model.room.booking.exceptions.BookingNotFoundException;
 import seedu.address.model.room.booking.exceptions.ExpiredBookingException;
 import seedu.address.model.room.booking.exceptions.OverlappingBookingException;
-import seedu.address.model.room.exceptions.ReassignToCheckedInRoomException;
 import seedu.address.model.room.exceptions.OriginalRoomReassignException;
+import seedu.address.model.room.exceptions.ReassignToCheckedInRoomException;
 
 /**
  * Reassigns a room's booking to another room.

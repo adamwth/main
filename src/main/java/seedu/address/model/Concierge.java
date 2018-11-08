@@ -17,8 +17,8 @@ import seedu.address.model.room.RoomNumber;
 import seedu.address.model.room.UniqueRoomList;
 import seedu.address.model.room.booking.Booking;
 import seedu.address.model.room.booking.exceptions.ExpiredBookingException;
-import seedu.address.model.room.exceptions.ReassignToCheckedInRoomException;
 import seedu.address.model.room.exceptions.OriginalRoomReassignException;
+import seedu.address.model.room.exceptions.ReassignToCheckedInRoomException;
 import seedu.address.model.tag.Tag;
 
 /**
@@ -247,11 +247,11 @@ public class Concierge implements ReadOnlyConcierge {
 
     /**
      * Checks out the given booking from the given room.
-     * 
+     *
      * If the booking's guest was checked-in (i.e. exists in the checked-in guest list), check:
      * 1) If the guest does not have checked-in bookings in other rooms, remove him from the checked-in guest list.
      * 2) If the guest exists in the archived guest list. add him to the archived guest list
-     * 
+     *
      * Reason for initial check: Guests who did not check-in do not count as having stayed in the hotel before.
      * Reason for 1): Guests can have multiple checked-in bookings at once.
      * Reason for 2): Guests may have stayed in the hotel before, and would thus already be in the archived guest list.

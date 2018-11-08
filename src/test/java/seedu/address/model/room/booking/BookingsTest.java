@@ -93,8 +93,8 @@ public class BookingsTest {
     @Test
     public void add_validBooking_success() {
         Booking bookingToAdd = TODAY_TOMORROW;
-        bookings.add(bookingToAdd);
-        assertTrue(bookings.contains(bookingToAdd));
+        Bookings editedBookings = bookings.add(bookingToAdd);
+        assertTrue(editedBookings.contains(bookingToAdd));
     }
 
     @Test
