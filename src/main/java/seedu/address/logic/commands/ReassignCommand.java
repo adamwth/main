@@ -16,7 +16,7 @@ import seedu.address.model.room.RoomNumber;
 import seedu.address.model.room.booking.exceptions.BookingNotFoundException;
 import seedu.address.model.room.booking.exceptions.ExpiredBookingException;
 import seedu.address.model.room.booking.exceptions.OverlappingBookingException;
-import seedu.address.model.room.exceptions.CheckedInRoomReassignException;
+import seedu.address.model.room.exceptions.ReassignToCheckedInRoomException;
 import seedu.address.model.room.exceptions.OriginalRoomReassignException;
 
 /**
@@ -74,7 +74,7 @@ public class ReassignCommand extends Command {
 
         } catch (BookingNotFoundException e) {
             throw new CommandException(String.format(MESSAGE_BOOKING_NOT_FOUND, roomNumber,
-                ParserUtil.parseDateToString(startDate)));
+                    ParserUtil.parseDateToString(startDate)));
 
         } catch (ExpiredBookingException e) {
             throw new CommandException(MESSAGE_EXPIRED_BOOKING_REASSIGN);
@@ -82,7 +82,7 @@ public class ReassignCommand extends Command {
         } catch (OriginalRoomReassignException e) {
             throw new CommandException(MESSAGE_REASSIGN_TO_ORIGINAL_ROOM);
 
-        } catch (CheckedInRoomReassignException e) {
+        } catch (ReassignToCheckedInRoomException e) {
             throw new CommandException(String.format(MESSAGE_REASSIGN_TO_CHECKED_IN_ROOM, newRoomNumber));
 
         } catch (OverlappingBookingException e) {

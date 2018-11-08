@@ -17,7 +17,7 @@ import seedu.address.model.room.RoomNumber;
 import seedu.address.model.room.UniqueRoomList;
 import seedu.address.model.room.booking.Booking;
 import seedu.address.model.room.booking.exceptions.ExpiredBookingException;
-import seedu.address.model.room.exceptions.CheckedInRoomReassignException;
+import seedu.address.model.room.exceptions.ReassignToCheckedInRoomException;
 import seedu.address.model.room.exceptions.OriginalRoomReassignException;
 import seedu.address.model.tag.Tag;
 
@@ -171,11 +171,11 @@ public class Concierge implements ReadOnlyConcierge {
     /**
      * Reassigns the booking identified by {@code startDate} in the room identified by {@code roomNumber} to the room
      * identified by {@code newRoomNumber}.<br>
-     * The following checks are conducted in succession:<br>
+     * The following checks are conducted in succession, each possibly throwing an exception:<br>
      * If the booking does not exist, throw NoBookingFoundException.<br>
      * If the booking is expired, throw ExpiredBookingException.<br>
      * If room and new room are equal, throw OriginalRoomReassignException.<br>
-     * If new room has bookings and its first booking is already checked-in, throw CheckedInRoomReassignException.<br>
+     * If new room has bookings and its first booking is already checked-in, throw ReassignToCheckedInRoomException.<br>
      * If the booking overlaps with any of new room's bookings, throw OverlappingBookingException.
      */
     public void reassignRoom(RoomNumber roomNumber, LocalDate startDate, RoomNumber newRoomNumber) {
@@ -194,7 +194,7 @@ public class Concierge implements ReadOnlyConcierge {
         }
 
         if (newRoom.hasBookings() && newRoom.getBookings().getFirstBooking().getIsCheckedIn()) {
-            throw new CheckedInRoomReassignException();
+            throw new ReassignToCheckedInRoomException();
         }
 
         Room editedNewRoom = newRoom.addBooking(bookingToReassign);
