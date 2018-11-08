@@ -154,7 +154,7 @@ public class ParserUtil {
         requireNonNull(date);
         String trimmedDate = date.trim();
         try {
-            return LocalDate.parse(date, BookingPeriod.STRING_TO_DATE_FORMAT);
+            return LocalDate.parse(trimmedDate, BookingPeriod.STRING_TO_DATE_FORMAT);
         } catch (DateTimeException e) {
             throw new ParseException(Messages.MESSAGE_INVALID_DATE);
         }
