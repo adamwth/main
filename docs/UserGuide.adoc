@@ -115,7 +115,7 @@ Format: `add n/NAME p/PHONE_NUMBER e/EMAIL [t/TAG] r/ROOM_NUMBER from/START_DATE
 [TIP]
 A guest can have any number of tags (including 0)
 
-[cols="^.^1,<.^5a", frame=none]
+[cols="^.^3,<.^5a", frame=none]
 |===
 |image:icon-important.png[Important info]
 |
