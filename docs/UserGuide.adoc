@@ -71,7 +71,7 @@ Some important things that you should know before using Concierge(TM)
 ** Therefore, it is possible for a guest who has made a booking to be in
 *** neither lists - guest has yet to check-in and has never stayed in the hotel before
 *** checked-in guest list only - guest has checked-in and has never stayed in the hotel before
-*** archived guest list only - guest has checked-in and has stayed in the hotel before
+*** archived guest list only - guest has not checked-in and has stayed in the hotel before
 *** both lists - guest has checked-in and has stayed in the hotel before
 
 ====
