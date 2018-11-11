@@ -43,6 +43,7 @@ e.g. typing *`help`* and pressing kbd:[Enter] will open the help window.
 .  Refer to <<Features>> for details of each command.
 
 [[Terminology]]
+//tag::terminology[]
 == Terminology
 Some important things that you should know before using Concierge(TM)
 
@@ -57,7 +58,7 @@ Some important things that you should know before using Concierge(TM)
 ** `M` - Month can be 1 or 2 digits
 ** `y` - Year can be 2 or 4 digits (if 2 digits, date is assumed to be in the current century)
 
-* A `Booking` ...
+* A *Booking* ...
 ** is *Active* if the period between its start and end date includes today's date, inclusively.
 ** is *Upcoming* if its start date is strictly after today's date.
 ** is *Expired* if its end date is strictly before today's date.
@@ -92,6 +93,7 @@ affect what you can or cannot do.
 [TIP]
 This is a *tip* icon. You may want to read this if you are new to Concierge(TM).
 
+//end::terminology[]
 
 
 [[Features]]
@@ -106,7 +108,7 @@ This is a *tip* icon. You may want to read this if you are new to Concierge(TM).
 * Parameters can be in any order e.g. if the command specifies `n/NAME p/PHONE_NUMBER`, `p/PHONE_NUMBER n/NAME` is also acceptable.
 ====
 
-// tag::add[]
+//tag::add[]
 === Adding a guest: `add` image:icon-key.png[width="32"]
 
 Adds a booking associated with a guest, room and booking period. +
@@ -143,6 +145,8 @@ When a booking is added and it starts today (i.e. it is active), then you can
 
 .Adding an inactive booking (i.e. booking is in the future)
 image::AddCommand-userguide-notactive.png[width="800"]
+
+//end::add[]
 
 //tag::checkin[]
 === Check-in room: `checkin` image:icon-key.png[width="32"]

@@ -81,12 +81,12 @@ https://github.com/CS2103-AY1819S1-F11-2/main/pull/226[#226]
 |===
 |_Given below are sections I contributed to the User Guide. They showcase my ability to write documentation targeting end-users._
 |===
-* Links to relevant sections in User Guide (for viewing on Github)
-** https://github.com/CS2103-AY1819S1-F11-2/main/blob/master/docs/UserGuide.adoc#check-in-room-code-checkin-code-span-class-image-img-src-images-icon-key-png-alt-icon-key-width-32-span[`checkin` command]
-** https://github.com/CS2103-AY1819S1-F11-2/main/blob/master/docs/UserGuide.adoc#checkout-room-code-checkout-code-span-class-image-img-src-images-icon-key-png-alt-icon-key-width-32-span[`checkout` command]
-** https://github.com/CS2103-AY1819S1-F11-2/main/blob/master/docs/UserGuide.adoc#reassigning-a-guest-to-another-room-code-reassign-code-span-class-image-img-src-images-icon-key-png-alt-icon-key-width-32-span[`reassign` command]
+
+include::../UserGuide.adoc[tag=terminology]
 
 include::../UserGuide.adoc[tag=checkin]
+
+include::../UserGuide.adoc[tag=checkout]
 
 include::../UserGuide.adoc[tag=reassign]
 
@@ -95,8 +95,6 @@ include::../UserGuide.adoc[tag=reassign]
 |===
 |_Given below are sections I contributed to the Developer Guide. They showcase my ability to write technical documentation and the technical depth of my contributions to the project._
 |===
-* Links to relevant sections in Developer Guide (for viewing on Github)
-** https://github.com/CS2103-AY1819S1-F11-2/main/blob/master/docs/DeveloperGuide.adoc#room-check-in-checkout-feature[Check-in/out feature]
 
 include::../DeveloperGuide.adoc[tag=checkin]
 
