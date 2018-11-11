@@ -30,8 +30,8 @@ checking-in/out of rooms.
 The current implementation was finalized after experimenting with different validity checks on multiple different scenarios.
 Refer to the <<Contributions to the User Guide, User Guide>> and <<Contributions to the Developer Guide, Developer Guide>>
 for more information on these checks.
-The checkout feature was initially intended to execute similar validity checks for checking-out a booking,
-but has now expanded its scope to double as a delete-booking feature.
+As for the checkout feature, though it was initially intended to execute similar validity checks for checking-out a booking,
+it has now expanded its scope to double as a delete-booking feature.
 
 * *Minor enhancements*:
 *** Add `list -cg` list checked-in guests feature: https://github.com/CS2103-AY1819S1-F11-2/main/pull/178[#178]
@@ -67,12 +67,12 @@ https://github.com/CS2103-AY1819S1-F11-2/main/pull/238[#238]
 
 ** Community
 *** PRs reviewed (with non-trivial review comments), giving praise and encouragement where it is due:
-https://github.com/CS2103-AY1819S1-F11-2/main/pull/63[#63]
-https://github.com/CS2103-AY1819S1-F11-2/main/pull/89[#89]
-https://github.com/CS2103-AY1819S1-F11-2/main/pull/105[#105]
-https://github.com/CS2103-AY1819S1-F11-2/main/pull/155[#155]
-https://github.com/CS2103-AY1819S1-F11-2/main/pull/158[#158]
-https://github.com/CS2103-AY1819S1-F11-2/main/pull/169[#169]
+https://github.com/CS2103-AY1819S1-F11-2/main/pull/63[#63],
+https://github.com/CS2103-AY1819S1-F11-2/main/pull/89[#89],
+https://github.com/CS2103-AY1819S1-F11-2/main/pull/105[#105],
+https://github.com/CS2103-AY1819S1-F11-2/main/pull/155[#155],
+https://github.com/CS2103-AY1819S1-F11-2/main/pull/158[#158],
+https://github.com/CS2103-AY1819S1-F11-2/main/pull/169[#169],
 https://github.com/CS2103-AY1819S1-F11-2/main/pull/226[#226]
 
 
