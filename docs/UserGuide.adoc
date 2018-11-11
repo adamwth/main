@@ -77,13 +77,13 @@ Some important things that you should know before using Concierge(TM)
 
 ====
 
-[cols="^.^1,<.^5a", frame=none]
+[cols="^.^1,<.^11a", frame=none]
 |===
 |image:icon-key.png[Login requirement,45,45,pdfwidth=50%,scaledwidth=50%]
 |This is a `login` icon. If a command requires login before execution, this icon will be located on its right in its title.
 |===
 
-[cols="^.^1,<.^5a", frame=none]
+[cols="^.^1,<.^11a", frame=none]
 |===
 |image:icon-important.png[Important info]
 |This is a *important* icon. You should read the information in these before executing the command, as it will likely
@@ -117,7 +117,7 @@ Format: `add n/NAME p/PHONE_NUMBER e/EMAIL [t/TAG] r/ROOM_NUMBER from/START_DATE
 [TIP]
 A guest can have any number of tags (including 0)
 
-[cols="^.^1,<.^5a", frame=none]
+[cols="^.^1,<.^11a", frame=none]
 |===
 |image:icon-important.png[Important info]
 |
@@ -154,7 +154,7 @@ image::AddCommand-userguide-notactive.png[width="800"]
 Checks in the first booking of a room. The guest who made the booking will be added to
 the checked-in guest list.
 
-[cols="^.^1,<.^5a", frame=none]
+[cols="^.^1,<.^11a", frame=none]
 |===
 |image:icon-important.png[Important info]
 |Expired and upcoming bookings *cannot* be checked-in.
@@ -179,7 +179,7 @@ Checks out the room's first (i.e. earliest) booking, or its booking with the spe
 `checkout` 's intended use is the deletion of any booking.
  This means that you can delete a non-checked-in booking using `checkout`.
 
-[cols="^.^1,<.^5a", frame=none]
+[cols="^.^1,<.^11a", frame=none]
 |===
 |image:icon-important.png[Important info]
 |
@@ -203,7 +203,7 @@ Checks out the booking with start date 01/11/18 from room 085.
 
 Reassigns a booking from one room to another. The room's expenses will also be ported over to the new room.
 
-[cols="^.^1,<.^5a", frame=none]
+[cols="^.^1,<.^11a", frame=none]
 |===
 |image:icon-important.png[role="center"]
 | You can reassign a booking only if:
