@@ -180,9 +180,8 @@ Checks out the room's first (i.e. earliest) booking, or its booking with the spe
 |image:icon-important.png[Important info]
 |
 * If the guest does not have any other checked-in bookings, then he/she will be removed from the checked-in
-guest list and added to the archived guest list.
-* If the guest still has other checked-in bookings, he/she will *not* be removed from the checked-in guest list,
-but will be added to the archived guest list.
+guest list. Otherwise, he/she will *not* be removed from the checked-in guest list.
+* If the guest has checked-in, he/she will be added to the archived guest list.
 |===
 
 Format: `checkout r/ROOM_NUMBER [from/START_DATE]`
