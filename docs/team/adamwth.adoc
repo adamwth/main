@@ -1,4 +1,4 @@
-= Adam Chew Yong Soon - Project Portfolio
+= Chew Yong Soon - Project Portfolio
 :site-section: AboutUs
 :imagesDir: ../images
 :stylesDir: ../stylesheets
@@ -92,8 +92,6 @@ https://github.com/CS2103-AY1819S1-F11-2/main/pull/226[#226]
 |===
 |_Given below are sections I contributed to the User Guide. They showcase my ability to write documentation targeting end-users._
 |===
-
-include::../UserGuide.adoc[tag=icons]
 
 include::../UserGuide.adoc[tag=checkin]
 
