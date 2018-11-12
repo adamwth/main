@@ -54,9 +54,9 @@ Some important things that you should know before using Concierge(TM)
 ** 000, 01, 99, 101 are invalid
 
 * The format used for dates is *d/M/y*, whereby
-** `d` - Day can be 1 or 2 digits
-** `M` - Month can be 1 or 2 digits
-** `y` - Year can be 2 or 4 digits (if 2 digits, date is assumed to be in the current century)
+** *d* - Day can be 1 or 2 digits
+** *M* - Month can be 1 or 2 digits
+** *y* - Year can be 2 or 4 digits (if 2 digits, date is assumed to be in the current century)
 
 * A *Booking* ...
 ** is *Active* if the period between its start and end date includes today's date, inclusively.
