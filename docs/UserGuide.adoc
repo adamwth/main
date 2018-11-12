@@ -181,7 +181,7 @@ Also updates the checked-in guest list and archived guest list with the guest wh
 * If the guest does not have any other checked-in bookings, then he/she will be removed from the checked-in
 guest list. Otherwise, he/she will *not* be removed from the checked-in guest list.
 * If the guest has checked-in, he/she will be added to the archived guest list.
-** If the guest's name is not found in any of the entries in the archived guest list, then a new entry will be created. 
+** If the guest's name is not found in any of the entries in the archived guest list, then a new entry will be created.
 ** Suppose there is already an entry with the same name as the guest in the archived guest list.
 *** If both the guest's phone number and email are the same as the ones found in the entry, or only one of them is different,
 then he/she is *treated as the same guest as the one in the entry, and thus the entry will not be updated*.
