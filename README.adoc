@@ -8,6 +8,7 @@ image:https://api.codacy.com/project/badge/Grade/e246831fbe73495b83cc53e409ff7fb
 
 ifdef::env-github[]
 image::docs/images/Ui.png[width="600"]
+image::/docs/images/ConciergeFinal.png[width="600"]
 endif::[]
 
 * Concierge(TM) is a desktop Hotel Management application. It has a GUI but most of the user interactions happen using a CLI (Command Line Interface).
