@@ -42,7 +42,9 @@ e.g. typing *`help`* and pressing kbd:[Enter] will open the help window.
 
 .  Refer to <<Features>> for details of each command.
 
+
 [[Terminology]]
+//tag::terminology[]
 == Terminology
 Some important things that you should know before using Concierge(TM)
 
@@ -96,6 +98,8 @@ affect what you can or cannot do.
 
 [TIP]
 This is a *tip* icon. You may want to read this if you are new to Concierge(TM).
+
+//end::terminology[]
 
 
 [[Features]]

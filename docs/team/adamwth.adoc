@@ -93,6 +93,8 @@ https://github.com/CS2103-AY1819S1-F11-2/main/pull/226[#226]
 |_Given below are sections I contributed to the User Guide. They showcase my ability to write documentation targeting end-users._
 |===
 
+include::../UserGuide.adoc[tag=terminology]
+
 include::../UserGuide.adoc[tag=checkin]
 
 include::../UserGuide.adoc[tag=checkout]
