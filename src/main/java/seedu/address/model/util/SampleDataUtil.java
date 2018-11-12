@@ -120,6 +120,13 @@ public class SampleDataUtil {
                 LocalDate.now().minusDays(1).format(BookingPeriod.DATE_TO_STRING_FORMAT),
                 LocalDate.now().plusDays(2).format(BookingPeriod.DATE_TO_STRING_FORMAT))));
 
+        // add bookings and expenses to room 004
+        roomNumberToEdit = new RoomNumber("005");
+        sampleAb.addBooking(roomNumberToEdit,
+            new Booking(getSampleGuests()[3], new BookingPeriod(
+                LocalDate.now().minusDays(1).format(BookingPeriod.DATE_TO_STRING_FORMAT),
+                LocalDate.now().format(BookingPeriod.DATE_TO_STRING_FORMAT))));
+
         sampleAb.setMenu(getSampleMenuMap());
         return sampleAb;
     }
