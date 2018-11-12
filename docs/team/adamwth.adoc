@@ -3,7 +3,7 @@
 :imagesDir: ../images
 :stylesDir: ../stylesheets
 
-== PROJECT: Concierge(TM)
+== PROJECT: image:ConciergeFinal.png[width="200"]
 
 ---
 
@@ -34,8 +34,12 @@ for more information on these checks.
 **** As for the checkout feature, though it was initially intended to execute similar validity checks for checking-out a booking,
 it has now expanded its scope to double as a delete-booking feature.
 **** Before these commands could be implemented, the underlying `Room` architecture had to be written first. Extensive
-trial-and-error was conducted to determine the best design for this architecture, and ultimately Immutability was
-selected to be the paradigm for the classes in the `Room` package. 
+trial-and-error was conducted to decide the better alternative between mutable and immutable data, from which
+the immutability paradigm emerged the victor, as it was easy to debug and made writing unit, integration, and system tests much easier.
+As for the data structure of Room, Guests, and Bookings, cyclic references were shunned in favor of one-way references
+(i.e. Room contains Bookings; each Booking contains a Guest). This was chosen to minimize the risk of data corruption, as it
+removed the need for maintaining the synchronization of the same data in multiple places.
+
 
 * *Minor enhancements*:
 *** Add `list -cg` list checked-in guests feature: https://github.com/CS2103-AY1819S1-F11-2/main/pull/178[#178]
@@ -59,7 +63,7 @@ https://github.com/CS2103-AY1819S1-F11-2/main/pull/154[#154]
 ** Documentation
 *** User Guide
 **** Update with description of usage of CheckIn, Checkout, and Reassign commands
-**** Did cosmetic tweaks to existing contents of the User Guide: https://github.com/CS2103-AY1819S1-F11-2/main/pull/238[#238]
+**** Did cosmetic tweaks (icons and format) to existing contents of the User Guide: https://github.com/CS2103-AY1819S1-F11-2/main/pull/238[#238]
 
 *** Developer Guide
 **** Update with detailed description of how CheckIn and Checkout features work
@@ -71,7 +75,7 @@ https://github.com/CS2103-AY1819S1-F11-2/main/pull/238[#238]
 *** Added Coveralls, Appveyor, and Codacy support for the team
 
 ** Community
-*** Opened 40+ https://github.com/CS2103-AY1819S1-F11-2/main/pulls?q=is%3Apr+assignee%3Aadamwth+is%3Aclosed[pull requests] 
+*** Opened 40+ https://github.com/CS2103-AY1819S1-F11-2/main/pulls?q=is%3Apr+assignee%3Aadamwth+is%3Aclosed[pull requests]
 *** Reviewed 40+ https://github.com/CS2103-AY1819S1-F11-2/main/pulls?q=is%3Apr+reviewed-by%3Aadamwth+is%3Aclosed[pull requests]
 *** Some examples of PRs reviewed (with non-trivial review comments), giving praise and encouragement where it is due:
 https://github.com/CS2103-AY1819S1-F11-2/main/pull/63[#63],
@@ -89,7 +93,7 @@ https://github.com/CS2103-AY1819S1-F11-2/main/pull/226[#226]
 |_Given below are sections I contributed to the User Guide. They showcase my ability to write documentation targeting end-users._
 |===
 
-include::../UserGuide.adoc[tag=terminology]
+include::../UserGuide.adoc[tag=icons]
 
 include::../UserGuide.adoc[tag=checkin]
 
