@@ -1640,6 +1640,23 @@ identifications details, thus the responsibility of the guest(s) under that book
 
 Given below are instructions to test the app manually.
 
+=== Autocomplete
+
+Enter `a` in the command box and press kbd:[Ctrl] +
+Add command word is autocompleted with n/ prefix.
+
+Fill in a name, press kbd:[Space] and kbd:[Ctrl] +
+You will be prompted with the next parameter.
+
+Optional parameters (e.g. [t/TAG] in `add`) are at the back, and are up to you
+ to include.
+
+Press kbd:[Alt] to clear your command box.
+
+Enter `c` in the command box and press kbd:[Ctrl] +
+No autocompletion is in place because there is no unique command that starts
+with `c`. `checkin` and `checkout` are both possible options.
+
 === Adding a Booking
 
 `add n/Pikachu p/81726354 e/pi@ka.chu t/wheelchair r/047 from/20/11/2018 to/23/11/2018` +
@@ -1656,7 +1673,7 @@ different room.
 `add n/Pikachu p/81726354 e/pi@ka.chu r/049 from/16/11/2018 to/20/11/2018` +
 Pikachu can make a new (active)** booking.
 
-`add n/Pikachu p/81726354 e/pi@ka.chu r/047 from/19/11/2018 to/21/11/2018` +
+`add n/Pikachu p/81726354 e/pi@ka.chu r/049 from/19/11/2018 to/21/11/2018` +
 Unable to make booking because it overlaps with the previous booking.
 
 `add n/Pikachu p/81726354 e/pi@ka.chu r/047 from/14/11/2018 to/17/11/2018` +
@@ -1742,6 +1759,66 @@ Unable to clear because user is not signed in.
 
 `undo` +
 Unable to undo because the revision history was erased.
+
+=== List
+
+`list -cg` +
+This is the list of guests currently checked-in.
+
+`login user/admin pw/passw0rd` +
+Sign in to Concierge.
+
+`add n/Pikachu p/81726354 e/pi@ka.chu r/059 from/16/11/2018 to/20/11/2018` +
+Add a booking to Concierge.
+
+`checkin r/059` +
+Checks in Pikachu to Concierge.
+
+`list -cg` +
+Pikachu is added to the list of checked-in guests.
+
+`list -r` +
+This is the list of rooms and bookings. The room view is the default view of
+Concierge(TM).
+
+`list -g` +
+This is the view of archived guests. It contains people who have ever checked
+ out of Concierge.
+
+`checkout r/059` +
+Checks out Pikachu from Concierge.
+
+`list -g` +
+Pikachu is added to the list of archived guests.
+
+=== Find
+
+`find -g n/Alex Yu` +
+Find guest(s) with "Alex" or "Yu" or both in their names.
+
+`find -g n/Alex t/VIP` +
+Find guest(s) named Alex with tag "VIP".
+
+`find -cg p/81027115` +
+Find checked-in guest(s) with phone number "81027115".
+
+`find -cg t/VIP` +
+Find checked-in guest(s) with tag "VIP".
+
+`find -r r/085` +
+Find room 085
+
+`find -r c/2` +
+Find all rooms with a capacity of 2.
+
+`find -r c/5 -nb from/ 01/11/2018 to/ 05/11/2018` +
+Find all rooms with a capacity of 5, without any bookings from the date range 01/11/2018 to 05/11/2018.
+
+`find -r -hb` +
+Find all rooms with bookings.
+
+`find -r -hb t/RoomService` +
+Find all rooms with bookings with tag "RoomService".
 
 [NOTE]
 These instructions only provide a starting point for testers to work on; testers are expected to do more _exploratory_ testing.
