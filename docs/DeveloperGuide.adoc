@@ -1702,6 +1702,8 @@ Expected: Cannot check-in room 006 as first booking is already expired.
 ** Test case: `checkin r/011` +
 Expected: Cannot check-in room 011 as first booking is not active.
 
+* Refer to the user guide to test more edge cases
+
 [NOTE]
 These instructions only provide a starting point for testers to work on; testers are expected to do more _exploratory_ testing.
 
@@ -1719,13 +1721,17 @@ Expected: First booking is deleted. Guest of booking is not added into checked-i
 ** Prerequisites: There is a booking in the room you want to check out. Add an active booking to an empty room by doing: +
 `add n/Raichu p/81726354 e/pika@chu r/021 from/16/11/2018 to/20/11/2018` and check-in by doing `checkin r/021`
 ** Test case: `checkout r/021` +
-Expected: First booking is deleted. Guest Raichu is removed from the checked-in guest list and added to the archived guest list.
+Expected: First booking is deleted. Guest Raichu is removed from the checked-in guest list as he does not have any other checked-in bookings,
+and is added to the archived guest list.
 
 * Checking out specified booking of a room that is not checked-in
 ** Prerequisites: There is a booking in the room you want to check out. Add a booking to an empty room by doing: +
 `add n/Pichu p/81726354 e/pika@chu r/022 from/16/11/2018 to/20/11/2018`
 ** Test case: `checkout r/022 from/16/11/18` +
 Expected: Booking is deleted. Guest Pichu is not added into checked-in guest list nor archived guest list.
+
+* Refer to the user guide to test more edge cases
+
 
 [NOTE]
 These instructions only provide a starting point for testers to work on; testers are expected to do more _exploratory_ testing.
@@ -1735,14 +1741,18 @@ These instructions only provide a starting point for testers to work on; testers
 First, ensure that you have signed in by doing `login user/admin pw/passw0rd`.
 
 * Reassigning a booking to another room
-** Prerequisites: There is a booking in the room you want to reassign. Add a booking to an empty room by doing: +
-`add n/Pichu p/81726354 e/pika@chu r/030 from/16/11/2018 to/20/11/2018`
-** Test case: `reassign r/030 from/16/11/18 nr/031` +
-Expected: Booking in room 030 that starts from 16/11/18 is reassigned to room 031 (which has no bookings prior).
+** Prerequisites: There is a booking in the room you want to reassign. Room 001 with its preloaded bookings and expenses is a good example to test this.
+** Test case: `reassign r/001 from/16/11/18 nr/030` +
+Expected: Booking in room 001 that starts from 16/11/18 is reassigned to room 030 (which has no bookings prior). Expenses from room 001 are
+also ported over.
 
 * Incorrect commands to try:
-** `reassign r/001 from/32/11/18 nr/002` (no such date)
-** `reassign r/005 from/12/11/18 nr/101` (no such rooms)
+** `reassign r/001 from/32/11/18 nr/002` (invalid command, no such date)
+** `reassign r/005 from/12/11/18 nr/101` (invalid command, no such new room)
+** `reassign r/006 from/1/1/18 nr/007` (room 006 has no such booking)
+** `reassign r/006 from/9/11/18 nr/007` (cannot reassign booking, because room 006 booking is expired)
+
+* Refer to the user guide to test more edge cases
 
 [NOTE]
 These instructions only provide a starting point for testers to work on; testers are expected to do more _exploratory_ testing.
