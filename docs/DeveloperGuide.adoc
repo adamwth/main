@@ -1693,8 +1693,8 @@ Expected: Checks-in the guest Pikachu's booking and adds him to the checked-in g
 
 * Checking in a room that has an expired first booking (i.e. ends before today's date)
 ** Prerequisites: There is a booking in the room you want to check in. Room 006 has a preloaded expired booking for you to test.
-** Test case: `checkin r/010` +
-Expected: Cannot check-in room 010 as first booking is already expired.
+** Test case: `checkin r/006` +
+Expected: Cannot check-in room 006 as first booking is already expired.
 
 * Checking in a room that has a upcoming first booking (i.e. starts after today's date)
 ** Prerequisites: There is a booking in the room you want to check in. Add an upcoming booking to an empty room by doing: +
@@ -1702,37 +1702,50 @@ Expected: Cannot check-in room 010 as first booking is already expired.
 ** Test case: `checkin r/011` +
 Expected: Cannot check-in room 011 as first booking is not active.
 
+[NOTE]
+These instructions only provide a starting point for testers to work on; testers are expected to do more _exploratory_ testing.
+
 === Checkout
 
 First, ensure that you have signed in by doing `login user/admin pw/passw0rd`.
 
 * Checking out first booking of a room that is not checked-in
-** Prerequisites: There is a booking in the room you want to check out. Room 002 has a preloaded non-checked-in booking for you to test.
-** Test case: `checkout r/002` +
+** Prerequisites: There is a booking in the room you want to check out. Add a booking to an empty room by doing: +
+`add n/Pikachu p/81726354 e/pika@chu r/020 from/16/11/2018 to/20/11/2018`
+** Test case: `checkout r/020` +
 Expected: First booking is deleted. Guest of booking is not added into checked-in guest list nor archived guest list.
 
 * Checking out first booking of a room that is checked-in
-** Prerequisites: There is a booking in the room you want to check out. Room 001 has a preloaded checked-in booking for you to test.
-** Test case: `checkout r/001` +
-Expected: First booking is deleted. Guest Alex Yeoh is removed from the checked-in guest list and added to the archived guest list.
+** Prerequisites: There is a booking in the room you want to check out. Add an active booking to an empty room by doing: +
+`add n/Raichu p/81726354 e/pika@chu r/021 from/16/11/2018 to/20/11/2018` and check-in by doing `checkin r/021`
+** Test case: `checkout r/021` +
+Expected: First booking is deleted. Guest Raichu is removed from the checked-in guest list and added to the archived guest list.
 
 * Checking out specified booking of a room that is not checked-in
-** Prerequisites: There is a booking in the room you want to check out. Room 003 has a preloaded upcoming booking for you to test.
-** Test case: `checkout r/003 from/14/11/18` +
-Expected: Booking is deleted. Guest of booking is not added into checked-in guest list nor archived guest list.
+** Prerequisites: There is a booking in the room you want to check out. Add a booking to an empty room by doing: +
+`add n/Pichu p/81726354 e/pika@chu r/022 from/16/11/2018 to/20/11/2018`
+** Test case: `checkout r/022 from/16/11/18` +
+Expected: Booking is deleted. Guest Pichu is not added into checked-in guest list nor archived guest list.
+
+[NOTE]
+These instructions only provide a starting point for testers to work on; testers are expected to do more _exploratory_ testing.
 
 === Reassign
 
 First, ensure that you have signed in by doing `login user/admin pw/passw0rd`.
 
-* Reassigning a non-checked-in booking to another
-** Prerequisites: There is a booking in the room you want to reassign. Room 004 has a preloaded booking for you to test.
-** Test case: `reassign r/004 from/12/11/18 nr/007` +
-Expected: Booking in room 004 that starts from 12/11/18 is reassigned to room 007 (which has no bookings prior).
+* Reassigning a booking to another room
+** Prerequisites: There is a booking in the room you want to reassign. Add a booking to an empty room by doing: +
+`add n/Pichu p/81726354 e/pika@chu r/030 from/16/11/2018 to/20/11/2018`
+** Test case: `reassign r/030 from/16/11/18 nr/031` +
+Expected: Booking in room 030 that starts from 16/11/18 is reassigned to room 031 (which has no bookings prior).
 
 * Incorrect commands to try:
 ** `reassign r/001 from/32/11/18 nr/002` (no such date)
 ** `reassign r/005 from/12/11/18 nr/101` (no such rooms)
+
+[NOTE]
+These instructions only provide a starting point for testers to work on; testers are expected to do more _exploratory_ testing.
 
 === Login/ logout
 
